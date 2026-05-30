@@ -30,11 +30,23 @@
     document.querySelectorAll(revealSel).forEach(el => el.classList.add('in'));
   }
 
-  /* ---------- 2. Header scroll state ---------- */
+  /* ---------- 2. Header scroll state ----------
+     The dark backdrop on the header is suppressed while the user is still
+     inside the scroll-scrub hero stage, so the header reads as floating
+     glyphs over the cinematic video rather than a heavy bar competing
+     with the headline. It snaps in cleanly once they're past the hero. */
   const header = document.querySelector('.site-header');
+  const scrubTrack = document.querySelector('[data-scrub]');
   const setHeader = () => {
     if (!header) return;
-    header.classList.toggle('scrolled', window.scrollY > 24);
+    const scrolledPast = window.scrollY > 24;
+    let insideHero = false;
+    if (scrubTrack) {
+      // active while the bottom of the track is still below the top of the viewport
+      const rect = scrubTrack.getBoundingClientRect();
+      insideHero = rect.bottom > 80; // small grace zone
+    }
+    header.classList.toggle('scrolled', scrolledPast && !insideHero);
   };
   setHeader();
   window.addEventListener('scroll', setHeader, { passive: true });

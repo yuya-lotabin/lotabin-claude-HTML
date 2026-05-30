@@ -53,12 +53,29 @@
   background: var(--ink-1000);
 }
 
+/* Two layers:
+   (1) a directional "spotlight" vignette that darkens the left side of
+       the frame where the headline sits, fading to clean image on the
+       right where the cinematic composition stays untouched.
+   (2) a vertical gradient: small top shade for header legibility,
+       a stronger bottom fade so the sub-text / CTAs always read clean.
+   Together they let the text stay sharp against any underlying frame
+   (snow, sky, rock, silhouette) without muddying the whole image. */
 .hero-scrub-overlay {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(70% 55% at 50% 80%, rgba(0,0,0,0.55), transparent 70%),
-    linear-gradient(180deg, rgba(0,0,0,0.30) 0%, transparent 28%, transparent 55%, rgba(13,13,17,0.92) 100%);
+    linear-gradient(105deg,
+      rgba(0, 0, 0, 0.68) 0%,
+      rgba(0, 0, 0, 0.50) 22%,
+      rgba(0, 0, 0, 0.20) 50%,
+      rgba(0, 0, 0, 0.00) 72%),
+    linear-gradient(180deg,
+      rgba(0, 0, 0, 0.45) 0%,
+      rgba(0, 0, 0, 0.10) 18%,
+      rgba(0, 0, 0, 0.10) 55%,
+      rgba(13, 13, 17, 0.55) 78%,
+      rgba(13, 13, 17, 0.92) 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -122,40 +139,85 @@
 }
 @media (min-width: 768px) { .hero-scrub-prompt { right: var(--s-7); } }
 
-/* Headline / sub / CTA reveal as the scrub completes */
+/* Headline / sub / CTA reveal as the scrub completes.
+   The block has both top: and bottom: constraints so even when the
+   headline grows tall it can't pass under the fixed site header.
+   Content stays bottom-aligned inside that box. */
+/* The text block lives in the bottom half of the stage:
+     top:    pushed way down (past the header zone, past mid-screen)
+     bottom: very small padding so content sits low in the frame
+   Result: clear empty space between the floating header and the
+   first line of the headline. */
 .hero-scrub-text {
   position: absolute;
-  left: 0; right: 0; bottom: 0;
+  left: 0; right: 0;
+  top: calc(46% + env(safe-area-inset-top, 0px));
+  bottom: 0;
   padding:
-    var(--s-7) var(--s-5)
-    calc(var(--s-8) + env(safe-area-inset-bottom, 0px));
+    var(--s-3) var(--s-5)
+    calc(var(--s-5) + env(safe-area-inset-bottom, 0px));
   z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   pointer-events: var(--scrub-text-pe, none);
   opacity: var(--scrub-text-op, 0);
   transform: translate3d(0, calc((1 - var(--scrub-text-op, 0)) * 32px), 0);
   will-change: opacity, transform;
 }
 @media (min-width: 768px) {
-  .hero-scrub-text { padding: var(--s-7) var(--s-7) var(--s-9); }
+  .hero-scrub-text {
+    top: calc(48% + env(safe-area-inset-top, 0px));
+    padding: var(--s-4) var(--s-7) var(--s-6);
+  }
+}
+@media (min-width: 1280px) {
+  .hero-scrub-text {
+    top: calc(50% + env(safe-area-inset-top, 0px));
+  }
 }
 
-.hero-scrub-text .eyebrow { color: rgba(246,244,239,0.75); }
+.hero-scrub-text .eyebrow { color: rgba(246, 244, 239, 0.78); }
 
+/* Headline tuned smaller than the page's --fs-h1: it needs to coexist
+   with the video frame underneath and stay clear of the floating header.
+   Smaller type also means the stack starts further from the top, which
+   is the main thing the user notices. */
 .hero-scrub-text .hero-headline {
-  max-width: 18ch;
-  margin-top: var(--s-4);
-  text-shadow: 0 2px 28px rgba(0,0,0,0.45);
+  font-size: clamp(1.85rem, 1.30rem + 2.4vw, 3.85rem);
+  line-height: 1.00;
+  letter-spacing: -0.022em;
+  max-width: 22ch;
+  margin-top: var(--s-2);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.60),
+    0 2px 22px rgba(0, 0, 0, 0.55),
+    0 0 60px rgba(0, 0, 0, 0.35);
 }
-.hero-scrub-text .hero-headline em { color: var(--bronze); font-style: italic; font-weight: 400; }
+.hero-scrub-text .hero-headline em {
+  color: var(--bronze);
+  font-style: italic;
+  font-weight: 400;
+}
 
 .hero-scrub-text .hero-sub {
-  margin-top: var(--s-5);
-  max-width: 56ch;
+  font-size: clamp(0.98rem, 0.92rem + 0.3vw, 1.18rem);
+  margin-top: var(--s-4);
+  max-width: 54ch;
   color: var(--paper-100);
-  text-shadow: 0 1px 18px rgba(0,0,0,0.4);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 1px 18px rgba(0, 0, 0, 0.4);
 }
 
-.hero-scrub-text .hero-cta { margin-top: var(--s-6); }
+.hero-scrub-text .hero-cta { margin-top: var(--s-5); }
+
+/* On taller / wider viewports, give the headline a touch more breathing
+   room from the sub-headline so they don't fuse visually. */
+@media (min-width: 1024px) {
+  .hero-scrub-text .hero-sub { margin-top: var(--s-5); }
+  .hero-scrub-text .hero-cta { margin-top: var(--s-6); }
+}
 
 /* iOS safari paints sticky elements outside their parent overflow
    briefly during clip-path animation — this isolates the layer. */
