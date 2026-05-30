@@ -41,8 +41,77 @@
   if (!track) return;
   const sticky  = track.querySelector('.hero-scrub-sticky');
   const video   = track.querySelector('.hero-scrub-video');
+  const canvas  = track.querySelector('.hero-scrub-canvas');
   const tcEl    = track.querySelector('[data-scrub-tc]');
   if (!sticky || !video) return;
+
+  /* ---------- Canvas paint loop ----------
+     Some browsers (iOS Safari, some Android WebViews, headless Chromium
+     during screenshots) don't composite a paused, transform-scaled
+     <video> element. Painting the decoded frame into a <canvas> sidesteps
+     all of that — canvas content always composites and screenshots cleanly.
+     The canvas is sized to the sticky stage in CSS pixels and uses devicePixelRatio
+     for crispness. We do object-fit: cover math manually. */
+  const ctx = canvas ? canvas.getContext('2d', { alpha: false }) : null;
+
+  function resizeCanvas() {
+    if (!canvas || !ctx) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = sticky.clientWidth;
+    const h = sticky.clientHeight;
+    canvas.width  = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    canvas.style.width  = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function paintFrame() {
+    if (!canvas || !ctx || !video.videoWidth) return;
+    const cw = sticky.clientWidth;
+    const ch = sticky.clientHeight;
+    const vw = video.videoWidth;
+    const vh = video.videoHeight;
+    // object-fit: cover
+    const cAspect = cw / ch;
+    const vAspect = vw / vh;
+    let sx, sy, sw, sh;
+    if (vAspect > cAspect) {
+      // video wider — crop horizontally
+      sh = vh;
+      sw = vh * cAspect;
+      sx = (vw - sw) / 2;
+      sy = 0;
+    } else {
+      // video taller — crop vertically
+      sw = vw;
+      sh = vw / cAspect;
+      sx = 0;
+      sy = (vh - sh) / 2;
+    }
+    try {
+      ctx.drawImage(video, sx, sy, sw, sh, 0, 0, cw, ch);
+    } catch (e) { /* drawImage can throw for not-yet-decoded video */ }
+  }
+
+  let paintTicking = false;
+  function schedulePaint() {
+    if (paintTicking) return;
+    paintTicking = true;
+    requestAnimationFrame(() => {
+      paintFrame();
+      paintTicking = false;
+    });
+  }
+
+  function startPaintLoop() {
+    // continuous paint loop — runs at the display's refresh rate
+    const loop = () => {
+      paintFrame();
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
 
   /* ---------- Easing helpers ---------- */
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
@@ -55,7 +124,9 @@
   // That created races: rVFC fires for paused-video repaints unrelated to the
   // seek, prematurely flipping the "pending" flag and dropping intermediate
   // seeks. The browser is already smart about coalescing rapid currentTime
-  // assignments — keep it simple.
+  // assignments — keep it simple. Because we keep the video in the PLAYING
+  // state (see startKeepalive), each scroll tick effectively "pins" the
+  // playhead to the scroll-driven target frame.
   let lastSeek = -1;
   function requestSeek(t) {
     // Skip sub-frame deltas (<= ~1/120 s): they're indistinguishable visually
@@ -106,9 +177,12 @@
     sticky.style.setProperty('--scrub-prompt-op',
       clamp(1 - p / 0.15, 0, 1).toFixed(2));
 
-    // 6. Video seek
+    // 6. Video seek — map scroll progress into the visible-content range
+    //    [CONTENT_START, duration - CONTENT_END_OFFSET].
     if (duration > 0) {
-      const target = duration * p;
+      const lo = CONTENT_START;
+      const hi = duration - CONTENT_END_OFFSET;
+      const target = lo + (hi - lo) * p;
       requestSeek(target);
       if (tcEl) tcEl.textContent = `${fmt(target)} / ${fmt(duration)}`;
     }
@@ -136,15 +210,68 @@
     });
   }
 
+  /* ---------- Keep the decoder "playing" so the compositor paints frames ----------
+     A muted <video> that has never been played stays BLACK in many
+     browsers (notably iOS Safari, Chromium mobile emulation, some
+     Android WebViews) even when its currentTime is set — the compositor
+     skips paint for a paused-since-init video.
+
+     Workaround: leave the video in the PLAYING state (allowed because
+     it's muted + playsinline). Forward currentTime each scroll tick
+     to the target frame. Because the element stays "playing", the
+     compositor schedules paints normally and the user sees the frame
+     at our seeked time. We don't actually need wall-clock playback —
+     the constant currentTime overrides keep the frame pinned to the
+     scroll position. */
+  // Scroll progress is mapped to this range of the video's timeline.
+  // Trimming the very start (fade-in black frames) and the very end
+  // (fade-out black frames) so the first painted frame always shows
+  // visible content and the last frame doesn't dip back into darkness.
+  // Tuned for Timeline 1.mp4; safe defaults for similar 2–3 s clips.
+  const CONTENT_START = 0.60;
+  const CONTENT_END_OFFSET = 0.15;
+  const FRAME_FLOOR = CONTENT_START;
+
+  function startKeepalive() {
+    // re-call play() if the browser autopauses (e.g. tab visibility flips back)
+    const tryPlay = () => {
+      try {
+        const p = video.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+        // playbackRate 0 keeps the element in the "playing" state (so the
+        // decoder + compositor stay active) but stops the natural advance
+        // of currentTime — so our scroll-driven seeks are the only source
+        // of frame changes.
+        try { video.playbackRate = 0; } catch (e) {}
+      } catch (e) {}
+    };
+    tryPlay();
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlay(); });
+    video.addEventListener('pause', () => {
+      // Allow our explicit pause-on-prime once; after init, refuse pauses.
+      if (video.dataset.scrubInit === 'on') tryPlay();
+    });
+    // some browsers reset playbackRate on play — re-clamp it
+    video.addEventListener('ratechange', () => {
+      if (video.dataset.scrubInit === 'on' && video.playbackRate !== 0) {
+        try { video.playbackRate = 0; } catch (e) {}
+      }
+    });
+  }
+
   /* ---------- Boot ---------- */
   function onReady() {
     duration = video.duration || 0;
-    if (duration > 0) {
-      // Pause autoplay attempts and lock to first frame
-      try { video.pause(); } catch (e) {}
-      try { video.currentTime = 0; } catch (e) {}
-      if (tcEl) tcEl.textContent = `00:00 / ${fmt(duration)}`;
-    }
+    if (duration > 0 && tcEl) tcEl.textContent = `00:00 / ${fmt(duration)}`;
+    // Mark the element as initialized; from now on, pauses get rejected.
+    video.dataset.scrubInit = 'on';
+    // Size the canvas to the stage and start the per-frame paint loop.
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+    startPaintLoop();
+    startKeepalive();
+    // First seek to the floor so the initial visible frame is sharp.
+    try { video.currentTime = FRAME_FLOOR; } catch (e) {}
     onScroll();
   }
 
