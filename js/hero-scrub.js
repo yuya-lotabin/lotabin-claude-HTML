@@ -177,13 +177,14 @@
     sticky.style.setProperty('--scrub-prompt-op',
       clamp(1 - p / 0.15, 0, 1).toFixed(2));
 
-    // 6. Video seek — map scroll progress to the full video timeline
-    //    (0 → duration), with a tiny floor so the decoder paints at boot.
+    // 6. Video seek — scroll progress maps linearly to the full timeline.
+    //    Clamp just shy of the end so we never trip 'ended' which would
+    //    auto-pause the element (we already are paused) or, on browsers
+    //    that auto-loop, restart from 0.
     if (duration > 0) {
-      const raw    = duration * p;
-      const target = Math.max(FRAME_FLOOR, Math.min(raw, duration - 0.01));
+      const target = Math.min(duration * p, duration - 0.05);
       requestSeek(target);
-      if (tcEl) tcEl.textContent = `${fmt(raw)} / ${fmt(duration)}`;
+      if (tcEl) tcEl.textContent = `${fmt(duration * p)} / ${fmt(duration)}`;
     }
   }
 
@@ -209,50 +210,29 @@
     });
   }
 
-  /* ---------- Keep the decoder "playing" so the compositor paints frames ----------
-     A muted <video> that has never been played stays BLACK in many
-     browsers (notably iOS Safari, Chromium mobile emulation, some
-     Android WebViews) even when its currentTime is set — the compositor
-     skips paint for a paused-since-init video.
-
-     Workaround: leave the video in the PLAYING state (allowed because
-     it's muted + playsinline). Forward currentTime each scroll tick
-     to the target frame. Because the element stays "playing", the
-     compositor schedules paints normally and the user sees the frame
-     at our seeked time. We don't actually need wall-clock playback —
-     the constant currentTime overrides keep the frame pinned to the
-     scroll position. */
-  // Scroll progress maps across the FULL video timeline (0 → duration),
-  // including any fade-in/fade-out the user authored — that's intentional
-  // for the cinematic intro.
-  // FRAME_FLOOR is just a tiny non-zero floor so paused-since-init video
-  // decoders that won't paint at exactly t=0 still get a frame.
-  const FRAME_FLOOR = 0.04;
-
-  function startKeepalive() {
-    // re-call play() if the browser autopauses (e.g. tab visibility flips back)
-    const tryPlay = () => {
+  /* ---------- Wake the decoder, then keep video strictly paused ----------
+     iOS Safari and several Android WebViews won't produce decoded
+     frames for a <video> that has *never* been played — drawImage()
+     reads black. The fix is to call play() once, wait for a single
+     'playing' tick, then pause, and never play again. After that the
+     decoder is "awake" and every currentTime seek paints a real frame
+     into the video, which our canvas paint loop copies to screen.
+     The video itself is opacity: 0 — only the canvas is visible. */
+  function primeDecoder() {
+    return new Promise((resolve) => {
+      let settled = false;
+      const finish = () => { if (settled) return; settled = true; resolve(); };
+      const onPlaying = () => {
+        try { video.pause(); } catch (e) {}
+        finish();
+      };
+      video.addEventListener('playing', onPlaying, { once: true });
       try {
         const p = video.play();
-        if (p && typeof p.catch === 'function') p.catch(() => {});
-        // playbackRate 0 keeps the element in the "playing" state (so the
-        // decoder + compositor stay active) but stops the natural advance
-        // of currentTime — so our scroll-driven seeks are the only source
-        // of frame changes.
-        try { video.playbackRate = 0; } catch (e) {}
-      } catch (e) {}
-    };
-    tryPlay();
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlay(); });
-    video.addEventListener('pause', () => {
-      // Allow our explicit pause-on-prime once; after init, refuse pauses.
-      if (video.dataset.scrubInit === 'on') tryPlay();
-    });
-    // some browsers reset playbackRate on play — re-clamp it
-    video.addEventListener('ratechange', () => {
-      if (video.dataset.scrubInit === 'on' && video.playbackRate !== 0) {
-        try { video.playbackRate = 0; } catch (e) {}
-      }
+        if (p && typeof p.catch === 'function') p.catch(() => finish());
+      } catch (e) { finish(); }
+      // hard safety: don't block boot indefinitely
+      setTimeout(finish, 800);
     });
   }
 
@@ -260,16 +240,22 @@
   function onReady() {
     duration = video.duration || 0;
     if (duration > 0 && tcEl) tcEl.textContent = `00:00 / ${fmt(duration)}`;
-    // Mark the element as initialized; from now on, pauses get rejected.
-    video.dataset.scrubInit = 'on';
+
     // Size the canvas to the stage and start the per-frame paint loop.
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas, { passive: true });
     startPaintLoop();
-    startKeepalive();
-    // First seek to the floor so the initial visible frame is sharp.
-    try { video.currentTime = FRAME_FLOOR; } catch (e) {}
-    onScroll();
+
+    // One-time prime, then strictly paused for the rest of the session.
+    primeDecoder().then(() => {
+      try {
+        // Make sure we're paused after the prime; never let the element
+        // auto-replay if it happens to hit the end during a seek.
+        video.pause();
+        video.currentTime = 0;
+      } catch (e) {}
+      onScroll();
+    });
   }
 
   if (reduced) {
