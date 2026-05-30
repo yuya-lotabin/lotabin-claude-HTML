@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ece7dc" />
+  <title>lotabin Entertainment — Motion picture studio · Nagoya, Japan</title>
+  <meta name="description" content="A growing motion picture studio in Japan. Screenplays in development, films in progress, and an open call to writers, directors, and crew." />
+
+  <link rel="icon" href="assets/transparent.png" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/transparent.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&family=Shippori+Mincho+B1:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/site.css" />
+  <link rel="stylesheet" href="css/entertainment.css" />
+
+  <meta property="og:title" content="lotabin Entertainment — Motion picture studio" />
+  <meta property="og:description" content="Stories that move the world toward compassion. Nagoya, Japan." />
+  <meta property="og:type" content="website" />
+</head>
+<body class="ent">
+
+  <!-- ============== HEADER ============== -->
+  <header class="site-header on-paper" id="site-header">
+    <a href="#top" class="brand-mark" aria-label="lotabin Entertainment home">
+      <img src="assets/transparent.png" alt="lotabin" />
+      <span>lotabin <em style="font-style: italic; font-weight: 400; opacity: 0.7;">Entertainment</em></span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#philosophy" data-i18n="ent.nav.philosophy">Philosophy</a>
+      <a href="#screenplays" data-i18n="ent.nav.work">Screenplays</a>
+      <a href="#in-progress" data-i18n="ent.nav.progress">In progress</a>
+      <a href="index.html" data-i18n="ent.nav.video">Video desk</a>
+    </nav>
+
+    <div class="nav-tools">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="ja">JA</button>
+      </div>
+      <button class="menu-btn" type="button" data-menu-btn aria-controls="mobile-menu" aria-expanded="false" aria-label="Menu">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 4h12M1 10h12"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile">
+    <a href="#philosophy" data-i18n="ent.nav.philosophy">Philosophy</a>
+    <a href="#screenplays" data-i18n="ent.nav.work">Screenplays</a>
+    <a href="#in-progress" data-i18n="ent.nav.progress">In progress</a>
+    <a href="index.html" data-i18n="ent.nav.video">Video desk</a>
+  </nav>
+
+  <main id="top">
+
+    <!-- ============== HERO ============== -->
+    <section class="ent-hero">
+      <div class="ent-hero-bg"></div>
+      <div class="ent-marquee" aria-hidden="true">storytelling · storytelling · storytelling · storytelling · 物語 · 物語 ·</div>
+
+      <div class="inner">
+        <div class="hero-top">
+          <div class="ent-eyebrow reveal" data-i18n="ent.hero.kicker">lotabin Entertainment · 名古屋</div>
+          <div class="kbd-rule reveal" style="color: var(--paper-700);">
+            <span class="dot live"></span>
+            <span data-i18n="ent.hero.status">Three films in active development</span>
+          </div>
+        </div>
+
+        <h1 class="ent-title">
+          <span class="mask-line"><span data-i18n="ent.hero.h1.1">Stories that move</span></span>
+          <span class="mask-line"><span data-i18n="ent.hero.h1.2"><em>the world</em></span></span>
+          <span class="mask-line"><span data-i18n="ent.hero.h1.3">toward compassion.</span></span>
+        </h1>
+
+        <p class="ent-sub reveal-up" data-i18n="ent.hero.sub">
+          A growing motion picture studio in Japan, gathering creative minds from different story backgrounds, industries, and skills — united by one mission: to create entertainment that only human excellence and compassion can produce.
+        </p>
+
+        <div class="hero-cta reveal-up" style="margin-top: var(--s-6);">
+          <a href="#screenplays" class="btn btn-dark" data-magnetic="0.18">
+            <span data-i18n="ent.hero.cta1">Read the screenplays</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <a href="#in-progress" class="btn btn-ghost" data-i18n="ent.hero.cta2">See films in progress</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== PHILOSOPHY ============== -->
+    <section id="philosophy" class="philosophy">
+      <div class="container">
+        <p class="quote reveal-up" data-i18n="ent.phil.quote">The power of storytelling has always been the true core of every great motion picture.</p>
+
+        <div class="stack">
+          <p class="reveal" data-i18n="ent.phil.p1">lotabin is more than an advertising video production partner — it is a growing motion picture studio based in Japan. We work with talented individuals all around the world to create films that genuinely move people, that spread true compassion for life, and that, in their own way, move us toward a world without war.</p>
+          <p class="reveal" data-i18n="ent.phil.p2">We make this vision possible by gathering creative minds from different story backgrounds, industries, and skills. Each of us comes from a different starting point, but we all aim to fulfill the same mission. In this era of artificial intelligence, we meet the moment with human excellence and compassion — to create the kind of entertainment only we can produce.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== TALENT STRIP ============== -->
+    <section class="container">
+      <div class="talents reveal-stagger">
+        <div class="talent"><span class="num" data-i18n="ent.tal.1.n">11</span><span class="lbl" data-i18n="ent.tal.1.l">Writers in residence</span></div>
+        <div class="talent"><span class="num" data-i18n="ent.tal.2.n">06</span><span class="lbl" data-i18n="ent.tal.2.l">Directors attached</span></div>
+        <div class="talent"><span class="num" data-i18n="ent.tal.3.n">04</span><span class="lbl" data-i18n="ent.tal.3.l">Continents of collaborators</span></div>
+        <div class="talent"><span class="num" data-i18n="ent.tal.4.n">01</span><span class="lbl" data-i18n="ent.tal.4.l">Shared mission</span></div>
+      </div>
+    </section>
+
+    <!-- ============== SCREENPLAYS ============== -->
+    <section id="screenplays" class="section">
+      <div class="container">
+        <div class="ent-shead">
+          <div class="meta">
+            <span class="kbd-rule reveal" style="color: var(--paper-700);" data-i18n="ent.scr.eyebrow">01 — Screenplays in development</span>
+          </div>
+          <div>
+            <h2 class="reveal" data-i18n="ent.scr.h2">Screenplay portfolio <em>by artist</em>.</h2>
+            <p class="desc reveal" style="margin-top: var(--s-5);" data-i18n="ent.scr.lead">A living archive of stories under our wing — from early drafts and concept boards to shooting-ready scripts. Each piece is a collaboration between writers, directors, and producers from inside and outside the studio.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="screenplay-grid reveal-stagger">
+
+          <article class="script-card">
+            <div class="meta-row"><span data-i18n="ent.s1.idx">#01 · DRAMA · 110 PAGES</span><span data-i18n="ent.s1.stage">Draft 3 · sealed</span></div>
+            <h3 class="title" data-i18n="ent.s1.title">The Lantern Tide</h3>
+            <p class="by"><span data-i18n="ent.s1.by.lbl">Screenplay by</span> <b data-i18n="ent.s1.by.name">Ayano Mori</b></p>
+            <p class="log" data-i18n="ent.s1.log">A reclusive lighthouse keeper on the Sea of Japan inherits a granddaughter she never knew, and through three winters they learn each other's grief.</p>
+            <div class="tags">
+              <span data-i18n="ent.s1.t1">Family</span>
+              <span data-i18n="ent.s1.t2">Coastal</span>
+              <span data-i18n="ent.s1.t3">Quiet drama</span>
+            </div>
+            <a href="#" class="open-arrow" aria-label="Open">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+          <article class="script-card">
+            <div class="meta-row"><span data-i18n="ent.s2.idx">#02 · SCI-FI / DRAMA · 98 PAGES</span><span data-i18n="ent.s2.stage">Concept board · open</span></div>
+            <h3 class="title" data-i18n="ent.s2.title">Hours of <em>Translation</em></h3>
+            <p class="by"><span data-i18n="ent.s2.by.lbl">Screenplay by</span> <b data-i18n="ent.s2.by.name">Devon Marsh &amp; Reiko Tachibana</b></p>
+            <p class="log" data-i18n="ent.s2.log">A near-future translator who works between human languages and a newly arrived non-human one begins to suspect that what is being communicated is grief, not threat.</p>
+            <div class="tags">
+              <span data-i18n="ent.s2.t1">Sci-fi</span>
+              <span data-i18n="ent.s2.t2">First contact</span>
+              <span data-i18n="ent.s2.t3">Linguistics</span>
+            </div>
+            <a href="#" class="open-arrow" aria-label="Open">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+          <article class="script-card">
+            <div class="meta-row"><span data-i18n="ent.s3.idx">#03 · WAR / ANTI-WAR · 132 PAGES</span><span data-i18n="ent.s3.stage">Draft 2 · open</span></div>
+            <h3 class="title" data-i18n="ent.s3.title">A Quiet Country</h3>
+            <p class="by"><span data-i18n="ent.s3.by.lbl">Screenplay by</span> <b data-i18n="ent.s3.by.name">Kenji Ishida</b></p>
+            <p class="log" data-i18n="ent.s3.log">In a country where war has just ended for the third time in a century, a soldier walks home through villages that are no longer sure they want soldiers walking home.</p>
+            <div class="tags">
+              <span data-i18n="ent.s3.t1">Anti-war</span>
+              <span data-i18n="ent.s3.t2">Period</span>
+              <span data-i18n="ent.s3.t3">Ensemble</span>
+            </div>
+            <a href="#" class="open-arrow" aria-label="Open">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+          <article class="script-card">
+            <div class="meta-row"><span data-i18n="ent.s4.idx">#04 · ANIMATION · 76 PAGES</span><span data-i18n="ent.s4.stage">Outline · pitch</span></div>
+            <h3 class="title" data-i18n="ent.s4.title">Mother of <em>Seeds</em></h3>
+            <p class="by"><span data-i18n="ent.s4.by.lbl">Screenplay by</span> <b data-i18n="ent.s4.by.name">Imani Wells</b></p>
+            <p class="log" data-i18n="ent.s4.log">A young farmer-priestess on a dying world is told by a dream to gather one seed from every living thing, and walk south until the soil remembers her.</p>
+            <div class="tags">
+              <span data-i18n="ent.s4.t1">Animation</span>
+              <span data-i18n="ent.s4.t2">Eco-fable</span>
+              <span data-i18n="ent.s4.t3">Journey</span>
+            </div>
+            <a href="#" class="open-arrow" aria-label="Open">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+          <article class="script-card">
+            <div class="meta-row"><span data-i18n="ent.s5.idx">#05 · DOCUMENTARY · 64 PAGES</span><span data-i18n="ent.s5.stage">Treatment · open</span></div>
+            <h3 class="title" data-i18n="ent.s5.title">Letters to Sendai</h3>
+            <p class="by"><span data-i18n="ent.s5.by.lbl">Direction by</span> <b data-i18n="ent.s5.by.name">Hana Okabe</b></p>
+            <p class="log" data-i18n="ent.s5.log">A documentary built from a decade of unanswered letters left at a payphone in Ōtsuchi, and the people on either end who never spoke but kept writing.</p>
+            <div class="tags">
+              <span data-i18n="ent.s5.t1">Documentary</span>
+              <span data-i18n="ent.s5.t2">Memory</span>
+              <span data-i18n="ent.s5.t3">Tōhoku</span>
+            </div>
+            <a href="#" class="open-arrow" aria-label="Open">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+          <article class="script-card">
+            <div class="meta-row"><span data-i18n="ent.s6.idx">#06 · DRAMA / ROMANCE · 102 PAGES</span><span data-i18n="ent.s6.stage">Draft 1 · in review</span></div>
+            <h3 class="title" data-i18n="ent.s6.title">Slow Hours, <em>Bright Hours</em></h3>
+            <p class="by"><span data-i18n="ent.s6.by.lbl">Screenplay by</span> <b data-i18n="ent.s6.by.name">Marisol Pareja</b></p>
+            <p class="log" data-i18n="ent.s6.log">A São Paulo nurse and a Kyoto pastry apprentice meet for one week in Nagoya and try to invent a relationship that survives time zones, languages, and the shifts neither of them control.</p>
+            <div class="tags">
+              <span data-i18n="ent.s6.t1">Romance</span>
+              <span data-i18n="ent.s6.t2">Bilingual</span>
+              <span data-i18n="ent.s6.t3">Slow cinema</span>
+            </div>
+            <a href="#" class="open-arrow" aria-label="Open">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== FILMS IN PROGRESS ============== -->
+    <section id="in-progress" class="section" style="border-top: 1px solid var(--ent-rule);">
+      <div class="container">
+        <div class="ent-shead">
+          <div class="meta">
+            <span class="kbd-rule reveal" style="color: var(--paper-700);" data-i18n="ent.prog.eyebrow">02 — Films in progress</span>
+          </div>
+          <div>
+            <h2 class="reveal" data-i18n="ent.prog.h2">Where each film <em>stands today</em>.</h2>
+            <p class="desc reveal" style="margin-top: var(--s-5);" data-i18n="ent.prog.lead">A live look at our development slate. Each track shows the film's current stage across the standard production pipeline. We update this page as projects move forward.</p>
+          </div>
+        </div>
+
+        <div class="tracks reveal-stagger">
+
+          <!-- TRACK 1: The Lantern Tide — 62% (Production live) -->
+          <article class="track">
+            <div class="track-head">
+              <span class="ttl" data-i18n="ent.f1.ttl">The Lantern Tide</span>
+              <span class="meta" data-i18n="ent.f1.meta">Feature · Drama · 2026</span>
+            </div>
+            <div class="progress-track">
+              <div class="stages" aria-hidden="true">
+                <span class="seg done"></span>
+                <span class="seg done"></span>
+                <span class="seg live"></span>
+                <span class="seg"></span>
+                <span class="seg"></span>
+              </div>
+              <div class="labels">
+                <span data-i18n="ent.prog.stage.1">Development</span>
+                <span data-i18n="ent.prog.stage.2">Pre-production</span>
+                <span class="live" data-i18n="ent.prog.stage.3">Production</span>
+                <span data-i18n="ent.prog.stage.4">Post</span>
+                <span data-i18n="ent.prog.stage.5">Release</span>
+              </div>
+            </div>
+            <div class="track-stat">
+              <span class="pct" data-i18n="ent.f1.pct">62%</span>
+              <span class="est" data-i18n="ent.f1.est">Principal photography Q1 2027</span>
+            </div>
+          </article>
+
+          <!-- TRACK 2: Hours of Translation — 34% (Pre-production live) -->
+          <article class="track">
+            <div class="track-head">
+              <span class="ttl" data-i18n="ent.f2.ttl">Hours of <em>Translation</em></span>
+              <span class="meta" data-i18n="ent.f2.meta">Feature · Sci-fi · 2027</span>
+            </div>
+            <div class="progress-track">
+              <div class="stages" aria-hidden="true">
+                <span class="seg done"></span>
+                <span class="seg live"></span>
+                <span class="seg"></span>
+                <span class="seg"></span>
+                <span class="seg"></span>
+              </div>
+              <div class="labels">
+                <span data-i18n="ent.prog.stage.1">Development</span>
+                <span class="live" data-i18n="ent.prog.stage.2">Pre-production</span>
+                <span data-i18n="ent.prog.stage.3">Production</span>
+                <span data-i18n="ent.prog.stage.4">Post</span>
+                <span data-i18n="ent.prog.stage.5">Release</span>
+              </div>
+            </div>
+            <div class="track-stat">
+              <span class="pct" data-i18n="ent.f2.pct">34%</span>
+              <span class="est" data-i18n="ent.f2.est">Casting · winter 2026</span>
+            </div>
+          </article>
+
+          <!-- TRACK 3: A Quiet Country — 48% (Pre-production live) -->
+          <article class="track">
+            <div class="track-head">
+              <span class="ttl" data-i18n="ent.f3.ttl">A Quiet Country</span>
+              <span class="meta" data-i18n="ent.f3.meta">Feature · Anti-war · 2027</span>
+            </div>
+            <div class="progress-track">
+              <div class="stages" aria-hidden="true">
+                <span class="seg done"></span>
+                <span class="seg live"></span>
+                <span class="seg"></span>
+                <span class="seg"></span>
+                <span class="seg"></span>
+              </div>
+              <div class="labels">
+                <span data-i18n="ent.prog.stage.1">Development</span>
+                <span class="live" data-i18n="ent.prog.stage.2">Pre-production</span>
+                <span data-i18n="ent.prog.stage.3">Production</span>
+                <span data-i18n="ent.prog.stage.4">Post</span>
+                <span data-i18n="ent.prog.stage.5">Release</span>
+              </div>
+            </div>
+            <div class="track-stat">
+              <span class="pct" data-i18n="ent.f3.pct">48%</span>
+              <span class="est" data-i18n="ent.f3.est">Locations · spring 2027</span>
+            </div>
+          </article>
+
+          <!-- TRACK 4: Mother of Seeds — 18% (Development live) -->
+          <article class="track">
+            <div class="track-head">
+              <span class="ttl" data-i18n="ent.f4.ttl">Mother of <em>Seeds</em></span>
+              <span class="meta" data-i18n="ent.f4.meta">Animation feature · 2028</span>
+            </div>
+            <div class="progress-track">
+              <div class="stages" aria-hidden="true">
+                <span class="seg live"></span>
+                <span class="seg"></span>
+                <span class="seg"></span>
+                <span class="seg"></span>
+                <span class="seg"></span>
+              </div>
+              <div class="labels">
+                <span class="live" data-i18n="ent.prog.stage.1">Development</span>
+                <span data-i18n="ent.prog.stage.2">Pre-production</span>
+                <span data-i18n="ent.prog.stage.3">Production</span>
+                <span data-i18n="ent.prog.stage.4">Post</span>
+                <span data-i18n="ent.prog.stage.5">Release</span>
+              </div>
+            </div>
+            <div class="track-stat">
+              <span class="pct" data-i18n="ent.f4.pct">18%</span>
+              <span class="est" data-i18n="ent.f4.est">Visual development</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== ENT CTA ============== -->
+    <section class="ent-cta" id="contact">
+      <h2 class="big reveal-up" data-i18n="ent.cta.h">If your story moves<br>toward the same horizon —<br><em>send it.</em></h2>
+      <p class="sub reveal" data-i18n="ent.cta.sub">Writers, directors, producers, and crew: we read everything. Cold submissions, finished drafts, half-finished outlines. If it belongs here, you'll hear back.</p>
+      <div class="actions reveal">
+        <a href="mailto:stories@lotabin.com?subject=Screenplay%20submission" class="btn btn-primary" data-magnetic="0.18">
+          <span data-i18n="ent.cta.btn1">Submit a screenplay</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a href="mailto:stories@lotabin.com" class="btn btn-ghost" style="color: var(--paper-50); border-color: rgba(246,244,239,0.22);" data-i18n="ent.cta.btn2">Collaborate with the studio</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============== FOOTER ============== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <a href="#top" class="brand-mark" style="font-size: 1.6rem; color: var(--paper-50);">
+            <img src="assets/transparent.png" alt="lotabin" />
+            <span>lotabin <em style="font-style: italic; font-weight: 400; opacity: 0.7;">Entertainment</em></span>
+          </a>
+          <p style="margin-top: var(--s-4); max-width: 36ch;" data-i18n="foot.tag">Short-form video ad production desk · Motion picture studio · Nagoya, Japan</p>
+        </div>
+        <div>
+          <h5 data-i18n="ent.nav.philosophy">Philosophy</h5>
+          <a href="#philosophy" data-i18n="ent.nav.philosophy">Philosophy</a>
+          <a href="#screenplays" data-i18n="ent.nav.work">Screenplays</a>
+          <a href="#in-progress" data-i18n="ent.nav.progress">In progress</a>
+        </div>
+        <div>
+          <h5 data-i18n="foot.col3.h">Studio</h5>
+          <a href="mailto:stories@lotabin.com">stories@lotabin.com</a>
+          <a href="index.html" data-i18n="ent.nav.video">Video desk</a>
+        </div>
+        <div>
+          <h5 data-i18n="nav.contact">Contact</h5>
+          <a href="mailto:hello@lotabin.com">hello@lotabin.com</a>
+          <a href="#contact" data-i18n="ent.cta.btn1">Submit a screenplay</a>
+        </div>
+      </div>
+      <div class="legal">
+        <span data-i18n="foot.legal">© 2026 lotabin K.K. — All rights reserved</span>
+        <span data-i18n="foot.location">Nagoya 名古屋 · Japan</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/anim.js"></script>
+</body>
+</html>

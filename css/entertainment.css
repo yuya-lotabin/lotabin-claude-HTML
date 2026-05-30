@@ -1,0 +1,206 @@
+/* ============================================================
+   lotabin Entertainment — portfolio page styles
+   Warmer paper canvas, more editorial / literary tone.
+   ============================================================ */
+
+body.ent { background: var(--ent-bg); color: var(--ent-fg); }
+body.ent ::selection { background: var(--ink-1000); color: var(--paper-50); }
+
+body.ent .nav-links a { color: var(--paper-900); opacity: 0.78; }
+body.ent .menu-btn   { border-color: var(--ent-rule); }
+body.ent .btn-ghost  { color: var(--paper-900); border-color: var(--ent-rule); }
+body.ent .btn-ghost:hover { background: rgba(29,26,22,0.05); border-color: var(--paper-900); }
+
+body.ent .rule, body.ent .rule-strong, body.ent .step,
+body.ent .what-grid, body.ent .what-cell { background: var(--ent-bg); }
+
+/* ---- Ent header offset ---- */
+.ent-hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex; align-items: flex-end;
+  padding: 140px var(--s-5) var(--s-9);
+  overflow: hidden;
+}
+@media (min-width: 768px) { .ent-hero { padding: 160px var(--s-7) var(--s-9); } }
+.ent-hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(80% 60% at 80% 0%, rgba(154, 125, 79, 0.22), transparent 65%),
+    radial-gradient(70% 60% at 0% 90%, rgba(29,26,22,0.18), transparent 65%),
+    linear-gradient(180deg, var(--paper-100) 0%, var(--paper-50) 100%);
+}
+.ent-hero-bg::after {
+  content:""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(180deg, rgba(0,0,0,0.018) 0 2px, transparent 2px 5px);
+}
+.ent-marquee {
+  position: absolute; left: 0; right: 0; top: 28%;
+  font-family: var(--font-display); font-style: italic;
+  font-size: clamp(7rem, 18vw, 22rem); color: rgba(29,26,22,0.06);
+  white-space: nowrap; pointer-events: none;
+  animation: marquee 46s linear infinite;
+}
+
+.ent-hero .inner { position: relative; z-index: 1; width: 100%; max-width: 1320px; margin: 0 auto; }
+
+.ent-eyebrow { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--bronze-deep); }
+
+.ent-title  { font-family: var(--font-display); font-weight: 500; line-height: 0.94; letter-spacing: -0.03em; color: var(--paper-900); font-size: var(--fs-h1); margin: var(--s-5) 0 0; max-width: 14ch; }
+.ent-title em { color: var(--bronze-deep); font-style: italic; }
+.ent-sub    { font-family: var(--font-serif); font-size: var(--fs-lead); line-height: 1.55; color: var(--paper-700); max-width: 60ch; margin-top: var(--s-6); }
+
+/* ---- Philosophy block ---- */
+.philosophy {
+  padding: var(--s-10) 0;
+  background: var(--paper-50);
+  border-top: 1px solid var(--ent-rule);
+  border-bottom: 1px solid var(--ent-rule);
+  position: relative;
+}
+.philosophy .quote {
+  font-family: var(--font-display); font-style: italic; font-weight: 400;
+  font-size: clamp(1.6rem, 3.4vw, 3rem);
+  line-height: 1.18; letter-spacing: -0.018em;
+  color: var(--paper-900);
+  max-width: 28ch;
+  margin: 0 auto;
+}
+.philosophy .quote::before {
+  content: "“"; display: block;
+  font-family: var(--font-display); font-size: clamp(6rem, 10vw, 10rem);
+  line-height: 0.6; color: var(--bronze-deep); margin-bottom: -10px;
+}
+
+.philosophy .stack {
+  display: grid; grid-template-columns: 1fr; gap: var(--s-6);
+  max-width: 980px; margin: var(--s-9) auto 0;
+}
+@media (min-width: 768px) { .philosophy .stack { grid-template-columns: 1fr 1fr; gap: var(--s-8); } }
+.philosophy .stack p { font-family: var(--font-serif); font-size: 1.08rem; color: var(--paper-700); line-height: 1.7; margin: 0; }
+.philosophy .stack p:first-letter { font-family: var(--font-display); font-size: 3.5em; float: left; line-height: 0.85; padding: 6px 8px 0 0; color: var(--paper-900); }
+
+/* ---- Section header (paper variant) ---- */
+.ent-shead {
+  display: grid; grid-template-columns: 1fr; gap: var(--s-5); align-items: end;
+  margin-bottom: var(--s-8);
+}
+@media (min-width: 1024px) { .ent-shead { grid-template-columns: 1fr 1.5fr; gap: var(--s-8); } }
+.ent-shead h2 {
+  font-family: var(--font-display); font-weight: 500; font-size: var(--fs-h2);
+  letter-spacing: -0.025em; line-height: 1; margin: 0; color: var(--paper-900);
+}
+.ent-shead h2 em { color: var(--bronze-deep); font-style: italic; }
+.ent-shead .desc { font-family: var(--font-serif); font-size: var(--fs-lead); color: var(--paper-700); }
+
+/* ---- Screenplay portfolio ---- */
+.screenplay-grid {
+  display: grid; grid-template-columns: 1fr; gap: 1px;
+  background: var(--ent-rule);
+  border-top: 1px solid var(--ent-rule);
+  border-bottom: 1px solid var(--ent-rule);
+}
+@media (min-width: 768px) { .screenplay-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .screenplay-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.script-card {
+  background: var(--paper-50);
+  padding: var(--s-6) var(--s-5);
+  display: flex; flex-direction: column;
+  gap: var(--s-3);
+  transition: background var(--d-med) var(--e-out);
+  position: relative;
+  min-height: 360px;
+}
+.script-card:hover { background: var(--paper-100); }
+.script-card .meta-row { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.70rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper-700); }
+.script-card .title { font-family: var(--font-display); font-size: 1.7rem; line-height: 1.1; letter-spacing: -0.018em; font-weight: 500; color: var(--paper-900); margin: var(--s-4) 0 0; }
+.script-card .title em { font-style: italic; color: var(--bronze-deep); }
+.script-card .by { font-family: var(--font-serif); font-size: 0.95rem; color: var(--paper-700); margin: 8px 0 0; }
+.script-card .by b { color: var(--paper-900); font-weight: 500; }
+.script-card .log { font-family: var(--font-serif); font-size: 0.96rem; color: var(--paper-700); line-height: 1.6; margin-top: var(--s-3); flex: 1; }
+.script-card .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--s-4); }
+.script-card .tags span { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--ent-rule); color: var(--paper-700); }
+.script-card .open-arrow {
+  position: absolute; right: 18px; bottom: 18px;
+  width: 38px; height: 38px;
+  border-radius: 999px; border: 1px solid var(--ent-rule);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--d-med) var(--e-out), border-color var(--d-med) var(--e-out), color var(--d-med) var(--e-out);
+  color: var(--paper-900);
+}
+.script-card:hover .open-arrow { background: var(--paper-900); border-color: var(--paper-900); color: var(--paper-50); }
+
+/* ---- Movies in progress (timeline / track) ---- */
+.tracks { display: flex; flex-direction: column; gap: var(--s-5); }
+.track {
+  background: var(--paper-50);
+  border: 1px solid var(--ent-rule);
+  border-radius: 16px;
+  padding: var(--s-6);
+  display: grid; grid-template-columns: 1fr; gap: var(--s-4);
+  transition: transform var(--d-med) var(--e-out), border-color var(--d-med) var(--e-out);
+}
+.track:hover { transform: translateY(-2px); border-color: var(--paper-700); }
+@media (min-width: 900px) { .track { grid-template-columns: 1.2fr 2fr 0.8fr; align-items: center; gap: var(--s-7); } }
+
+.track-head { display: flex; flex-direction: column; gap: 8px; }
+.track-head .ttl { font-family: var(--font-display); font-size: 1.7rem; font-weight: 500; letter-spacing: -0.018em; line-height: 1.05; color: var(--paper-900); }
+.track-head .ttl em { color: var(--bronze-deep); font-style: italic; }
+.track-head .meta { font-family: var(--font-mono); font-size: 0.70rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper-700); }
+
+.progress-track { position: relative; }
+.progress-track .stages {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 12px;
+}
+.progress-track .stages .seg {
+  height: 6px; border-radius: 3px; background: var(--ent-rule);
+  transition: background var(--d-slow) var(--e-out);
+}
+.progress-track .stages .seg.done { background: var(--paper-900); }
+.progress-track .stages .seg.live {
+  background: linear-gradient(90deg, var(--paper-900), var(--bronze-deep), var(--paper-900));
+  background-size: 200% 100%;
+  animation: liveSeg 2.4s linear infinite;
+}
+@keyframes liveSeg { 0% { background-position: 0% 0; } 100% { background-position: -200% 0; } }
+.progress-track .labels {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-700);
+}
+.progress-track .labels span { text-align: left; }
+.progress-track .labels span.live { color: var(--bronze-deep); }
+
+.track-stat { display: flex; flex-direction: column; gap: 6px; text-align: right; }
+@media (max-width: 900px) { .track-stat { text-align: left; } }
+.track-stat .pct { font-family: var(--font-display); font-size: 2.4rem; line-height: 1; font-weight: 500; letter-spacing: -0.02em; color: var(--paper-900); }
+.track-stat .est { font-family: var(--font-mono); font-size: 0.70rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper-700); }
+
+/* ---- Talent strip ---- */
+.talents {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-5);
+  padding: var(--s-7) 0;
+  border-top: 1px solid var(--ent-rule);
+  border-bottom: 1px solid var(--ent-rule);
+}
+@media (min-width: 768px) { .talents { grid-template-columns: repeat(4, 1fr); gap: var(--s-7); } }
+.talent { display: flex; flex-direction: column; gap: 6px; }
+.talent .num { font-family: var(--font-display); font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1; color: var(--paper-900); letter-spacing: -0.025em; font-weight: 500; }
+.talent .lbl { font-family: var(--font-mono); font-size: 0.70rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--paper-700); }
+
+/* ---- Final cta ent ---- */
+.ent-cta {
+  background: var(--paper-900);
+  color: var(--paper-50);
+  padding: var(--s-10) var(--s-5);
+  text-align: center;
+}
+.ent-cta .big { font-family: var(--font-display); font-size: var(--fs-mega); font-weight: 500; line-height: 0.9; letter-spacing: -0.04em; max-width: 14ch; margin: 0 auto; }
+.ent-cta .big em { color: var(--bronze); font-style: italic; }
+.ent-cta .sub { font-family: var(--font-serif); font-size: var(--fs-lead); margin-top: var(--s-5); color: var(--paper-200); max-width: 56ch; margin-left: auto; margin-right: auto; }
+.ent-cta .actions { margin-top: var(--s-7); display: flex; justify-content: center; gap: var(--s-3); flex-wrap: wrap; }
+
+/* paper footer variant */
+body.ent .site-footer { background: var(--paper-900); color: var(--paper-200); border-top-color: rgba(255,255,255,0.08); }
+body.ent .site-footer h5 { color: var(--paper-50); }
+body.ent .site-footer .legal { border-top-color: rgba(255,255,255,0.10); }
