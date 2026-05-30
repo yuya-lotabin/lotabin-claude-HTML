@@ -177,14 +177,13 @@
     sticky.style.setProperty('--scrub-prompt-op',
       clamp(1 - p / 0.15, 0, 1).toFixed(2));
 
-    // 6. Video seek — map scroll progress into the visible-content range
-    //    [CONTENT_START, duration - CONTENT_END_OFFSET].
+    // 6. Video seek — map scroll progress to the full video timeline
+    //    (0 → duration), with a tiny floor so the decoder paints at boot.
     if (duration > 0) {
-      const lo = CONTENT_START;
-      const hi = duration - CONTENT_END_OFFSET;
-      const target = lo + (hi - lo) * p;
+      const raw    = duration * p;
+      const target = Math.max(FRAME_FLOOR, Math.min(raw, duration - 0.01));
       requestSeek(target);
-      if (tcEl) tcEl.textContent = `${fmt(target)} / ${fmt(duration)}`;
+      if (tcEl) tcEl.textContent = `${fmt(raw)} / ${fmt(duration)}`;
     }
   }
 
@@ -223,14 +222,12 @@
      at our seeked time. We don't actually need wall-clock playback —
      the constant currentTime overrides keep the frame pinned to the
      scroll position. */
-  // Scroll progress is mapped to this range of the video's timeline.
-  // Trimming the very start (fade-in black frames) and the very end
-  // (fade-out black frames) so the first painted frame always shows
-  // visible content and the last frame doesn't dip back into darkness.
-  // Tuned for Timeline 1.mp4; safe defaults for similar 2–3 s clips.
-  const CONTENT_START = 0.60;
-  const CONTENT_END_OFFSET = 0.15;
-  const FRAME_FLOOR = CONTENT_START;
+  // Scroll progress maps across the FULL video timeline (0 → duration),
+  // including any fade-in/fade-out the user authored — that's intentional
+  // for the cinematic intro.
+  // FRAME_FLOOR is just a tiny non-zero floor so paused-since-init video
+  // decoders that won't paint at exactly t=0 still get a frame.
+  const FRAME_FLOOR = 0.04;
 
   function startKeepalive() {
     // re-call play() if the browser autopauses (e.g. tab visibility flips back)
