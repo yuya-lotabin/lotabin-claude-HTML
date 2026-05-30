@@ -41,73 +41,27 @@
   if (!track) return;
   const sticky  = track.querySelector('.hero-scrub-sticky');
   const video   = track.querySelector('.hero-scrub-video');
-  const canvas  = track.querySelector('.hero-scrub-canvas');
   const tcEl    = track.querySelector('[data-scrub-tc]');
   if (!sticky || !video) return;
 
-  /* ---------- Canvas paint loop ----------
-     Some browsers (iOS Safari, some Android WebViews, headless Chromium
-     during screenshots) don't composite a paused, transform-scaled
-     <video> element. Painting the decoded frame into a <canvas> sidesteps
-     all of that — canvas content always composites and screenshots cleanly.
-     The canvas is sized to the sticky stage in CSS pixels and uses devicePixelRatio
-     for crispness. We do object-fit: cover math manually. */
-  const ctx = canvas ? canvas.getContext('2d', { alpha: false }) : null;
+  /* ---------- Scroll-locked playback ----------
+     The video element is visible (no canvas overlay). It's playing
+     continuously with `loop` (required for iOS Safari to paint the
+     frames — paused-since-init videos stay black on iOS). The rAF
+     loop overrides currentTime to the scroll-driven target every
+     frame. At 60 fps the at-most-16 ms of forward drift between
+     snaps is invisible, and the natural loop-restart at end-of-clip
+     is also masked by the same override.
+     This keeps the visible behavior: video locked to scroll position,
+     no visible looping, no visible auto-play. */
 
-  function resizeCanvas() {
-    if (!canvas || !ctx) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = sticky.clientWidth;
-    const h = sticky.clientHeight;
-    canvas.width  = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    canvas.style.width  = w + 'px';
-    canvas.style.height = h + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-
-  function paintFrame() {
-    if (!canvas || !ctx || !video.videoWidth) return;
-    const cw = sticky.clientWidth;
-    const ch = sticky.clientHeight;
-    const vw = video.videoWidth;
-    const vh = video.videoHeight;
-    // object-fit: cover
-    const cAspect = cw / ch;
-    const vAspect = vw / vh;
-    let sx, sy, sw, sh;
-    if (vAspect > cAspect) {
-      // video wider — crop horizontally
-      sh = vh;
-      sw = vh * cAspect;
-      sx = (vw - sw) / 2;
-      sy = 0;
-    } else {
-      // video taller — crop vertically
-      sw = vw;
-      sh = vw / cAspect;
-      sx = 0;
-      sy = (vh - sh) / 2;
-    }
-    try {
-      ctx.drawImage(video, sx, sy, sw, sh, 0, 0, cw, ch);
-    } catch (e) { /* drawImage can throw for not-yet-decoded video */ }
-  }
-
-  let paintTicking = false;
-  function schedulePaint() {
-    if (paintTicking) return;
-    paintTicking = true;
-    requestAnimationFrame(() => {
-      paintFrame();
-      paintTicking = false;
-    });
-  }
-
-  function startPaintLoop() {
-    // continuous paint loop — runs at the display's refresh rate
+  function startLockLoop() {
     const loop = () => {
-      paintFrame();
+      try {
+        if (duration > 0 && Math.abs(video.currentTime - scrollTargetCT) > 0.024) {
+          video.currentTime = scrollTargetCT;
+        }
+      } catch (e) {}
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
@@ -178,12 +132,11 @@
       clamp(1 - p / 0.15, 0, 1).toFixed(2));
 
     // 6. Video seek — scroll progress maps linearly to the full timeline.
-    //    Clamp just shy of the end so we never trip 'ended' which would
-    //    auto-pause the element (we already are paused) or, on browsers
-    //    that auto-loop, restart from 0.
+    //    Clamp just shy of the end so we never trip 'ended' (which auto-
+    //    pauses the element on some browsers and could trigger a reset).
     if (duration > 0) {
-      const target = Math.min(duration * p, duration - 0.05);
-      requestSeek(target);
+      scrollTargetCT = Math.min(duration * p, duration - 0.05);
+      requestSeek(scrollTargetCT);
       if (tcEl) tcEl.textContent = `${fmt(duration * p)} / ${fmt(duration)}`;
     }
   }
@@ -210,30 +163,14 @@
     });
   }
 
-  /* ---------- Wake the decoder, then keep video strictly paused ----------
-     iOS Safari and several Android WebViews won't produce decoded
-     frames for a <video> that has *never* been played — drawImage()
-     reads black. The fix is to call play() once, wait for a single
-     'playing' tick, then pause, and never play again. After that the
-     decoder is "awake" and every currentTime seek paints a real frame
-     into the video, which our canvas paint loop copies to screen.
-     The video itself is opacity: 0 — only the canvas is visible. */
-  function primeDecoder() {
-    return new Promise((resolve) => {
-      let settled = false;
-      const finish = () => { if (settled) return; settled = true; resolve(); };
-      const onPlaying = () => {
-        try { video.pause(); } catch (e) {}
-        finish();
-      };
-      video.addEventListener('playing', onPlaying, { once: true });
-      try {
-        const p = video.play();
-        if (p && typeof p.catch === 'function') p.catch(() => finish());
-      } catch (e) { finish(); }
-      // hard safety: don't block boot indefinitely
-      setTimeout(finish, 800);
-    });
+  let scrollTargetCT = 0;
+
+  function ensurePlaying() {
+    if (!video.paused) return;
+    try {
+      const p = video.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    } catch (e) {}
   }
 
   /* ---------- Boot ---------- */
@@ -241,21 +178,16 @@
     duration = video.duration || 0;
     if (duration > 0 && tcEl) tcEl.textContent = `00:00 / ${fmt(duration)}`;
 
-    // Size the canvas to the stage and start the per-frame paint loop.
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas, { passive: true });
-    startPaintLoop();
+    // Try to play (autoplay attr should already have started it; this is
+    // a fallback for browsers / WebViews where attribute autoplay was denied
+    // but a JS-initiated play after user gesture is permitted).
+    ensurePlaying();
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) ensurePlaying(); });
+    // On gesture-locked browsers (rare for muted+inline), kick play on first scroll.
+    window.addEventListener('scroll', ensurePlaying, { passive: true, once: true });
 
-    // One-time prime, then strictly paused for the rest of the session.
-    primeDecoder().then(() => {
-      try {
-        // Make sure we're paused after the prime; never let the element
-        // auto-replay if it happens to hit the end during a seek.
-        video.pause();
-        video.currentTime = 0;
-      } catch (e) {}
-      onScroll();
-    });
+    startLockLoop();
+    onScroll();
   }
 
   if (reduced) {

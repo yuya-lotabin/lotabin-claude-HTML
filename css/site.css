@@ -39,10 +39,6 @@
   background: var(--ink-1000);
 }
 
-/* The <video> stays in the DOM for decoding, but it's the <canvas>
-   below that the user actually sees. Hiding the video this way
-   (rather than display: none) keeps its decoder pipeline active
-   on every browser. */
 .hero-scrub-video {
   position: absolute;
   inset: 0;
@@ -50,24 +46,10 @@
   height: 100%;
   object-fit: cover;
   pointer-events: none;
-  opacity: 0;
-  /* keep on its own compositor layer so the canvas above can pull
-     frames from it without forcing a CPU readback every tick */
-  transform: translateZ(0);
-}
-
-/* Canvas the user actually sees. We paint each decoded video frame
-   into it on every animation tick, with object-fit:cover math done
-   manually. transform: scale() drives the cinematic de-zoom. */
-.hero-scrub-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  /* slight zoom that releases as the frame opens */
   transform: translate3d(0, 0, 0) scale(var(--scrub-scale, 1.10));
   transform-origin: 50% 50%;
   will-change: transform;
-  pointer-events: none;
   background: var(--ink-1000);
 }
 
