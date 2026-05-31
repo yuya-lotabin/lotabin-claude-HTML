@@ -11,7 +11,7 @@
    .hero-scrub-track is taller than the viewport. As the user
    scrolls past it, progress p ∈ [0, 1] is the fraction passed
    across (track.height - viewport.height). That single p drives
-   six CSS custom properties on the sticky stage:
+   five CSS custom properties on the sticky stage:
 
      --scrub-iy / --scrub-ix : clip-path inset, opens 14% → 0%
      --scrub-scale           : video scale,    1.10 → 1.00
@@ -21,9 +21,10 @@
 
    p is ALSO used to set video.currentTime = duration * p, so
    the scroll position pins the visible frame to the video
-   timeline. The video element stays paused — no autoplay, no
-   loop, no rAF rate-snapping fighting the browser. That's
-   what keeps the scrub smooth and flicker-free.
+   timeline. The video element is visible directly (no canvas
+   overlay) — autoplay+muted+playsinline lets every iPhone and
+   Android composite it, and we pause on the first 'playing' tick
+   so the user only sees scroll-driven frames.
 
    Reduced motion: respected — CSS opens the clip-path and
    reveals the headline immediately, JS does nothing on scroll.
@@ -38,49 +39,8 @@
   if (!track) return;
   const sticky = track.querySelector('.hero-scrub-sticky');
   const video  = track.querySelector('.hero-scrub-video');
-  const canvas = track.querySelector('.hero-scrub-canvas');
   const tcEl   = track.querySelector('[data-scrub-tc]');
   if (!sticky || !video) return;
-
-  /* ---------- Canvas paint (cross-device-reliable) ----------
-     iPhone 12 / iOS 14 happens to composite a paused, seeked <video>
-     element to screen, but newer iOS (iPhone 13/15 on iOS 16/17/18)
-     and several Android WebViews refuse to — the user sees the
-     dark element with no frame. Painting the decoded frame into a
-     <canvas> sidesteps that compositor: canvas content always paints,
-     and drawImage(video) returns the actual decoded pixels as long
-     as the decoder is awake (which our one-time prime ensures). */
-  const ctx = canvas ? canvas.getContext('2d', { alpha: false }) : null;
-
-  function resizeCanvas() {
-    if (!canvas || !ctx) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = sticky.clientWidth, h = sticky.clientHeight;
-    canvas.width  = Math.max(1, Math.round(w * dpr));
-    canvas.height = Math.max(1, Math.round(h * dpr));
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-
-  function paintFrame() {
-    if (!canvas || !ctx || !video.videoWidth) return;
-    const cw = sticky.clientWidth, ch = sticky.clientHeight;
-    const vw = video.videoWidth, vh = video.videoHeight;
-    // object-fit: cover
-    const cAspect = cw / ch, vAspect = vw / vh;
-    let sx, sy, sw, sh;
-    if (vAspect > cAspect) {
-      sh = vh; sw = vh * cAspect; sx = (vw - sw) / 2; sy = 0;
-    } else {
-      sw = vw; sh = vw / cAspect; sx = 0; sy = (vh - sh) / 2;
-    }
-    try { ctx.drawImage(video, sx, sy, sw, sh, 0, 0, cw, ch); }
-    catch (e) { /* drawImage can throw before first decode */ }
-  }
-
-  function startPaintLoop() {
-    const loop = () => { paintFrame(); requestAnimationFrame(loop); };
-    requestAnimationFrame(loop);
-  }
 
   /* ---------- Helpers ---------- */
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
@@ -98,35 +58,35 @@
   let duration = 0;
   let ticking  = false;
   let lastP    = -1;
+  let decoderAwake = false;
 
-  /* ---------- Apply progress to the stage ---------- */
+  /* ---------- Apply scroll progress to the stage ---------- */
   function applyProgress(p) {
-    // Clip-path inset opens
+    // Clip-path inset opens 14%/18% → 0%
     sticky.style.setProperty('--scrub-iy', (lerp(14, 0, p)).toFixed(2) + '%');
     sticky.style.setProperty('--scrub-ix', (lerp(18, 0, p)).toFixed(2) + '%');
     sticky.style.setProperty('--scrub-r',  (lerp(14, 0, p)).toFixed(1) + 'px');
 
-    // Video scale de-zooms
+    // Video scale de-zooms 1.10 → 1.00
     sticky.style.setProperty('--scrub-scale', (1.10 - 0.10 * p).toFixed(3));
 
-    // Headline reveals once frame is mostly open
+    // Headline reveal kicks in once the frame is mostly open
     const tp  = clamp((p - 0.55) / 0.45, 0, 1);
     const tpe = easeOutCubic(tp);
     sticky.style.setProperty('--scrub-text-op', tpe.toFixed(3));
     sticky.style.setProperty('--scrub-text-pe', tpe > 0.05 ? 'auto' : 'none');
 
-    // Timecode fades in at the edges
+    // Timecode fades in/out at the edges
     const tcOp = (p < 0.05) ? p / 0.05
               : (p > 0.95) ? (1 - p) / 0.05
               : 1;
     sticky.style.setProperty('--scrub-tc-op', tcOp.toFixed(2));
 
-    // Scroll prompt fades out fast
+    // Scroll prompt fades out quickly
     sticky.style.setProperty('--scrub-prompt-op', clamp(1 - p / 0.15, 0, 1).toFixed(2));
 
     // Drive the video frame
     if (duration > 0) {
-      // Clamp just shy of duration so we never trip 'ended'.
       const target = clamp(duration * p, 0, duration - 0.05);
       try { video.currentTime = target; } catch (e) {}
       if (tcEl) tcEl.textContent = `${fmt(duration * p)} / ${fmt(duration)}`;
@@ -154,33 +114,36 @@
   }
 
   /* ---------- Unlock seeking for moov-at-end MP4s ----------
-     Some MP4s are encoded without `-movflags +faststart`, so
-     their seekable range stays [0,0] even when fully buffered,
-     and setting currentTime silently snaps to 0. Fetching the
-     file as a Blob and pointing the <video> at the blob URL
-     gives the browser the whole file at once and unlocks the
-     trailing moov atom so seeks land correctly. */
+     If the MP4 wasn't encoded with `-movflags +faststart`, its
+     seekable range stays [0,0] and currentTime silently snaps
+     to 0. Pulling the file in as a Blob and pointing video.src
+     at the resulting blob: URL gives the browser the whole file
+     at once so it can parse the trailing moov atom. */
   function unlockSeeking() {
-    const originalSrc = video.currentSrc || video.src;
-    if (!originalSrc) return Promise.resolve();
-    return fetch(originalSrc)
+    const src = video.currentSrc || video.src;
+    if (!src) return Promise.resolve();
+    return fetch(src)
       .then(r => r.ok ? r.blob() : Promise.reject(new Error('fetch failed')))
       .then(blob => new Promise((resolve) => {
+        const old = video.currentSrc || video.src;
         video.addEventListener('loadedmetadata', resolve, { once: true });
         setTimeout(resolve, 3000); // safety
         video.src = URL.createObjectURL(blob);
+        if (old && old.startsWith('blob:')) {
+          try { URL.revokeObjectURL(old); } catch (e) {}
+        }
       }))
       .catch(() => { /* fall through to whatever's already loaded */ });
   }
 
-  /* ---------- Wake the decoder ----------
-     A paused-since-init <video> stays black on iOS Safari (and some
-     Android WebViews) — drawImage returns transparent pixels until
-     a real play() has resolved at least once. We call play(),
-     pause on the first 'playing' tick, then never touch playback
-     again. The video stays paused for the rest of the session and
-     scroll-driven seeks paint correctly via the canvas. */
-  let decoderAwake = false;
+  /* ---------- Wake the decoder so iOS/WebKit will paint frames ----------
+     iOS Safari (13+ all the way through 18) won't paint a paused-
+     since-init <video> to the screen — even with currentTime set.
+     The fix is to call play() once, pause on the first 'playing'
+     tick, then never touch playback again. We have both an
+     autoplay attribute on the element AND a JS play() to belt
+     this — on the strictest iOS versions the autoplay can be
+     blocked while gesture-initiated play() will not be. */
   function primeDecoder() {
     return new Promise((resolve) => {
       let done = false;
@@ -201,21 +164,25 @@
     });
   }
 
-  /* On the strictest iOS Safari versions (17/18), the auto-attempted
-     play() can be silently rejected without firing 'playing'. If that
-     happens, we retry inside the first user gesture handler — gesture-
-     initiated play() is always allowed. */
+  /* On the strictest iOS Safari versions (17/18 on iPhone 13/14/15),
+     both the autoplay attribute and the JS-initiated play() can be
+     silently denied — no 'playing' event fires. The first real
+     user gesture is always allowed, so we re-run the prime inside
+     a one-time touchstart/scroll/click handler. */
   function attachGestureFallback() {
     if (decoderAwake) return;
     const tryWake = () => {
       if (decoderAwake) return;
       primeDecoder().then(() => {
         try { video.pause(); } catch (e) {}
+        // Re-fire scroll handler so the visible frame matches
+        // wherever the user actually is on the page now.
+        lastP = -1;
         onScroll();
       });
     };
     const opts = { once: true, passive: true, capture: true };
-    window.addEventListener('touchstart', tryWake, opts);
+    window.addEventListener('touchstart',  tryWake, opts);
     window.addEventListener('pointerdown', tryWake, opts);
     window.addEventListener('scroll',      tryWake, opts);
     window.addEventListener('click',       tryWake, opts);
@@ -224,13 +191,10 @@
   function onReady() {
     duration = video.duration || 0;
     if (duration > 0 && tcEl) tcEl.textContent = `00:00 / ${fmt(duration)}`;
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas, { passive: true });
-    startPaintLoop();
     primeDecoder().then(() => {
       try { video.pause(); } catch (e) {}
       onScroll();
-      attachGestureFallback(); // re-wakes the decoder on first gesture if needed
+      attachGestureFallback();
     });
   }
 
