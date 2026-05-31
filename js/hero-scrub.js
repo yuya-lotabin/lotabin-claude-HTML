@@ -38,8 +38,49 @@
   if (!track) return;
   const sticky = track.querySelector('.hero-scrub-sticky');
   const video  = track.querySelector('.hero-scrub-video');
+  const canvas = track.querySelector('.hero-scrub-canvas');
   const tcEl   = track.querySelector('[data-scrub-tc]');
   if (!sticky || !video) return;
+
+  /* ---------- Canvas paint (cross-device-reliable) ----------
+     iPhone 12 / iOS 14 happens to composite a paused, seeked <video>
+     element to screen, but newer iOS (iPhone 13/15 on iOS 16/17/18)
+     and several Android WebViews refuse to — the user sees the
+     dark element with no frame. Painting the decoded frame into a
+     <canvas> sidesteps that compositor: canvas content always paints,
+     and drawImage(video) returns the actual decoded pixels as long
+     as the decoder is awake (which our one-time prime ensures). */
+  const ctx = canvas ? canvas.getContext('2d', { alpha: false }) : null;
+
+  function resizeCanvas() {
+    if (!canvas || !ctx) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = sticky.clientWidth, h = sticky.clientHeight;
+    canvas.width  = Math.max(1, Math.round(w * dpr));
+    canvas.height = Math.max(1, Math.round(h * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function paintFrame() {
+    if (!canvas || !ctx || !video.videoWidth) return;
+    const cw = sticky.clientWidth, ch = sticky.clientHeight;
+    const vw = video.videoWidth, vh = video.videoHeight;
+    // object-fit: cover
+    const cAspect = cw / ch, vAspect = vw / vh;
+    let sx, sy, sw, sh;
+    if (vAspect > cAspect) {
+      sh = vh; sw = vh * cAspect; sx = (vw - sw) / 2; sy = 0;
+    } else {
+      sw = vw; sh = vw / cAspect; sx = 0; sy = (vh - sh) / 2;
+    }
+    try { ctx.drawImage(video, sx, sy, sw, sh, 0, 0, cw, ch); }
+    catch (e) { /* drawImage can throw before first decode */ }
+  }
+
+  function startPaintLoop() {
+    const loop = () => { paintFrame(); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  }
 
   /* ---------- Helpers ---------- */
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
@@ -132,35 +173,64 @@
       .catch(() => { /* fall through to whatever's already loaded */ });
   }
 
-  /* ---------- iOS-Safari first-frame paint ----------
+  /* ---------- Wake the decoder ----------
      A paused-since-init <video> stays black on iOS Safari (and some
-     Android WebViews) even after currentTime is set — the decoder
-     won't paint until a real play() has resolved at least once.
-     We call play() once, pause on the first 'playing' tick, then
-     never touch playback again. The video stays paused for the
-     rest of the session and scroll-driven seeks paint correctly. */
+     Android WebViews) — drawImage returns transparent pixels until
+     a real play() has resolved at least once. We call play(),
+     pause on the first 'playing' tick, then never touch playback
+     again. The video stays paused for the rest of the session and
+     scroll-driven seeks paint correctly via the canvas. */
+  let decoderAwake = false;
   function primeDecoder() {
     return new Promise((resolve) => {
       let done = false;
-      const finish = () => { if (done) return; done = true; resolve(); };
+      const finish = (ok) => {
+        if (done) return; done = true;
+        if (ok) decoderAwake = true;
+        resolve();
+      };
       video.addEventListener('playing', () => {
         try { video.pause(); } catch (e) {}
-        finish();
+        finish(true);
       }, { once: true });
       try {
         const p = video.play();
-        if (p && typeof p.catch === 'function') p.catch(() => finish());
-      } catch (e) { finish(); }
-      setTimeout(finish, 800); // safety
+        if (p && typeof p.catch === 'function') p.catch(() => finish(false));
+      } catch (e) { finish(false); }
+      setTimeout(() => finish(false), 800); // safety
     });
+  }
+
+  /* On the strictest iOS Safari versions (17/18), the auto-attempted
+     play() can be silently rejected without firing 'playing'. If that
+     happens, we retry inside the first user gesture handler — gesture-
+     initiated play() is always allowed. */
+  function attachGestureFallback() {
+    if (decoderAwake) return;
+    const tryWake = () => {
+      if (decoderAwake) return;
+      primeDecoder().then(() => {
+        try { video.pause(); } catch (e) {}
+        onScroll();
+      });
+    };
+    const opts = { once: true, passive: true, capture: true };
+    window.addEventListener('touchstart', tryWake, opts);
+    window.addEventListener('pointerdown', tryWake, opts);
+    window.addEventListener('scroll',      tryWake, opts);
+    window.addEventListener('click',       tryWake, opts);
   }
 
   function onReady() {
     duration = video.duration || 0;
     if (duration > 0 && tcEl) tcEl.textContent = `00:00 / ${fmt(duration)}`;
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+    startPaintLoop();
     primeDecoder().then(() => {
       try { video.pause(); } catch (e) {}
       onScroll();
+      attachGestureFallback(); // re-wakes the decoder on first gesture if needed
     });
   }
 
