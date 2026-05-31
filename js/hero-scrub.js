@@ -132,10 +132,36 @@
       .catch(() => { /* fall through to whatever's already loaded */ });
   }
 
+  /* ---------- iOS-Safari first-frame paint ----------
+     A paused-since-init <video> stays black on iOS Safari (and some
+     Android WebViews) even after currentTime is set — the decoder
+     won't paint until a real play() has resolved at least once.
+     We call play() once, pause on the first 'playing' tick, then
+     never touch playback again. The video stays paused for the
+     rest of the session and scroll-driven seeks paint correctly. */
+  function primeDecoder() {
+    return new Promise((resolve) => {
+      let done = false;
+      const finish = () => { if (done) return; done = true; resolve(); };
+      video.addEventListener('playing', () => {
+        try { video.pause(); } catch (e) {}
+        finish();
+      }, { once: true });
+      try {
+        const p = video.play();
+        if (p && typeof p.catch === 'function') p.catch(() => finish());
+      } catch (e) { finish(); }
+      setTimeout(finish, 800); // safety
+    });
+  }
+
   function onReady() {
     duration = video.duration || 0;
     if (duration > 0 && tcEl) tcEl.textContent = `00:00 / ${fmt(duration)}`;
-    onScroll();
+    primeDecoder().then(() => {
+      try { video.pause(); } catch (e) {}
+      onScroll();
+    });
   }
 
   /* ---------- Reduced motion: open the frame, show the text ---------- */
