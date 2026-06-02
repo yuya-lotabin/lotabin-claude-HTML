@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&family=Shippori+Mincho+B1:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
 
   <link rel="stylesheet" href="css/tokens.css?v=20260531r" />
-  <link rel="stylesheet" href="css/site.css?v=20260531r" />
+  <link rel="stylesheet" href="css/site.css?v=20260602c" />
 
   <meta property="og:title" content="lotabin — Short-form video ad production desk" />
   <meta property="og:description" content="Sharp scripts, storyboards, and short-form video ads your team can launch. Nagoya, Japan." />
@@ -32,8 +32,7 @@
 
     <nav class="nav-links" aria-label="Primary">
       <a href="#what"        data-i18n="nav.work">Work</a>
-      <a href="#for-brands"  data-i18n="nav.brands">For Brands</a>
-      <a href="#for-agencies" data-i18n="nav.agencies">For Agencies</a>
+      <a href="#for-brands"  data-i18n="nav.brands">Services</a>
       <a href="entertainment.html" data-i18n="nav.entertainment">Entertainment</a>
       <a href="#contact"     data-i18n="nav.contact">Contact</a>
     </nav>
@@ -52,8 +51,7 @@
   <!-- mobile menu -->
   <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile">
     <a href="#what"        data-i18n="nav.work">Work</a>
-    <a href="#for-brands"  data-i18n="nav.brands">For Brands</a>
-    <a href="#for-agencies" data-i18n="nav.agencies">For Agencies</a>
+    <a href="#for-brands"  data-i18n="nav.brands">Services</a>
     <a href="entertainment.html" data-i18n="nav.entertainment">Entertainment</a>
     <a href="#contact"     data-i18n="nav.contact">Contact</a>
   </nav>
@@ -97,7 +95,7 @@
 
           <!-- Headline reveals as scrub completes -->
           <div class="hero-scrub-text">
-            <p class="eyebrow" data-i18n="hero.kicker">Short-form video ad production desk</p>
+            <p class="eyebrow" data-i18n="hero.kicker">Short-form video production desk</p>
 
             <h1 class="h1 hero-headline">
               <span class="mask-line"><span data-i18n="hero.h1.1">We script,</span></span>
@@ -112,7 +110,7 @@
             </p>
 
             <div class="hero-cta">
-              <a href="#contact" class="btn btn-primary" data-magnetic="0.18">
+              <a href="intake.html" class="btn btn-primary" data-magnetic="0.18">
                 <span data-i18n="hero.cta.primary">Book a Sprout trial</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
               </a>
@@ -209,9 +207,9 @@
             <p class="lead muted" style="margin-top: var(--s-5); max-width: 70ch;" data-i18n="lane.brands.p">Best for founders, in-house teams, and growing businesses with multiple offers that need structured, repeatable creative output. Start small with Sprout, scale into a monthly plan when you're ready.</p>
           </div>
 
-          <div class="plan-grid reveal-stagger" style="margin-top: var(--s-7);">
+          <div class="plan-stack reveal-stagger" data-vine style="margin-top: var(--s-7);">
             <!-- SPROUT -->
-            <article class="plan">
+            <article class="plan sprout-feature">
               <span class="tier" data-i18n="p.sprout.tier">Trial — one-time</span>
               <h4 class="name" data-i18n="p.sprout.name">Sprout</h4>
               <p class="blurb" data-i18n="p.sprout.blurb">The low-risk first step.</p>
@@ -227,15 +225,16 @@
                 <li data-i18n="p.sprout.l8">7-day turnaround</li>
                 <li class="dim" data-i18n="p.sprout.l9">$99 credited toward month one if upgraded within 7 days</li>
               </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="p.sprout.cta">Start a Sprout trial</span><span class="arr">→</span></a></div>
+              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="p.sprout.cta">Start a Sprout trial</span><span class="arr">→</span></a></div>
             </article>
 
+            <div class="plan-trio">
             <!-- STANDARD -->
             <article class="plan">
               <span class="tier" data-i18n="p.standard.tier">Monthly</span>
               <h4 class="name" data-i18n="p.standard.name">Standard</h4>
               <p class="blurb" data-i18n="p.standard.blurb">Your monthly video foundation.</p>
-              <div class="price"><span class="amt" data-i18n="p.standard.price">$997</span><span class="per" data-i18n="p.standard.per">/ month</span></div>
+              <div class="price is-hidden"><span class="amt" data-i18n="p.standard.price">$997</span><span class="per" data-i18n="p.standard.per">/ month</span></div>
               <ul>
                 <li data-i18n="p.standard.l1">Up to 2 products / 2 offers</li>
                 <li data-i18n="p.standard.l2">6 Video Ad Packs / month</li>
@@ -246,7 +245,7 @@
                 <li data-i18n="p.standard.l7">Review checkpoints in each wave</li>
                 <li data-i18n="p.standard.l8">Brand Alignment Sheet</li>
               </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="p.standard.cta">Choose Standard</span><span class="arr">→</span></a></div>
+              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="p.standard.cta">Choose Standard</span><span class="arr">→</span></a></div>
             </article>
 
             <!-- PRO (featured) -->
@@ -255,7 +254,7 @@
               <span class="tier" data-i18n="p.pro.tier">Monthly — most chosen</span>
               <h4 class="name" data-i18n="p.pro.name">Pro</h4>
               <p class="blurb" data-i18n="p.pro.blurb">A repeatable video production engine.</p>
-              <div class="price"><span class="amt" data-i18n="p.pro.price">$1,997</span><span class="per" data-i18n="p.pro.per">/ month</span></div>
+              <div class="price is-hidden"><span class="amt" data-i18n="p.pro.price">$1,997</span><span class="per" data-i18n="p.pro.per">/ month</span></div>
               <ul>
                 <li data-i18n="p.pro.l1">Up to 3 products / 3 offers</li>
                 <li data-i18n="p.pro.l2">12 Video Ad Packs / month</li>
@@ -266,7 +265,7 @@
                 <li data-i18n="p.pro.l7">Monthly creative direction call</li>
                 <li data-i18n="p.pro.l8">Priority turnaround</li>
               </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="p.pro.cta">Choose Pro</span><span class="arr">→</span></a></div>
+              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="p.pro.cta">Choose Pro</span><span class="arr">→</span></a></div>
             </article>
 
             <!-- ENTERPRISE -->
@@ -274,7 +273,7 @@
               <span class="tier" data-i18n="p.ent.tier">Monthly — high capacity</span>
               <h4 class="name" data-i18n="p.ent.name">Enterprise</h4>
               <p class="blurb" data-i18n="p.ent.blurb">Priority video capacity.</p>
-              <div class="price"><span class="amt" data-i18n="p.ent.price">$2,497+</span><span class="per" data-i18n="p.ent.per">/ month</span></div>
+              <div class="price is-hidden"><span class="amt" data-i18n="p.ent.price">$2,497+</span><span class="per" data-i18n="p.ent.per">/ month</span></div>
               <ul>
                 <li data-i18n="p.ent.l1">Up to 5 products / 5 offers</li>
                 <li data-i18n="p.ent.l2">15 Video Ad Packs / month</li>
@@ -285,8 +284,9 @@
                 <li data-i18n="p.ent.l7">Scheduled review checkpoints</li>
                 <li data-i18n="p.ent.l8">Optional avatar-supported scope</li>
               </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="p.ent.cta">Talk to us</span><span class="arr">→</span></a></div>
+              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="p.ent.cta">Talk to us</span><span class="arr">→</span></a></div>
             </article>
+            </div>
 
             <!-- FILM STUDIO STRIP -->
             <article class="plan feature-strip">
@@ -304,7 +304,7 @@
                 <li data-i18n="p.film.l4">Voiceover &amp; avatar-supported delivery</li>
                 <li data-i18n="p.film.l5">Up to 5 revision rounds</li>
                 <li data-i18n="p.film.l6">Custom production plan</li>
-                <li style="list-style:none; padding:0;"><a href="#contact" class="btn-arrow" style="margin-top: 14px; display:inline-flex;"><span data-i18n="p.film.cta">Request a quote</span><span class="arr">→</span></a></li>
+                <li style="list-style:none; padding:0;"><a href="intake.html" class="btn-arrow" style="margin-top: 14px; display:inline-flex;"><span data-i18n="p.film.cta">Request a quote</span><span class="arr">→</span></a></li>
               </ul>
             </article>
           </div>
@@ -335,7 +335,7 @@
                 <li data-i18n="a.sprint.l5">Partner brief template</li>
                 <li class="dim" data-i18n="a.sprint.l6">Credit toward first monthly block</li>
               </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="a.sprint.cta">Start a partner sprint</span><span class="arr">→</span></a></div>
+              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="a.sprint.cta">Start a partner sprint</span><span class="arr">→</span></a></div>
             </article>
 
             <!-- STARTER -->
@@ -353,7 +353,7 @@
                 <li data-i18n="a.starter.l6">7-day standard turnaround</li>
                 <li data-i18n="a.starter.l7">No ad account access required</li>
               </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="a.starter.cta">Open a starter block</span><span class="arr">→</span></a></div>
+              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="a.starter.cta">Open a starter block</span><span class="arr">→</span></a></div>
             </article>
 
             <!-- GROWTH (featured) -->
@@ -372,7 +372,7 @@
                 <li data-i18n="a.growth.l6">Clean handoff structure</li>
                 <li data-i18n="a.growth.l7">No end-client account access required</li>
               </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="a.growth.cta">Open a growth block</span><span class="arr">→</span></a></div>
+              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="a.growth.cta">Open a growth block</span><span class="arr">→</span></a></div>
             </article>
 
             <!-- SCALE -->
@@ -390,7 +390,7 @@
                 <li data-i18n="a.scale.l6">Custom handoff workflow</li>
                 <li data-i18n="a.scale.l7">Refresh support</li>
               </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="a.scale.cta">Plan capacity</span><span class="arr">→</span></a></div>
+              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="a.scale.cta">Plan capacity</span><span class="arr">→</span></a></div>
             </article>
           </div>
         </div>
@@ -498,11 +498,11 @@
     <section id="contact" class="final-cta">
       <h2 class="big reveal-up" data-i18n="fin.h">Bring the offer.<br>We turn it <em>into video.</em></h2>
       <div class="actions reveal">
-        <a href="mailto:hello@lotabin.com?subject=Sprout%20trial" class="btn btn-primary" data-magnetic="0.18">
+        <a href="intake.html" class="btn btn-primary" data-magnetic="0.18">
           <span data-i18n="fin.cta1">Book a Sprout trial</span>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         </a>
-        <a href="mailto:hello@lotabin.com" class="btn btn-ghost" data-i18n="fin.cta2">Talk to the desk</a>
+        <a href="/cdn-cgi/l/email-protection#4a222f2626250a26253e2b28232464292527" class="btn btn-ghost" data-i18n="fin.cta2">Talk to the desk</a>
       </div>
     </section>
   </main>
@@ -536,7 +536,7 @@
         <div>
           <h5 data-i18n="foot.col3.h">Studio</h5>
           <a href="entertainment.html" data-i18n="nav.entertainment">Entertainment</a>
-          <a href="mailto:hello@lotabin.com">hello@lotabin.com</a>
+          <a href="/cdn-cgi/l/email-protection#7d15181111123d1112091c1f1413531e1210"><span class="__cf_email__" data-cfemail="e48c8188888ba4888b9085868d8aca878b89">[email&#160;protected]</span></a>
           <a href="#contact" data-i18n="nav.contact">Contact</a>
         </div>
       </div>
@@ -547,8 +547,9 @@
     </div>
   </footer>
 
-  <script src="js/i18n.js?v=20260531r"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/i18n.js?v=20260531r"></script>
   <script src="js/anim.js?v=20260531r"></script>
   <script src="js/hero-scrub.js?v=20260531r"></script>
+  <script src="js/vine.js?v=20260602c"></script>
 </body>
 </html>
