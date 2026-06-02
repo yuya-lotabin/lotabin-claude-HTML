@@ -10,7 +10,7 @@ window.LOTABIN_I18N = (function () {
   const DICT = {
     en: {
       'nav.work': 'Work',
-      'nav.brands': 'For Brands',
+      'nav.brands': 'Services',
       'nav.agencies': 'For Agencies',
       'nav.entertainment': 'Entertainment',
       'nav.contact': 'Contact',
@@ -19,7 +19,7 @@ window.LOTABIN_I18N = (function () {
 
       'hero.coord': 'Nagoya · 35.18°N 136.91°E',
       'hero.status': 'Production desk open — Wave 14',
-      'hero.kicker': 'Short-form video ad production desk',
+      'hero.kicker': 'Short-form video production desk',
       'hero.h1.1': 'We script,',
       'hero.h1.2': 'storyboard,',
       'hero.h1.3': '<em>and produce</em>',
@@ -384,7 +384,7 @@ window.LOTABIN_I18N = (function () {
 
     ja: {
       'nav.work': '事例',
-      'nav.brands': 'ブランド向け',
+      'nav.brands': 'サービス',
       'nav.agencies': '代理店向け',
       'nav.entertainment': '映画事業',
       'nav.contact': 'お問い合わせ',
@@ -393,7 +393,7 @@ window.LOTABIN_I18N = (function () {
 
       'hero.coord': '名古屋 · 北緯35.18° 東経136.91°',
       'hero.status': '制作デスク稼働中 — 第14ウェーブ',
-      'hero.kicker': 'ショート動画広告の制作デスク',
+      'hero.kicker': 'ショート動画の制作デスク',
       'hero.h1.1': '台本を書き、',
       'hero.h1.2': '絵コンテを組み、',
       'hero.h1.3': '<em>動画広告を</em>',

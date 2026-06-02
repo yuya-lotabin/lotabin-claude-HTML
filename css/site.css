@@ -540,3 +540,69 @@ details.faq-item .ans { padding-top: var(--s-4); color: var(--fg-muted); max-wid
 .lane[hidden] { display: none; }
 .lane { animation: laneIn var(--d-med) var(--e-out); }
 @keyframes laneIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ---- Brand plan stack: Sprout featured on top, monthly trio beneath ---- */
+.plan-stack { display: flex; flex-direction: column; gap: var(--s-4); }
+.plan-stack > .plan { min-height: auto; }
+.plan-trio { display: grid; grid-template-columns: 1fr; gap: var(--s-4); }
+@media (min-width: 768px) { .plan-trio { grid-template-columns: repeat(3, 1fr); } }
+.plan-trio .plan { min-height: 100%; }
+
+.plan .price.is-hidden { display: none; }
+
+.plan.sprout-feature {
+  border-color: var(--bronze);
+  background: linear-gradient(180deg, #1a1612 0%, var(--ink-900) 100%);
+}
+.plan.sprout-feature .name { font-size: 2.6rem; }
+.plan.sprout-feature .price { margin-top: var(--s-4); }
+@media (min-width: 768px) {
+  .plan.sprout-feature ul { columns: 2; column-gap: var(--s-8); }
+  .plan.sprout-feature ul li { break-inside: avoid; }
+  .plan.sprout-feature .footer-cta { padding-top: var(--s-5); }
+}
+@media (min-width: 1100px) {
+  .plan.sprout-feature ul { columns: 3; }
+}
+
+/* ============================================================
+   Pricing vine — scroll-driven draw-on connecting Sprout to the trio
+   ============================================================ */
+.plan-stack[data-vine] { position: relative; }
+/* room in the gap for the stem + fork to be visible */
+.plan-stack[data-vine] > .plan-trio { margin-top: clamp(64px, 8vw, 124px); }
+/* cards/sprout sit above the vine layer */
+.plan-stack[data-vine] > * { position: relative; z-index: 1; }
+
+.vine-layer {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  overflow: visible;
+  opacity: 1 !important; transform: none !important; /* opt out of reveal-stagger */
+}
+.vine-svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+.vine-path {
+  fill: none; stroke: url(#vineGradSite);
+  stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round;
+  filter: drop-shadow(0 0 7px rgba(200, 168, 118, 0.55)) drop-shadow(0 0 2px rgba(227, 201, 163, 0.8));
+}
+.vine-path.vine-side { stroke-width: 2.7; }
+
+.vine-leaf { transform-box: fill-box; transform-origin: center; opacity: 0; transform: scale(0); transition: opacity .5s var(--e-out), transform .55s var(--e-spring); }
+.vine-leaf path { fill: url(#leafGradSite); stroke: var(--bronze-deep); stroke-width: 0.6; }
+.vine-svg g.in .vine-leaf { opacity: 1; transform: scale(1); }
+
+/* trio cards stay hidden until their vine connects */
+.plan-stack.vine-armed .plan-trio .plan {
+  opacity: 0; transform: translateY(46px);
+  transition: opacity .9s var(--e-out), transform .9s var(--e-out);
+  will-change: opacity, transform;
+}
+.plan-stack.vine-armed .plan-trio .plan.vine-revealed { opacity: 1; transform: translateY(0); }
+.plan-stack.vine-armed .plan-trio .plan.vine-revealed:hover { transform: translateY(-4px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .plan-stack.vine-armed .plan-trio .plan { opacity: 1 !important; transform: none !important; transition: none; }
+  .vine-leaf { transition: none; }
+}
+
