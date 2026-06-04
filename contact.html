@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0d11" />
+  <title>lotabin — Contact · Nagoya, Japan</title>
+  <meta name="description" content="Send a message to the lotabin video-ad production desk in Nagoya. Replies from yuya@lotabin.com within one business day." />
+
+  <link rel="icon" href="assets/transparent.png" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/transparent.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&family=Shippori+Mincho+B1:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+  <link rel="stylesheet" href="css/tokens.css?v=20260531r" />
+  <link rel="stylesheet" href="css/site.css?v=20260602d" />
+
+  <meta property="og:title" content="lotabin — Contact" />
+  <meta property="og:description" content="Open a conversation with the lotabin video-ad production desk in Nagoya, Japan." />
+  <meta property="og:type" content="website" />
+
+  <style>
+    /* ===== Contact page — local styles ===== */
+    .contact-section { padding-top: clamp(96px, 18vh, 180px); padding-bottom: clamp(96px, 14vh, 140px); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: clamp(40px, 6vw, 80px);
+      margin-top: clamp(40px, 6vw, 64px);
+    }
+    @media (min-width: 880px) {
+      .contact-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; }
+    }
+
+    .contact-aside p { color: var(--ink-300); max-width: 38ch; }
+    .contact-aside .meta-list { margin-top: var(--s-6); list-style: none; padding: 0; display: grid; gap: var(--s-4); }
+    .contact-aside .meta-list li { display: grid; gap: 4px; }
+    .contact-aside .meta-list .lbl { font-family: var(--font-mono, ui-monospace, monospace); font-size: var(--fs-eyebrow); color: var(--ink-300); letter-spacing: 0.08em; text-transform: uppercase; }
+    .contact-aside .meta-list .val { color: var(--paper-50); font-size: 1.05rem; }
+    .contact-aside .meta-list a.val:hover { color: var(--bronze); }
+
+    .contact-form {
+      display: grid;
+      gap: var(--s-5);
+      padding: clamp(28px, 4vw, 44px);
+      background: var(--ink-800);
+      border: 1px solid var(--ink-700);
+      border-radius: 18px;
+    }
+    .field { display: grid; gap: 8px; }
+    .field label {
+      font-family: var(--font-mono, ui-monospace, monospace);
+      font-size: var(--fs-eyebrow);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-300);
+    }
+    .field label .opt { text-transform: none; letter-spacing: 0; color: var(--ink-500); font-weight: 400; margin-left: 6px; }
+    .field input,
+    .field textarea {
+      width: 100%;
+      min-height: 52px;
+      padding: 14px 16px;
+      font: inherit;
+      font-size: 1rem;
+      color: var(--paper-50);
+      background: var(--ink-1000);
+      border: 1px solid var(--ink-700);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .field textarea { min-height: 160px; resize: vertical; line-height: 1.55; font-family: inherit; }
+    .field input::placeholder,
+    .field textarea::placeholder { color: var(--ink-500); }
+    .field input:focus,
+    .field textarea:focus { border-color: var(--bronze); box-shadow: 0 0 0 2px rgba(200, 168, 118, 0.25); }
+    .field.has-error input,
+    .field.has-error textarea { border-color: #d27676; box-shadow: 0 0 0 2px rgba(210, 118, 118, 0.18); }
+    .field .err {
+      display: none;
+      font-size: 0.85rem;
+      color: #d27676;
+    }
+    .field.has-error .err { display: block; }
+
+    /* honeypot — invisible to humans, present in DOM for bots */
+    .field--hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+    .contact-form .actions { display: flex; flex-wrap: wrap; gap: var(--s-4); align-items: center; margin-top: var(--s-3); }
+    .contact-form .actions .btn { min-width: 180px; justify-content: center; }
+    .contact-form .actions .btn[disabled] { opacity: 0.6; cursor: progress; }
+    .contact-form .fallback { font-size: 0.9rem; color: var(--ink-300); }
+    .contact-form .fallback a { color: var(--paper-50); border-bottom: 1px solid var(--ink-700); }
+    .contact-form .fallback a:hover { color: var(--bronze); border-bottom-color: var(--bronze); }
+
+    .form-status {
+      display: none;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+    }
+    .form-status.is-error { display: block; background: rgba(210, 118, 118, 0.10); border: 1px solid rgba(210, 118, 118, 0.35); color: #f1c8c8; }
+
+    /* Success state — replaces the form */
+    .contact-success {
+      display: none;
+      padding: clamp(28px, 4vw, 44px);
+      background: var(--ink-800);
+      border: 1px solid var(--ink-700);
+      border-radius: 18px;
+    }
+    .contact-success h3 { font-family: var(--font-display, Playfair Display, serif); font-size: clamp(1.5rem, 1.2rem + 1vw, 2.2rem); color: var(--paper-50); margin: 0; }
+    .contact-success p { margin-top: var(--s-4); color: var(--ink-300); max-width: 48ch; }
+    .contact-success .check {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(200, 168, 118, 0.15);
+      border: 1px solid var(--bronze);
+      color: var(--bronze);
+      margin-bottom: var(--s-4);
+    }
+    .is-sent .contact-form { display: none; }
+    .is-sent .contact-success { display: block; }
+  </style>
+</head>
+<body class="grain">
+
+  <!-- ============== HEADER ============== -->
+  <header class="site-header" id="site-header">
+    <a href="index.html" class="brand-mark" aria-label="lotabin home">
+      <img src="assets/transparent.png" alt="lotabin" />
+      <span>lotabin</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html#what"     data-i18n="nav.work">Work</a>
+      <a href="services.html"       data-i18n="nav.brands">Services</a>
+      <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
+      <a href="contact.html"        data-i18n="nav.contact" aria-current="page">Contact</a>
+    </nav>
+
+    <div class="nav-tools">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="ja">JA</button>
+      </div>
+      <button class="menu-btn" type="button" data-menu-btn aria-controls="mobile-menu" aria-expanded="false" aria-label="Menu">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 4h12M1 10h12" /></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- mobile menu -->
+  <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile">
+    <a href="index.html#what"     data-i18n="nav.work">Work</a>
+    <a href="services.html"       data-i18n="nav.brands">Services</a>
+    <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
+    <a href="contact.html"        data-i18n="nav.contact" aria-current="page">Contact</a>
+  </nav>
+
+  <main id="top">
+    <section class="section rule contact-section" id="contact">
+      <div class="container">
+        <div class="s-head">
+          <div class="meta">
+            <span class="kbd-rule reveal" data-i18n="contact.eyebrow">06 — Contact</span>
+          </div>
+          <div>
+            <h2 class="h2 reveal" data-i18n="contact.h">Open a <em>conversation</em>.</h2>
+            <p class="lead muted reveal" style="margin-top: var(--s-5); max-width: 56ch;" data-i18n="contact.lead">Tell us a bit about what you need. We'll write back from <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a> within one business day.</p>
+          </div>
+        </div>
+
+        <div class="contact-grid">
+          <!-- LEFT: meta column -->
+          <aside class="contact-aside reveal">
+            <ul class="meta-list">
+              <li>
+                <span class="lbl" data-i18n="contact.direct.lbl">Direct email</span>
+                <a class="val" href="mailto:yuya@lotabin.com">yuya@lotabin.com</a>
+              </li>
+              <li>
+                <span class="lbl" data-i18n="contact.reply.lbl">Reply window</span>
+                <span class="val" data-i18n="contact.reply.val">1 business day</span>
+              </li>
+              <li>
+                <span class="lbl" data-i18n="contact.loc.lbl">Studio</span>
+                <span class="val" data-i18n="contact.loc.val">Nagoya 名古屋 · Japan</span>
+              </li>
+            </ul>
+          </aside>
+
+          <!-- RIGHT: form -->
+          <div class="reveal" data-contact-wrap>
+            <form class="contact-form" id="contact-form" novalidate>
+              <!-- Web3Forms hidden config -->
+              <!-- ▼▼▼ REPLACE THIS VALUE WITH YOUR REAL ACCESS KEY from web3forms.com ▼▼▼ -->
+              <input type="hidden" name="access_key" value=f9608412-82eb-4e17-9474-b9a4341d6b7d
+              <!-- ▲▲▲ REPLACE THIS VALUE WITH YOUR REAL ACCESS KEY from web3forms.com ▲▲▲ -->
+              <input type="hidden" name="subject" value="New inquiry via lotabin.com">
+              <input type="hidden" name="from_name" value="lotabin.com contact form">
+              <input type="hidden" name="redirect" value="false">
+              <!-- honeypot — invisible field; if a bot fills it, Web3Forms rejects the submission -->
+              <div class="field field--hp" aria-hidden="true">
+                <label>Leave this empty</label>
+                <input type="text" name="botcheck" tabindex="-1" autocomplete="off">
+              </div>
+
+              <div class="field" data-field="name">
+                <label for="cf-name" data-i18n="contact.field.name">Your name</label>
+                <input id="cf-name" name="name" type="text" autocomplete="name" required>
+                <span class="err" data-i18n="contact.err.required">This field is required.</span>
+              </div>
+
+              <div class="field" data-field="email">
+                <label for="cf-email" data-i18n="contact.field.email">Email</label>
+                <input id="cf-email" name="email" type="email" autocomplete="email" required>
+                <span class="err" data-i18n="contact.err.email">Please enter a valid email.</span>
+              </div>
+
+              <div class="field" data-field="company">
+                <label for="cf-company"><span data-i18n="contact.field.company">Company / brand</span><span class="opt" data-i18n="contact.optional">(optional)</span></label>
+                <input id="cf-company" name="company" type="text" autocomplete="organization">
+              </div>
+
+              <div class="field" data-field="message">
+                <label for="cf-message" data-i18n="contact.field.message">Message</label>
+                <textarea id="cf-message" name="message" required></textarea>
+                <span class="err" data-i18n="contact.err.required">This field is required.</span>
+              </div>
+
+              <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+
+              <div class="actions">
+                <button type="submit" class="btn btn-primary" data-magnetic="0.12">
+                  <span data-i18n="contact.submit">Send message</span>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                </button>
+                <span class="fallback">
+                  <span data-i18n="contact.fallback">Prefer plain email?</span>
+                  <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a>
+                </span>
+              </div>
+            </form>
+
+            <!-- SUCCESS STATE -->
+            <div class="contact-success" id="contact-success" role="region" aria-live="polite">
+              <div class="check" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11l4 4 10-10"/></svg>
+              </div>
+              <h3 data-i18n="contact.success.h">Message received.</h3>
+              <p data-i18n="contact.success.p">Thank you. Yuya will write back from <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a> within one business day.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============== FOOTER ============== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <a href="index.html" class="brand-mark" style="font-size: 1.6rem;">
+            <img src="assets/transparent.png" alt="lotabin" />
+            <span data-i18n="foot.brand">lotabin</span>
+          </a>
+          <p style="margin-top: var(--s-4); max-width: 36ch;" data-i18n="foot.tag">Short-form video ad production desk · Motion picture studio · Nagoya, Japan</p>
+        </div>
+        <div>
+          <h5 data-i18n="foot.col1.h">For Brands</h5>
+          <a href="services.html" data-i18n="p.sprout.name">Sprout</a>
+          <a href="services.html" data-i18n="p.standard.name">Standard</a>
+          <a href="services.html" data-i18n="p.pro.name">Pro</a>
+          <a href="services.html" data-i18n="p.ent.name">Enterprise</a>
+          <a href="services.html" data-i18n="p.film.name">Film Studio</a>
+        </div>
+        <div>
+          <h5 data-i18n="foot.col2.h">For Agencies</h5>
+          <a href="services.html#for-agencies" data-i18n="a.sprint.name">Partner Test Sprint</a>
+          <a href="services.html#for-agencies" data-i18n="a.starter.name">Partner Starter</a>
+          <a href="services.html#for-agencies" data-i18n="a.growth.name">Partner Growth</a>
+          <a href="services.html#for-agencies" data-i18n="a.scale.name">Partner Scale</a>
+        </div>
+        <div>
+          <h5 data-i18n="foot.col3.h">Studio</h5>
+          <a href="entertainment.html" data-i18n="nav.entertainment">Entertainment</a>
+          <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a>
+          <a href="contact.html" data-i18n="nav.contact">Contact</a>
+        </div>
+      </div>
+      <div class="legal">
+        <span data-i18n="foot.legal">© 2026 lotabin LLC — All rights reserved</span>
+        <span data-i18n="foot.location">Nagoya 名古屋 · Japan</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js?v=20260605a"></script>
+  <script src="js/anim.js?v=20260531r"></script>
+
+  <!-- ============== Contact form submit handler ============== -->
+  <script>
+    (function () {
+      const form = document.getElementById('contact-form');
+      const wrap = document.querySelector('[data-contact-wrap]');
+      const status = document.getElementById('form-status');
+      if (!form || !wrap || !status) return;
+
+      // Auto-focus first field on desktop (skip on touch to avoid keyboard popping up)
+      const firstInput = form.querySelector('input[name="name"]');
+      if (firstInput && window.matchMedia('(min-width: 880px)').matches) {
+        setTimeout(() => firstInput.focus(), 200);
+      }
+
+      // Cmd/Ctrl+Enter from textarea submits the form
+      form.querySelector('textarea[name="message"]')?.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') form.requestSubmit();
+      });
+
+      // Clear error styling as soon as the user starts fixing the field
+      form.querySelectorAll('input, textarea').forEach((el) => {
+        el.addEventListener('input', () => {
+          el.closest('.field')?.classList.remove('has-error');
+          status.classList.remove('is-error');
+          status.textContent = '';
+        });
+      });
+
+      function t(key, fallback) {
+        try {
+          const lang = window.LOTABIN_I18N?.getLang?.() || 'en';
+          const dict = window.LOTABIN_I18N?.DICT?.[lang] || window.LOTABIN_I18N?.DICT?.en || {};
+          return dict[key] || fallback;
+        } catch { return fallback; }
+      }
+
+      function validate() {
+        let ok = true;
+        const fields = ['name', 'email', 'message'];
+        fields.forEach((name) => {
+          const fieldEl = form.querySelector(`[data-field="${name}"]`);
+          const input = form.querySelector(`[name="${name}"]`);
+          if (!input || !fieldEl) return;
+          const val = (input.value || '').trim();
+          fieldEl.classList.remove('has-error');
+          if (!val) { fieldEl.classList.add('has-error'); ok = false; return; }
+          if (name === 'email') {
+            const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRe.test(val)) { fieldEl.classList.add('has-error'); ok = false; }
+          }
+        });
+        return ok;
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        status.classList.remove('is-error');
+        status.textContent = '';
+        if (!validate()) return;
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const labelSpan = submitBtn.querySelector('span');
+        const originalLabel = labelSpan.textContent;
+        submitBtn.disabled = true;
+        labelSpan.textContent = t('contact.sending', 'Sending…');
+
+        try {
+          const fd = new FormData(form);
+          const accessKey = fd.get('access_key');
+          if (!accessKey || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY') {
+            // No real key configured — show graceful error directing to mailto.
+            throw new Error('Form not yet configured. Please contact yuya@lotabin.com directly.');
+          }
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            body: fd,
+            headers: { 'Accept': 'application/json' },
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || data.success === false) {
+            throw new Error(data.message || 'Submission failed');
+          }
+          // Success — swap to success state
+          wrap.classList.add('is-sent');
+          // Scroll the success card into view for mobile
+          document.getElementById('contact-success')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } catch (err) {
+          status.classList.add('is-error');
+          status.textContent = t('contact.error', 'Something went wrong. Please email yuya@lotabin.com directly.');
+        } finally {
+          submitBtn.disabled = false;
+          labelSpan.textContent = originalLabel;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

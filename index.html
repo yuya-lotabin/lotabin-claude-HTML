@@ -14,8 +14,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&family=Shippori+Mincho+B1:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
 
-  <link rel="stylesheet" href="css/tokens.css?v=20260531q" />
-  <link rel="stylesheet" href="css/site.css?v=20260531q" />
+  <link rel="stylesheet" href="css/tokens.css?v=20260531r" />
+  <link rel="stylesheet" href="css/site.css?v=20260602d" />
 
   <meta property="og:title" content="lotabin — Short-form video ad production desk" />
   <meta property="og:description" content="Sharp scripts, storyboards, and short-form video ads your team can launch. Nagoya, Japan." />
@@ -32,10 +32,9 @@
 
     <nav class="nav-links" aria-label="Primary">
       <a href="#what"        data-i18n="nav.work">Work</a>
-      <a href="#for-brands"  data-i18n="nav.brands">For Brands</a>
-      <a href="#for-agencies" data-i18n="nav.agencies">For Agencies</a>
-      <a href="entertainment.html" data-i18n="nav.entertainment">Entertainment</a>
-      <a href="#contact"     data-i18n="nav.contact">Contact</a>
+      <a href="services.html" data-i18n="nav.brands">Services</a>
+      <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
+      <a href="contact.html" data-i18n="nav.contact">Contact</a>
     </nav>
 
     <div class="nav-tools">
@@ -52,10 +51,9 @@
   <!-- mobile menu -->
   <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile">
     <a href="#what"        data-i18n="nav.work">Work</a>
-    <a href="#for-brands"  data-i18n="nav.brands">For Brands</a>
-    <a href="#for-agencies" data-i18n="nav.agencies">For Agencies</a>
-    <a href="entertainment.html" data-i18n="nav.entertainment">Entertainment</a>
-    <a href="#contact"     data-i18n="nav.contact">Contact</a>
+    <a href="services.html" data-i18n="nav.brands">Services</a>
+    <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
+    <a href="contact.html" data-i18n="nav.contact">Contact</a>
   </nav>
 
   <!-- ============== HERO — SCROLL-SCRUB CINEMATIC ============== -->
@@ -63,18 +61,18 @@
     <section class="hero-scrub" aria-label="Cinematic intro">
       <div class="hero-scrub-track" data-scrub>
         <div class="hero-scrub-sticky">
-          <!-- Cinematic backdrop. The <video> decodes frames; the
-               <canvas> displays them. This split is needed because
-               iOS Safari 16/17/18 refuses to composite a paused
-               video element to the screen even when currentTime is
-               set — but it still produces frames the canvas can
-               draw via ctx.drawImage(video). iPhone 12 (iOS 14)
-               happened to paint the video directly; newer phones
-               don't. The canvas-paint route works on every device. -->
+          <!-- Cinematic backdrop. Video stays visible (no canvas overlay),
+               scroll position drives currentTime. autoplay + muted +
+               playsinline + webkit-playsinline is the universally
+               supported pattern for an inline cinematic on every
+               iPhone (12/13/14/15/16) and on Android. The JS pauses
+               it on the first 'playing' tick so the user doesn't see
+               natural playback — only the scroll-driven frame. -->
           <video
             class="hero-scrub-video"
             src="assets/better.mp4"
             muted
+            autoplay
             playsinline
             webkit-playsinline
             preload="auto"
@@ -82,7 +80,6 @@
             tabindex="-1"
             aria-hidden="true"
           ></video>
-          <canvas class="hero-scrub-canvas" aria-hidden="true"></canvas>
           <div class="hero-scrub-overlay" aria-hidden="true"></div>
 
           <!-- Live timecode (appears during scrub) -->
@@ -98,7 +95,7 @@
 
           <!-- Headline reveals as scrub completes -->
           <div class="hero-scrub-text">
-            <p class="eyebrow" data-i18n="hero.kicker">Short-form video ad production desk</p>
+            <p class="eyebrow" data-i18n="hero.kicker">Create Pictures People Remember</p>
 
             <h1 class="h1 hero-headline">
               <span class="mask-line"><span data-i18n="hero.h1.1">We script,</span></span>
@@ -113,11 +110,11 @@
             </p>
 
             <div class="hero-cta">
-              <a href="#contact" class="btn btn-primary" data-magnetic="0.18">
+              <a href="intake.html" class="btn btn-primary" data-magnetic="0.18">
                 <span data-i18n="hero.cta.primary">Book a Sprout trial</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
               </a>
-              <a href="#for-brands" class="btn btn-ghost" data-i18n="hero.cta.secondary">See the offer</a>
+              <a href="services.html" class="btn btn-ghost" data-i18n="hero.cta.secondary">See the offer</a>
             </div>
           </div>
         </div>
@@ -180,220 +177,6 @@
           <div class="step"><h4 data-i18n="process.s2.h">Creative direction</h4><p data-i18n="process.s2.p">We turn the offer into a clear direction before production starts. No guesswork mid-shoot.</p></div>
           <div class="step"><h4 data-i18n="process.s3.h">Production wave</h4><p data-i18n="process.s3.p">Scripts, hooks, storyboards, master cuts — produced together in a single review window.</p></div>
           <div class="step"><h4 data-i18n="process.s4.h">Review-ready delivery</h4><p data-i18n="process.s4.p">Launch-ready files for paid social. Light adjustments on approved cuts as needed.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============== TWO LANES ============== -->
-    <section id="for-brands" class="section rule">
-      <div class="container">
-        <div class="s-head">
-          <div class="meta">
-            <span class="kbd-rule reveal" data-i18n="tabs.eyebrow">03 — Two ways to work with us</span>
-          </div>
-          <div>
-            <h2 class="h2 reveal" data-i18n="tabs.h2">Choose your <em>lane</em>.</h2>
-            <p class="lead muted reveal" style="margin-top: var(--s-5);" data-i18n="tabs.lead">The Brands &amp; End Businesses offer is for teams selling their own product or service. The Agencies &amp; Media Buyers offer is white-label / co-branded fulfillment for partners who already own the strategy and the client relationship.</p>
-          </div>
-        </div>
-
-        <div class="audience-tabs" role="tablist" data-tabs aria-label="Audience">
-          <button role="tab" type="button" data-target="brands"   aria-selected="true"  data-i18n="tabs.brands">For Brands &amp; End Businesses</button>
-          <button role="tab" type="button" data-target="agencies" aria-selected="false" data-i18n="tabs.agencies">For Agencies &amp; Media Buyers</button>
-        </div>
-
-        <!-- LANE: BRANDS -->
-        <div class="lane" data-lane="brands">
-          <div class="reveal">
-            <span class="audience-lane-tag" data-i18n="lane.brands.tag">For Brands &amp; End Businesses</span>
-            <h3 class="h2" style="max-width: 22ch; margin-top: var(--s-3);" data-i18n="lane.brands.h">Build a real video-ad engine —<br><em>without</em> hiring a creative team.</h3>
-            <p class="lead muted" style="margin-top: var(--s-5); max-width: 70ch;" data-i18n="lane.brands.p">Best for founders, in-house teams, and growing businesses with multiple offers that need structured, repeatable creative output. Start small with Sprout, scale into a monthly plan when you're ready.</p>
-          </div>
-
-          <div class="plan-grid reveal-stagger" style="margin-top: var(--s-7);">
-            <!-- SPROUT -->
-            <article class="plan">
-              <span class="tier" data-i18n="p.sprout.tier">Trial — one-time</span>
-              <h4 class="name" data-i18n="p.sprout.name">Sprout</h4>
-              <p class="blurb" data-i18n="p.sprout.blurb">The low-risk first step.</p>
-              <div class="price"><span class="amt" data-i18n="p.sprout.price">$99</span><span class="per" data-i18n="p.sprout.per">one-time</span></div>
-              <ul>
-                <li data-i18n="p.sprout.l1">1 product / 1 offer</li>
-                <li data-i18n="p.sprout.l2">1 Video Ad Pack</li>
-                <li data-i18n="p.sprout.l3">3 hook options</li>
-                <li data-i18n="p.sprout.l4">1 script + 1 storyboard</li>
-                <li data-i18n="p.sprout.l5">1 master cut up to 15s</li>
-                <li data-i18n="p.sprout.l6">Captions &amp; text overlays</li>
-                <li data-i18n="p.sprout.l7">Brand Alignment Sheet</li>
-                <li data-i18n="p.sprout.l8">7-day turnaround</li>
-                <li class="dim" data-i18n="p.sprout.l9">$99 credited toward month one if upgraded within 7 days</li>
-              </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="p.sprout.cta">Start a Sprout trial</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- STANDARD -->
-            <article class="plan">
-              <span class="tier" data-i18n="p.standard.tier">Monthly</span>
-              <h4 class="name" data-i18n="p.standard.name">Standard</h4>
-              <p class="blurb" data-i18n="p.standard.blurb">Your monthly video foundation.</p>
-              <div class="price"><span class="amt" data-i18n="p.standard.price">$997</span><span class="per" data-i18n="p.standard.per">/ month</span></div>
-              <ul>
-                <li data-i18n="p.standard.l1">Up to 2 products / 2 offers</li>
-                <li data-i18n="p.standard.l2">6 Video Ad Packs / month</li>
-                <li data-i18n="p.standard.l3">Videos up to 30 seconds</li>
-                <li data-i18n="p.standard.l4">Storyboarding included</li>
-                <li data-i18n="p.standard.l5">9:16 delivery + 1:1 exports</li>
-                <li data-i18n="p.standard.l6">Planned production waves</li>
-                <li data-i18n="p.standard.l7">Review checkpoints in each wave</li>
-                <li data-i18n="p.standard.l8">Brand Alignment Sheet</li>
-              </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="p.standard.cta">Choose Standard</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- PRO (featured) -->
-            <article class="plan featured">
-              <span class="ribbon" data-i18n="p.pro.ribbon">Most chosen</span>
-              <span class="tier" data-i18n="p.pro.tier">Monthly — most chosen</span>
-              <h4 class="name" data-i18n="p.pro.name">Pro</h4>
-              <p class="blurb" data-i18n="p.pro.blurb">A repeatable video production engine.</p>
-              <div class="price"><span class="amt" data-i18n="p.pro.price">$1,997</span><span class="per" data-i18n="p.pro.per">/ month</span></div>
-              <ul>
-                <li data-i18n="p.pro.l1">Up to 3 products / 3 offers</li>
-                <li data-i18n="p.pro.l2">12 Video Ad Packs / month</li>
-                <li data-i18n="p.pro.l3">2 production waves of 6</li>
-                <li data-i18n="p.pro.l4">6 light adjustment credits / month</li>
-                <li data-i18n="p.pro.l5">Refreshes from winners &amp; prior ads</li>
-                <li data-i18n="p.pro.l6">Voiceover included</li>
-                <li data-i18n="p.pro.l7">Monthly creative direction call</li>
-                <li data-i18n="p.pro.l8">Priority turnaround</li>
-              </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="p.pro.cta">Choose Pro</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- ENTERPRISE -->
-            <article class="plan">
-              <span class="tier" data-i18n="p.ent.tier">Monthly — high capacity</span>
-              <h4 class="name" data-i18n="p.ent.name">Enterprise</h4>
-              <p class="blurb" data-i18n="p.ent.blurb">Priority video capacity.</p>
-              <div class="price"><span class="amt" data-i18n="p.ent.price">$2,497+</span><span class="per" data-i18n="p.ent.per">/ month</span></div>
-              <ul>
-                <li data-i18n="p.ent.l1">Up to 5 products / 5 offers</li>
-                <li data-i18n="p.ent.l2">15 Video Ad Packs / month</li>
-                <li data-i18n="p.ent.l3">Custom production cadence</li>
-                <li data-i18n="p.ent.l4">Priority queue</li>
-                <li data-i18n="p.ent.l5">Refreshes from winners &amp; prior ads</li>
-                <li data-i18n="p.ent.l6">Voiceover included</li>
-                <li data-i18n="p.ent.l7">Scheduled review checkpoints</li>
-                <li data-i18n="p.ent.l8">Optional avatar-supported scope</li>
-              </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="p.ent.cta">Talk to us</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- FILM STUDIO STRIP -->
-            <article class="plan feature-strip">
-              <div>
-                <span class="tier" data-i18n="p.film.tier">Separate service line</span>
-                <h4 class="name" style="margin-top: 10px;" data-i18n="p.film.name">Film Studio</h4>
-                <p class="blurb" style="margin-top: var(--s-3); max-width: 38ch;" data-i18n="p.film.blurb">Longer-form production — B2B instructional, product explainers, branded educational, sales support.</p>
-              </div>
-              <ul>
-                <li data-i18n="p.film.l1">Up to 4 finished videos</li>
-                <li data-i18n="p.film.l2">Videos up to 1m 30s</li>
-                <li data-i18n="p.film.l3">Script + storyboarding</li>
-              </ul>
-              <ul>
-                <li data-i18n="p.film.l4">Voiceover &amp; avatar-supported delivery</li>
-                <li data-i18n="p.film.l5">Up to 5 revision rounds</li>
-                <li data-i18n="p.film.l6">Custom production plan</li>
-                <li style="list-style:none; padding:0;"><a href="#contact" class="btn-arrow" style="margin-top: 14px; display:inline-flex;"><span data-i18n="p.film.cta">Request a quote</span><span class="arr">→</span></a></li>
-              </ul>
-            </article>
-          </div>
-        </div>
-
-        <hr class="lane-divider" />
-
-        <!-- LANE: AGENCIES -->
-        <div id="for-agencies" class="lane" data-lane="agencies" hidden>
-          <div class="reveal">
-            <span class="audience-lane-tag" data-i18n="lane.agencies.tag">For Agencies &amp; Media Buyers</span>
-            <h3 class="h2" style="max-width: 22ch; margin-top: var(--s-3);" data-i18n="lane.agencies.h">You keep the client and the strategy.<br><em>We supply the videos.</em></h3>
-            <p class="lead muted" style="margin-top: var(--s-5); max-width: 70ch;" data-i18n="lane.agencies.p">A white-label-friendly production desk for solo media buyers, performance agencies, and paid-social specialists. No client poaching. No random freelance editing. A repeatable production process you can plug in.</p>
-          </div>
-
-          <div class="plan-grid reveal-stagger" style="margin-top: var(--s-7);">
-            <!-- TEST SPRINT -->
-            <article class="plan">
-              <span class="tier" data-i18n="a.sprint.tier">Test sprint — one-time</span>
-              <h4 class="name" data-i18n="a.sprint.name">Partner Test Sprint</h4>
-              <p class="blurb" data-i18n="a.sprint.blurb">Partner-first proof of fit.</p>
-              <div class="price"><span class="amt" data-i18n="a.sprint.price">$297–$500</span><span class="per" data-i18n="a.sprint.per">one-time</span></div>
-              <ul>
-                <li data-i18n="a.sprint.l1">Partner onboarding form</li>
-                <li data-i18n="a.sprint.l2">1 client-facing Video Ad Pack or 2 smaller concepts</li>
-                <li data-i18n="a.sprint.l3">White-label-ready delivery folder</li>
-                <li data-i18n="a.sprint.l4">Partner-facing Loom handoff</li>
-                <li data-i18n="a.sprint.l5">Partner brief template</li>
-                <li class="dim" data-i18n="a.sprint.l6">Credit toward first monthly block</li>
-              </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="a.sprint.cta">Start a partner sprint</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- STARTER -->
-            <article class="plan">
-              <span class="tier" data-i18n="a.starter.tier">Monthly</span>
-              <h4 class="name" data-i18n="a.starter.name">Partner Starter</h4>
-              <p class="blurb" data-i18n="a.starter.blurb">Monthly support for solo buyers and small agencies.</p>
-              <div class="price"><span class="amt" data-i18n="a.starter.price">$850+</span><span class="per" data-i18n="a.starter.per">/ month</span></div>
-              <ul>
-                <li data-i18n="a.starter.l1">Up to 4 Video Ad Packs / month</li>
-                <li data-i18n="a.starter.l2">White-label or co-branded delivery</li>
-                <li data-i18n="a.starter.l3">Partner brief workflow</li>
-                <li data-i18n="a.starter.l4">Partner-facing Loom handoffs</li>
-                <li data-i18n="a.starter.l5">Planned production waves</li>
-                <li data-i18n="a.starter.l6">7-day standard turnaround</li>
-                <li data-i18n="a.starter.l7">No ad account access required</li>
-              </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="a.starter.cta">Open a starter block</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- GROWTH (featured) -->
-            <article class="plan featured">
-              <span class="ribbon" data-i18n="a.growth.ribbon">Most chosen</span>
-              <span class="tier" data-i18n="a.growth.tier">Monthly — most chosen</span>
-              <h4 class="name" data-i18n="a.growth.name">Partner Growth</h4>
-              <p class="blurb" data-i18n="a.growth.blurb">Larger monthly block for multi-account agencies.</p>
-              <div class="price"><span class="amt" data-i18n="a.growth.price">$1,700+</span><span class="per" data-i18n="a.growth.per">/ month</span></div>
-              <ul>
-                <li data-i18n="a.growth.l1">Up to 10 Video Ad Packs / month</li>
-                <li data-i18n="a.growth.l2">White-label delivery</li>
-                <li data-i18n="a.growth.l3">Refresh support from prior concepts</li>
-                <li data-i18n="a.growth.l4">Planned production waves</li>
-                <li data-i18n="a.growth.l5">Priority production over starter</li>
-                <li data-i18n="a.growth.l6">Clean handoff structure</li>
-                <li data-i18n="a.growth.l7">No end-client account access required</li>
-              </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="a.growth.cta">Open a growth block</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- SCALE -->
-            <article class="plan">
-              <span class="tier" data-i18n="a.scale.tier">Custom</span>
-              <h4 class="name" data-i18n="a.scale.name">Partner Scale</h4>
-              <p class="blurb" data-i18n="a.scale.blurb">Dedicated capacity for high-volume agencies.</p>
-              <div class="price"><span class="amt" data-i18n="a.scale.price">Custom</span><span class="per" data-i18n="a.scale.per">monthly</span></div>
-              <ul>
-                <li data-i18n="a.scale.l1">Custom monthly video capacity</li>
-                <li data-i18n="a.scale.l2">Multi-account production planning</li>
-                <li data-i18n="a.scale.l3">White-label fulfillment system</li>
-                <li data-i18n="a.scale.l4">Priority queue</li>
-                <li data-i18n="a.scale.l5">Structured review cadence</li>
-                <li data-i18n="a.scale.l6">Custom handoff workflow</li>
-                <li data-i18n="a.scale.l7">Refresh support</li>
-              </ul>
-              <div class="footer-cta"><a href="#contact" class="btn-arrow"><span data-i18n="a.scale.cta">Plan capacity</span><span class="arr">→</span></a></div>
-            </article>
-          </div>
         </div>
       </div>
     </section>
@@ -499,11 +282,10 @@
     <section id="contact" class="final-cta">
       <h2 class="big reveal-up" data-i18n="fin.h">Bring the offer.<br>We turn it <em>into video.</em></h2>
       <div class="actions reveal">
-        <a href="mailto:hello@lotabin.com?subject=Sprout%20trial" class="btn btn-primary" data-magnetic="0.18">
+        <a href="intake.html" class="btn btn-primary" data-magnetic="0.18">
           <span data-i18n="fin.cta1">Book a Sprout trial</span>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         </a>
-        <a href="mailto:hello@lotabin.com" class="btn btn-ghost" data-i18n="fin.cta2">Talk to the desk</a>
       </div>
     </section>
   </main>
@@ -521,35 +303,36 @@
         </div>
         <div>
           <h5 data-i18n="foot.col1.h">For Brands</h5>
-          <a href="#for-brands" data-i18n="p.sprout.name">Sprout</a>
-          <a href="#for-brands" data-i18n="p.standard.name">Standard</a>
-          <a href="#for-brands" data-i18n="p.pro.name">Pro</a>
-          <a href="#for-brands" data-i18n="p.ent.name">Enterprise</a>
-          <a href="#for-brands" data-i18n="p.film.name">Film Studio</a>
+          <a href="services.html" data-i18n="p.sprout.name">Sprout</a>
+          <a href="services.html" data-i18n="p.standard.name">Standard</a>
+          <a href="services.html" data-i18n="p.pro.name">Pro</a>
+          <a href="services.html" data-i18n="p.ent.name">Enterprise</a>
+          <a href="services.html" data-i18n="p.film.name">Film Studio</a>
         </div>
         <div>
           <h5 data-i18n="foot.col2.h">For Agencies</h5>
-          <a href="#for-agencies" data-i18n="a.sprint.name">Partner Test Sprint</a>
-          <a href="#for-agencies" data-i18n="a.starter.name">Partner Starter</a>
-          <a href="#for-agencies" data-i18n="a.growth.name">Partner Growth</a>
-          <a href="#for-agencies" data-i18n="a.scale.name">Partner Scale</a>
+          <a href="services.html#for-agencies" data-i18n="a.sprint.name">Partner Test Sprint</a>
+          <a href="services.html#for-agencies" data-i18n="a.starter.name">Partner Starter</a>
+          <a href="services.html#for-agencies" data-i18n="a.growth.name">Partner Growth</a>
+          <a href="services.html#for-agencies" data-i18n="a.scale.name">Partner Scale</a>
         </div>
         <div>
           <h5 data-i18n="foot.col3.h">Studio</h5>
           <a href="entertainment.html" data-i18n="nav.entertainment">Entertainment</a>
-          <a href="mailto:hello@lotabin.com">hello@lotabin.com</a>
-          <a href="#contact" data-i18n="nav.contact">Contact</a>
+          <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a>
+          <a href="contact.html" data-i18n="nav.contact">Contact</a>
         </div>
       </div>
       <div class="legal">
-        <span data-i18n="foot.legal">© 2026 lotabin K.K. — All rights reserved</span>
+        <span data-i18n="foot.legal">© 2026 lotabin LLC — All rights reserved</span>
         <span data-i18n="foot.location">Nagoya 名古屋 · Japan</span>
       </div>
     </div>
   </footer>
 
-  <script src="js/i18n.js?v=20260531q"></script>
-  <script src="js/anim.js?v=20260531q"></script>
-  <script src="js/hero-scrub.js?v=20260531q"></script>
+  <script src="js/i18n.js?v=20260602c"></script>
+  <script src="js/anim.js?v=20260531r"></script>
+  <script src="js/hero-scrub.js?v=20260531r"></script>
+  <script src="js/vine.js?v=20260602d"></script>
 </body>
 </html>
