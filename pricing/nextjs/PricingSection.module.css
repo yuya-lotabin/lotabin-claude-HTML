@@ -1,0 +1,143 @@
+/* ============================================================
+   lotabin — Pricing section (dark luxury) + scroll-grown vine
+   Plain CSS used by the live preview. The Next.js drop-in ships
+   the same rules as PricingSection.module.css.
+   ============================================================ */
+
+.pricing {
+  --ink-1000: #07070a;
+  --ink-900: #0d0d11;
+  --ink-800: #14141a;
+  --ink-700: #1c1c24;
+  --line: rgba(246, 244, 239, 0.10);
+  --line-strong: rgba(246, 244, 239, 0.20);
+  --paper-50: #f6f4ef;
+  --paper-200: #d8d2c4;
+  --muted: #8c8c96;
+  --bronze: #c8a876;
+  --bronze-deep: #9a7d4f;
+
+  position: relative;
+  background:
+    radial-gradient(90% 55% at 50% -5%, rgba(200, 168, 118, 0.10), transparent 60%),
+    radial-gradient(70% 50% at 50% 105%, rgba(200, 168, 118, 0.06), transparent 65%),
+    var(--ink-900);
+  color: var(--paper-50);
+  font-family: 'Inter', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  padding: clamp(64px, 9vw, 140px) clamp(20px, 4vw, 56px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.inner { max-width: 1120px; margin: 0 auto; position: relative; }
+
+/* ---- header ---- */
+.head { text-align: center; max-width: 40ch; margin: 0 auto clamp(40px, 6vw, 80px); position: relative; z-index: 2; }
+.eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.7rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--bronze);
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.eyebrow::before, .eyebrow::after { content: ""; width: 24px; height: 1px; background: currentColor; opacity: 0.6; }
+.title {
+  font-family: 'Playfair Display', Georgia, serif; font-weight: 500;
+  font-size: clamp(2.1rem, 1.4rem + 2.8vw, 3.6rem); line-height: 1.04; letter-spacing: -0.028em;
+  margin: 18px 0 0;
+}
+.title em { font-style: italic; color: var(--bronze); }
+.sub { color: var(--muted); font-weight: 300; font-size: 1.05rem; line-height: 1.55; margin: 16px auto 0; max-width: 52ch; }
+
+/* ---- vine overlay (behind cards) ---- */
+.vineWrap {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  overflow: visible;
+}
+.vineSvg { width: 100%; height: 100%; display: block; overflow: visible; }
+.vinePath, .branch {
+  fill: none; stroke: url(#vineGrad); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(200, 168, 118, 0.35));
+}
+.branch { stroke-width: 2.4; }
+.leaf path { fill: url(#leafGrad); stroke: var(--bronze-deep); stroke-width: 0.6; }
+.leaf { transform-box: fill-box; transform-origin: center; }
+.bud { fill: var(--bronze); filter: drop-shadow(0 0 5px rgba(200,168,118,0.6)); }
+
+/* ---- card stack ---- */
+.stack { position: relative; z-index: 1; display: flex; flex-direction: column; gap: clamp(34px, 5vw, 72px); }
+.trio { display: grid; grid-template-columns: 1fr; gap: clamp(16px, 2.2vw, 26px); }
+@media (min-width: 760px) { .trio { grid-template-columns: repeat(3, 1fr); } }
+
+.card {
+  position: relative; display: flex; flex-direction: column;
+  border: 1px solid var(--line); border-radius: 20px;
+  background: linear-gradient(180deg, var(--ink-800) 0%, var(--ink-900) 100%);
+  padding: clamp(22px, 2.4vw, 34px);
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1), border-color 0.5s ease;
+  backdrop-filter: blur(2px);
+}
+.card:hover { transform: translateY(-4px); border-color: var(--line-strong); }
+
+.tier { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bronze); }
+.name { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; margin: 10px 0 0; }
+.blurb { color: var(--paper-200); font-size: 0.95rem; line-height: 1.5; margin: 12px 0 0; max-width: 46ch; }
+
+.price { display: flex; align-items: baseline; gap: 8px; margin: 20px 0 0; }
+.amt { font-family: 'Playfair Display', Georgia, serif; font-size: 2.6rem; line-height: 1; letter-spacing: -0.02em; }
+.per { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.quote { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 20px 0 0; }
+
+.feats { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-direction: column; gap: 11px; }
+.feats li { position: relative; padding-left: 22px; font-size: 0.92rem; line-height: 1.5; color: var(--paper-50); }
+.feats li::before { content: ""; position: absolute; left: 0; top: 9px; width: 11px; height: 1px; background: var(--bronze); }
+.feats li.dim { color: var(--muted); }
+
+.cta {
+  margin-top: auto; padding-top: 26px;
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--paper-50); background: none; border: 0; cursor: pointer; text-decoration: none;
+}
+.cta .line { width: 100%; }
+.ctaArrow { display: inline-flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line-strong); padding-bottom: 7px; transition: color 0.4s ease, border-color 0.4s ease; }
+.cta:hover .ctaArrow { color: var(--bronze); border-color: var(--bronze); }
+.cta:hover .arr { transform: translateX(6px); }
+.arr { transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); }
+
+/* ---- Sprout feature (full width, prominent) ---- */
+.sprout { border-color: var(--bronze); background: linear-gradient(180deg, #1a1612 0%, var(--ink-900) 100%); }
+.sprout .name { font-size: clamp(2.2rem, 1.6rem + 1.6vw, 3rem); }
+.sproutTop { display: flex; flex-direction: column; }
+@media (min-width: 860px) {
+  .sprout { display: grid; grid-template-columns: 0.9fr 1.4fr; gap: clamp(28px, 4vw, 64px); align-items: start; }
+  .sprout .feats { margin-top: 4px; columns: 2; column-gap: 40px; }
+  .sprout .feats li { break-inside: avoid; margin-bottom: 0; }
+  .sprout .cta { grid-column: 1 / -1; margin-top: 8px; }
+}
+
+/* ---- Pro highlight ---- */
+.pro {
+  border-color: rgba(200, 168, 118, 0.65);
+  background: linear-gradient(180deg, #181410 0%, var(--ink-900) 100%);
+  box-shadow: 0 0 0 1px rgba(200, 168, 118, 0.25), 0 18px 50px -22px rgba(200, 168, 118, 0.55), inset 0 0 60px -30px rgba(200, 168, 118, 0.4);
+}
+.pro::before {
+  content: ""; position: absolute; inset: 0; border-radius: 20px; padding: 1px; pointer-events: none;
+  background: linear-gradient(180deg, rgba(200,168,118,0.7), transparent 55%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+.pill {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-1000); background: var(--bronze); padding: 6px 14px; border-radius: 999px;
+  box-shadow: 0 6px 20px -6px rgba(200,168,118,0.7); white-space: nowrap;
+}
+
+/* mobile: simplify vine (hide branches + branch leaves) */
+@media (max-width: 759px) {
+  .branch, .leafBranch { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .arr { transition: none; }
+}

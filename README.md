@@ -174,7 +174,7 @@ Older browsers (IE11) are not supported.
 
 ## Contact
 
-- General — `hello@lotabin.com`
-- Screenplays / studio — `stories@lotabin.com`
+- General — `yuya@lotabin.com`
+- Screenplays / studio — `yuya@lotabin.com`
 
 — Built with focus on clarity, motion that means something, and Japanese editorial restraint.
