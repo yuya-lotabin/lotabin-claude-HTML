@@ -9,6 +9,7 @@ window.LOTABIN_I18N = (function () {
 
   const DICT = {
     en: {
+      'orbit.jump': 'Jump to Pricing',
       'nav.work': 'Work',
       'nav.brands': 'Services',
       'nav.agencies': 'For Agencies',
@@ -406,6 +407,7 @@ window.LOTABIN_I18N = (function () {
     },
 
     ja: {
+      'orbit.jump': '料金へ移動',
       'nav.work': '事例',
       'nav.brands': 'サービス',
       'nav.agencies': '代理店向け',
