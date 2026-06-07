@@ -7,7 +7,10 @@
   <title>lotabin — Start a brief</title>
   <meta name="description" content="Open a production brief with the lotabin video-ad desk — a guided, bilingual intake." />
 
-  <link rel="icon" href="assets/transparent.png" type="image/png" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32"   href="/assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png" />
+  <link rel="apple-touch-icon"      sizes="180x180" href="/assets/apple-touch-icon.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,6 +26,20 @@
     /* keep film grain above the console but never block clicks */
     .grain::before { z-index: 70; }
   </style>
+
+  <link rel="canonical" href="https://lotabin.com/intake.html" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "lotabin",
+    "legalName": "lotabin LLC",
+    "url": "https://lotabin.com",
+    "logo": "https://lotabin.com/assets/lotabin-logo.png",
+    "email": "yuya@lotabin.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Nagoya", "addressRegion": "Aichi", "addressCountry": "JP" }
+  }
+  </script>
 </head>
 <body class="grain">
   <div id="root"></div>
