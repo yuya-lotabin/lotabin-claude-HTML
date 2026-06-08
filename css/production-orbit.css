@@ -49,8 +49,8 @@
         min-height: 6500px;
         color: var(--ltb-text);
         background:
-          radial-gradient(circle at 50% 20%, rgba(200,247,213,.06), transparent 30vw),
-          #0d0d11;
+          radial-gradient(circle at 50% 52%, rgba(200,247,213,.06), transparent 30vw),
+          #0d0d10;
       }
 .lotabin-orbit .lo-pin {
         position: sticky;
@@ -64,9 +64,9 @@
         gap: 16px;
         padding: 20px clamp(16px, 2vw, 36px) 22px;
         background:
-          radial-gradient(circle at 50% 46%, rgba(200,247,213,.10), transparent 38vw),
-          radial-gradient(circle at 58% 18%, rgba(242,239,230,.05), transparent 34vw),
-          linear-gradient(180deg, #0d0d11, #0d0d11);
+          radial-gradient(circle at 50% 52%, rgba(200,247,213,.10), transparent 38vw),
+          radial-gradient(circle at 58% 40%, rgba(242,239,230,.05), transparent 34vw),
+          #0d0d10;
         z-index: 0;
       }
 .lotabin-orbit .lo-pin::before {
@@ -75,8 +75,8 @@
         inset: 0;
         pointer-events: none;
         background:
-          linear-gradient(90deg, rgba(0,0,0,.22), transparent 16%, transparent 84%, rgba(0,0,0,.20)),
-          linear-gradient(180deg, rgba(255,255,255,.022), transparent 18%, transparent 82%, rgba(0,0,0,.10));
+          linear-gradient(180deg, #0d0d10, #0d0d10 14%, rgba(13,13,16,0) 26%, rgba(13,13,16,0) 86%, #0d0d10),
+          linear-gradient(90deg, #0d0d10, rgba(13,13,16,0) 12%, rgba(13,13,16,0) 88%, #0d0d10);
         z-index: 0;
       }
 .lotabin-orbit .lo-hud, .lotabin-orbit .lo-stage, .lotabin-orbit .lo-info {
@@ -231,13 +231,13 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: min(34vw, 420px);
-        height: min(34vw, 420px);
+        width: min(24vw, 300px);
+        height: min(24vw, 300px);
         transform: translate(-50%,-50%) scale(var(--glow-scale,.6));
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(200,247,213,.12), rgba(242,239,230,.04) 44%, transparent 72%);
+        background: radial-gradient(circle, rgba(200,247,213,.13), rgba(242,239,230,.04) 38%, transparent 60%);
         opacity: var(--glow-opacity,0);
-        filter: blur(14px);
+        filter: blur(10px);
         z-index: 2;
         pointer-events: none;
       }

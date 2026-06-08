@@ -36,13 +36,13 @@
         }));
     
         const copy = [
-          ['01 · Linear','Onboarding a Real Production Team','Linear keeps production organized.','Tasks, status, and approvals sit here before anything is assembled.','It gives the whole project structure so the creative does not drift.'],
-          ['02 · Script','Script defines the voice','The script gives the commercial its voice.','Voiceover, captions, timing, and emphasis shape the message before visuals combine.','It makes the final video feel intentional, not improvised.'],
-          ['02.5 · Concept','Character concept aligns the look','Concept work shows the client the character direction and visual consistency of the final product.','It prevents surprises by aligning wardrobe, styling, world-building, and brand tone early.'],
+          ['01 · Linear','Onboarding a Real Production Team','We set up a production line for you.','Tasks, status, and approvals sit here before anything is assembled.','It gives the whole project structure so the creative does not drift.'],
+          ['02 · Script','Script defines the voice','Scripts crafted by industry professional.','Voiceover, captions, timing, and emphasis shape the message before visuals combine.','It makes the final video feel intentional, not improvised.'],
+          ['02.5 · Concept','Character concept aligns the look','High-concept development for the character direction and visual consistency.','It prevents surprises by aligning wardrobe, styling, world-building, and brand tone early.'],
           ['03 · Storyboard','Storyboard maps the shots','Storyboard turns the script into shot order, framing, and commercial rhythm.','It lets everyone see the production plan before edit decisions become expensive.'],
-          ['03.5 · QA','Weekly QA keeps brand alignment','Quality assurance happens in check-in calls where the brand image and commercial direction are reviewed together.','It keeps the work aligned with the client every week instead of waiting until the final review.'],
-          ['04 · Picture','Picture completes the orbit','The hero picture lands in front and completes the full production circle.','Now the viewer understands every ingredient before the phone assembles.'],
-          ['05 · Merge','Pieces merge into iPhone','The six production moments collapse into the device screen as one assembled mobile output.','It shows the final result is built from a clear production system.'],
+          ['03.5 · QA','Weekly QA keeps brand alignment','Weekly creative reviews ensure every commercial stays aligned with its story and purpose.','It keeps the work aligned with the client every week instead of waiting until the final review.'],
+          ['04 · Picture','Picture completes the orbit','Videography directed by professional DOP.','Now the viewer understands every ingredient before the phone assembles.'],
+          ['05 · Merge','Pieces merge into iPhone','Post production and revisions','It shows the final result is built from a clear production system.'],
           ['06 · Autoplay','Final screen is live','Watch your brand gain a voice and story','The viewer can feel the final product immediately.']
         ];
     
@@ -265,7 +265,7 @@
           });
     
           glow.style.setProperty('--glow-opacity', smooth(.80,.92,p).toFixed(4));
-          glow.style.setProperty('--glow-scale', mix(.54,1.08,smooth(.84,.92,p)).toFixed(4));
+          glow.style.setProperty('--glow-scale', mix(.54,.92,smooth(.84,.92,p)).toFixed(4));
           phone.style.setProperty('--phone-opacity', smooth(.80,.90,p).toFixed(4));
           phone.style.setProperty('--phone-scale', mix(.70,D.compact?1.02:1.08,phoneRise).toFixed(4));
           // Keep the phone screen anchored at its centered position — no upward settle
