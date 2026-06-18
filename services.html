@@ -4,54 +4,31 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0d0d11" />
-  <title>lotabin — Services & pricing · Nagoya, Japan</title>
-  <meta name="description" content="Plans and pricing for the lotabin video-ad production desk: Sprout trial, monthly Standard / Pro / Enterprise, agency partner blocks, and the Film Studio line." />
+  <title>lotabin — Services · The Case &amp; The Tiers · Nagoya, Japan</title>
+  <meta name="description" content="Why teams buy a creative system instead of a hire — and the lotabin tiers: Sprout Creative Pilot, Standard Campaign Builder, Pro Creative Testing Engine, Scale Creative Department, Film Studio, and partner blocks for agencies." />
 
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32"   href="/assets/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png" />
   <link rel="apple-touch-icon"      sizes="180x180" href="/assets/apple-touch-icon.png" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&family=Shippori+Mincho+B1:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
-
-  <link rel="stylesheet" href="css/tokens.css?v=20260531r" />
-  <link rel="stylesheet" href="css/site.css?v=20260602d" />
-  <link rel="stylesheet" href="css/production-orbit.css?v=20260608h" />
-  <style>
-    .orbit-jump { display: flex; justify-content: center; padding: 0 0 1px; margin-top: -2px; }
-    .orbit-lead { padding-top: clamp(82px, 8vh, 92px); }
-    .orbit-jump-btn { color: var(--fg-muted); border-bottom-color: var(--rule); }
-    .orbit-jump-btn .arr { display: inline-block; transition: transform var(--d-med, .3s) var(--e-out, ease); }
-    .orbit-jump-btn:hover { color: var(--bronze); border-color: var(--bronze); }
-    .orbit-jump-btn:hover .arr { transform: translateY(4px); }
-  </style>
-
-  <meta property="og:title" content="lotabin — Services & pricing" />
-  <meta property="og:description" content="Plans and pricing for the lotabin short-form video-ad production desk in Nagoya, Japan." />
+  <meta property="og:title" content="lotabin — Services" />
+  <meta property="og:description" content="Why teams run a fixed-cost creative system instead of a hire — and the lotabin tiers, from the $149 Sprout Creative Pilot to the Scale Creative Department and Film Studio." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://lotabin.com/services.html" />
   <meta property="og:image" content="https://lotabin.com/assets/lotabin-logo.png" />
   <link rel="canonical" href="https://lotabin.com/services.html" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "lotabin",
-    "legalName": "lotabin LLC",
-    "url": "https://lotabin.com",
-    "logo": "https://lotabin.com/assets/lotabin-logo.png",
-    "image": "https://lotabin.com/assets/lotabin-logo.png",
-    "email": "yuya@lotabin.com",
-    "description": "Short-form video ad production desk and motion picture studio in Nagoya, Japan.",
-    "address": { "@type": "PostalAddress", "addressLocality": "Nagoya", "addressRegion": "Aichi", "addressCountry": "JP" },
-    "contactPoint": { "@type": "ContactPoint", "email": "yuya@lotabin.com", "contactType": "customer support", "availableLanguage": ["English", "Japanese"] }
-  }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600&family=Shippori+Mincho+B1:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+  <link rel="stylesheet" href="css/tokens.css?v=20260531r" />
+  <link rel="stylesheet" href="css/site.css?v=20260602d" />
+  <link rel="stylesheet" href="css/services-v3.css?v=20260613e" />
+  <link rel="stylesheet" href="css/case-orbit-v3.css?v=20260614a" />
 </head>
-<body class="grain">
+<body class="grain svc3-page">
 
   <!-- ============== HEADER ============== -->
   <header class="site-header" id="site-header">
@@ -61,8 +38,16 @@
     </a>
 
     <nav class="nav-links" aria-label="Primary">
-      <a href="index.html#what"     data-i18n="nav.work">Work</a>
-      <a href="services.html"       data-i18n="nav.brands" aria-current="page">Services</a>
+      <span class="nav-drop">
+        <button type="button" class="nav-drop-trigger" data-i18n="nav.work" aria-haspopup="true">How We Craft</button>
+        <span class="nav-drop-menu" aria-label="How we craft">
+          <a href="principle.html" data-i18n="nav.craft.principle">Our Principle</a>
+          <a href="work.html" data-i18n="nav.craft.selected">Selected Work</a>
+          <a href="team.html" data-i18n="nav.craft.team">The Team</a>
+        </span>
+      </span>
+      <a href="services.html" class="nav-brk" aria-current="page"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.brands">Services</span><span class="brk" aria-hidden="true">]</span></a>
+      <a href="index.html#top" class="nav-home" aria-label="Home"><span class="nav-home-mark" aria-hidden="true"></span></a>
       <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
       <a href="contact.html" data-i18n="nav.contact">Contact</a>
     </nav>
@@ -80,363 +65,178 @@
 
   <!-- mobile menu -->
   <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile">
-    <a href="index.html#what"     data-i18n="nav.work">Work</a>
-    <a href="services.html"       data-i18n="nav.brands" aria-current="page">Services</a>
+    <span class="menu-group-label" data-i18n="nav.work">How We Craft</span>
+    <a href="principle.html" class="menu-sub" data-i18n="nav.craft.principle">Our Principle</a>
+    <a href="work.html" class="menu-sub" data-i18n="nav.craft.selected">Selected Work</a>
+    <a href="team.html" class="menu-sub" data-i18n="nav.craft.team">The Team</a>
+    <a href="services.html" class="nav-brk" aria-current="page"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.brands">Services</span><span class="brk" aria-hidden="true">]</span></a>
     <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
     <a href="contact.html" data-i18n="nav.contact">Contact</a>
   </nav>
 
-  <main id="top">
-    <!-- ============== PRODUCTION ORBIT ============== -->
-    <section class="section rule orbit-lead">
-      <div class="container">
-        <div class="orbit-jump">
-          <a href="#sprout" class="btn-arrow orbit-jump-btn" aria-label="Jump to pricing — Sprout plan">
-            <span data-i18n="orbit.jump">Jump to Pricing</span>
-            <span class="arr" aria-hidden="true">↓</span>
-          </a>
+  <!-- ============== INDEX RAIL (desktop) ============== -->
+  <nav class="svc3-rail" aria-label="Services index">
+    <span class="thread" aria-hidden="true"></span>
+    <button type="button" class="svc3-rail-btn" aria-expanded="false" aria-controls="railMenu" aria-label="Services index">
+      <span class="n" id="railNow">00</span>
+      <span class="x" aria-hidden="true"></span>
+    </button>
+    <div class="svc3-rail-menu" id="railMenu">
+      <a href="#blueprint" data-ch="t-blueprint">Ad Blueprint</a>
+      <a href="services-sprout.html" data-ch="t-sprout">Sprout</a>
+      <a href="services-standard.html" data-ch="t-standard">Standard</a>
+      <a href="services-pro.html" data-ch="t-pro">Pro</a>
+      <a href="services-enterprise.html" data-ch="t-enterprise">Scale</a>
+      <a href="services-film.html" data-ch="t-film">Film Studio</a>
+      <a href="services-partners.html" data-ch="t-partners">Partners</a>
+    </div>
+  </nav>
+
+  <main id="svc3">
+
+    <!-- ============== CHAPTER 00 — THE CASE ============== -->
+    <section id="why" data-chapter="why" data-screen-label="00 The Case">
+
+      <!-- hero stage -->
+      <div class="svc3-hero">
+        <canvas id="svc3-stage" aria-hidden="true"></canvas>
+        <div class="svc3-wrap">
+          <h1 class="svc3-h1" style="text-align: center;">
+            <span class="svc3-line"><span>Where filmmaking meets</span></span>
+            <span class="svc3-line"><span>performance <em>marketing.</em></span></span>
+          </h1>
         </div>
-        <!-- Orbit web component -->
-        <div class="lotabin-orbit" data-screen-label="Production orbit" style="--lotabin-sticky-top: var(--site-header-height, 76px);">
-<section class="lo-assembly" id="assembly" aria-label="Lotabin production orbit animation">
-      <div class="lo-pin">
-        <div class="lo-hud" id="hud">
-          <div class="lo-hud-head">
-            <div class="lo-hud-kicker">Production flow</div>
-            <div class="lo-hud-stage" id="hudStage">Onboarding a Real Production Team</div>
-          </div>
-          <div class="lo-hud-rail" aria-hidden="true"><span class="lo-hud-fill" id="hudFill"></span></div>
-          <div class="lo-steps">
-            <div class="lo-step"><span>KPI Setup</span></div>
-            <div class="lo-step"><span>Script</span></div>
-            <div class="lo-step"><span>Concept</span></div>
-            <div class="lo-step"><span>Board</span></div>
-            <div class="lo-step"><span>QA</span></div>
-            <div class="lo-step"><span>Pictures</span></div>
-            <div class="lo-step"><span>Post-Prod</span></div>
-            <div class="lo-step"><span>Play</span></div>
-          </div>
-        </div>
-  
-        <div class="lo-stage">
-          <div class="lo-world" id="world">
-            <div class="lo-soft-shadow"></div>
-            <div class="lo-glow" id="glow"></div>
-  
-            <div class="lo-orbit" id="orbit" aria-hidden="true">
-              <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="ltbVineGradient" x1="0" x2="1" y1="0" y2="0">
-                    <stop offset="0%" stop-color="#7fe6a8"/>
-                    <stop offset="50%" stop-color="#54cf8a"/>
-                    <stop offset="100%" stop-color="#93ecb9"/>
-                  </linearGradient>
-                </defs>
-                <ellipse class="lo-track" cx="50" cy="50" rx="34" ry="44"/>
-                <ellipse class="lo-vine-line" id="vineLine" cx="50" cy="50" rx="34" ry="44" pathLength="100"/>
-                <ellipse class="lo-vine-line lo-vine-gold" id="vineGold" cx="50" cy="50" rx="34" ry="44" pathLength="100"/>
-              </svg>
-              <div class="lo-vine-leaf" id="leaf1">
-                <svg class="lo-leaf-svg" viewBox="0 0 44 60" aria-hidden="true"><path class="lo-leaf-stem" d="M22,34 L22,22"/><g class="lo-leaf-sub" transform="translate(10,24) rotate(-40) scale(.6)"><path class="lo-leaf-blade" d="M22,1 C32,9 32,20 22,28 C12,20 12,9 22,1 Z"/><path class="lo-leaf-vein" d="M22,4 V26 M22,12 L27,11 M22,18 L27,18"/></g><g class="lo-leaf-main"><path class="lo-leaf-blade" d="M22,1 C34,11 34,23 22,31 C10,23 10,11 22,1 Z"/><path class="lo-leaf-vein" d="M22,5 V29 M22,12 L29,10 M22,12 L15,10 M22,19 L30,19 M22,19 L14,19 M22,25 L28,26 M22,25 L16,26"/></g></svg>
-              </div>
-              <div class="lo-vine-leaf" id="leaf2">
-                <svg class="lo-leaf-svg" viewBox="0 0 44 60" aria-hidden="true"><path class="lo-leaf-stem" d="M22,34 L22,22"/><g class="lo-leaf-sub" transform="translate(10,24) rotate(-40) scale(.6)"><path class="lo-leaf-blade" d="M22,1 C32,9 32,20 22,28 C12,20 12,9 22,1 Z"/><path class="lo-leaf-vein" d="M22,4 V26 M22,12 L27,11 M22,18 L27,18"/></g><g class="lo-leaf-main"><path class="lo-leaf-blade" d="M22,1 C34,11 34,23 22,31 C10,23 10,11 22,1 Z"/><path class="lo-leaf-vein" d="M22,5 V29 M22,12 L29,10 M22,12 L15,10 M22,19 L30,19 M22,19 L14,19 M22,25 L28,26 M22,25 L16,26"/></g></svg>
-              </div>
-              <div class="lo-vine-leaf" id="leaf3">
-                <svg class="lo-leaf-svg" viewBox="0 0 44 60" aria-hidden="true"><path class="lo-leaf-stem" d="M22,34 L22,22"/><g class="lo-leaf-sub" transform="translate(10,24) rotate(-40) scale(.6)"><path class="lo-leaf-blade" d="M22,1 C32,9 32,20 22,28 C12,20 12,9 22,1 Z"/><path class="lo-leaf-vein" d="M22,4 V26 M22,12 L27,11 M22,18 L27,18"/></g><g class="lo-leaf-main"><path class="lo-leaf-blade" d="M22,1 C34,11 34,23 22,31 C10,23 10,11 22,1 Z"/><path class="lo-leaf-vein" d="M22,5 V29 M22,12 L29,10 M22,12 L15,10 M22,19 L30,19 M22,19 L14,19 M22,25 L28,26 M22,25 L16,26"/></g></svg>
-              </div>
-              <div class="lo-vine-leaf" id="leaf4">
-                <svg class="lo-leaf-svg" viewBox="0 0 44 60" aria-hidden="true"><path class="lo-leaf-stem" d="M22,34 L22,22"/><g class="lo-leaf-sub" transform="translate(10,24) rotate(-40) scale(.6)"><path class="lo-leaf-blade" d="M22,1 C32,9 32,20 22,28 C12,20 12,9 22,1 Z"/><path class="lo-leaf-vein" d="M22,4 V26 M22,12 L27,11 M22,18 L27,18"/></g><g class="lo-leaf-main"><path class="lo-leaf-blade" d="M22,1 C34,11 34,23 22,31 C10,23 10,11 22,1 Z"/><path class="lo-leaf-vein" d="M22,5 V29 M22,12 L29,10 M22,12 L15,10 M22,19 L30,19 M22,19 L14,19 M22,25 L28,26 M22,25 L16,26"/></g></svg>
-              </div>
-              <div class="lo-vine-leaf" id="leaf5">
-                <svg class="lo-leaf-svg" viewBox="0 0 44 60" aria-hidden="true"><path class="lo-leaf-stem" d="M22,34 L22,22"/><g class="lo-leaf-sub" transform="translate(10,24) rotate(-40) scale(.6)"><path class="lo-leaf-blade" d="M22,1 C32,9 32,20 22,28 C12,20 12,9 22,1 Z"/><path class="lo-leaf-vein" d="M22,4 V26 M22,12 L27,11 M22,18 L27,18"/></g><g class="lo-leaf-main"><path class="lo-leaf-blade" d="M22,1 C34,11 34,23 22,31 C10,23 10,11 22,1 Z"/><path class="lo-leaf-vein" d="M22,5 V29 M22,12 L29,10 M22,12 L15,10 M22,19 L30,19 M22,19 L14,19 M22,25 L28,26 M22,25 L16,26"/></g></svg>
-              </div>
-            </div>
-  
-            <article class="lo-card" id="c1" aria-label="Linear">
-              <div class="lo-card-shell"><div class="lo-card-media"><div class="lo-card-pic" style="--pic:var(--ltb-img1)"></div></div></div>
-            </article>
-            <article class="lo-card" id="c2" aria-label="Script">
-              <div class="lo-card-shell"><div class="lo-card-media"><div class="lo-card-pic" style="--pic:var(--ltb-img2)"></div></div></div>
-            </article>
-            <article class="lo-card" id="c3" aria-label="Concept">
-              <div class="lo-card-shell"><div class="lo-card-media"><div class="lo-card-pic" style="--pic:var(--ltb-img25)"></div></div></div>
-            </article>
-            <article class="lo-card" id="c4" aria-label="Storyboard">
-              <div class="lo-card-shell"><div class="lo-card-media"><div class="lo-card-pic" style="--pic:var(--ltb-img3)"></div></div></div>
-            </article>
-            <article class="lo-card" id="c5" aria-label="Quality assurance">
-              <div class="lo-card-shell"><div class="lo-card-media"><div class="lo-card-pic" style="--pic:var(--ltb-img35)"></div></div></div>
-            </article>
-            <article class="lo-card" id="c6" aria-label="Picture">
-              <div class="lo-card-shell"><div class="lo-card-media"><div class="lo-card-pic" style="--pic:var(--ltb-img4)"></div></div></div>
-            </article>
-  
-            <div class="lo-phone" id="phone" aria-label="Assembled iPhone output">
-              <div class="lo-device">
-                <div class="lo-screen">
-                  <div class="lo-grid" id="grid" aria-hidden="true">
-                    <div style="--pic:var(--ltb-img1)"></div>
-                    <div style="--pic:var(--ltb-img2)"></div>
-                    <div style="--pic:var(--ltb-img25)"></div>
-                    <div style="--pic:var(--ltb-img3)"></div>
-                    <div style="--pic:var(--ltb-img35)"></div>
-                    <div style="--pic:var(--ltb-img4)"></div>
-                  </div>
-                  <video id="finalVideo" src="assets/devvideo.mp4" poster="data:image/jpeg;base64,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" muted loop playsinline webkit-playsinline preload="auto" autoplay></video>
-                  <div class="lo-poster"></div>
-                  <div class="lo-island"></div>
-                  <div class="lo-home"></div>
-                  <div class="lo-shine"></div>
+      </div>
+
+      <!-- the case -->
+      <div class="svc3-case">
+        <div class="svc3-wrap">
+
+          <!-- the case — scroll-driven spiral staircase (three.js) -->
+          <div class="svc3-stair" id="caseStair" style="--co-sticky: var(--site-header-height, 76px);" data-screen-label="00 The Case">
+            <div class="co-track" id="coTrack">
+              <div class="co-pin" id="coPin">
+                <canvas class="co-bg" id="stairCanvas" aria-hidden="true"></canvas>
+                <video class="co-bg co-video" id="pitVideo" muted playsinline preload="auto" aria-hidden="true">
+                  <source src="assets/f1-pittotrack.mp4" type="video/mp4">
+                </video>
+                <div class="co-scrim" aria-hidden="true"></div>
+
+                <span id="coFill" class="co-progress" aria-hidden="true"></span>
+
+                <div class="co-panels" id="coPanels">
+                  <article class="co-panel">
+                    <span class="co-num" aria-hidden="true">i.</span>
+                    <h3 class="co-h3">One desk, <em>not a department.</em></h3>
+                    <p class="co-copy">Hiring the function costs five figures a month before a single ad ships. The desk gives you editor, copywriter and director as one fixed line item — no recruiting, no churn, no management overhead.</p>
+                    <ul class="co-rows svc3-rows">
+                      <li><span class="k">In-house editor</span><span class="v">$4–6k / month</span></li>
+                      <li><span class="k">Copywriter</span><span class="v">$3–5k / month</span></li>
+                      <li><span class="k">Creative director</span><span class="v">$5k+ / month</span></li>
+                      <li class="sum"><span class="k">The desk</span><span class="v">one line item, from $149</span></li>
+                    </ul>
+                  </article>
+                  <article class="co-panel">
+                    <span class="co-num" aria-hidden="true">ii.</span>
+                    <h3 class="co-h3">Creative Tests, <em>not loose files.</em></h3>
+                    <p class="co-copy">Every order returns a Creative Test — a structured ad concept, not a folder of clips. A sales angle to test, a script that sells, a cut ready for the platform it lives on.</p>
+                    <ul class="co-rows svc3-rows">
+                      <li><span class="k">Hook options</span><span class="v">×3 per test</span></li>
+                      <li><span class="k">Script</span><span class="v">1, conversion-structured</span></li>
+                      <li><span class="k">Storyboard</span><span class="v">approved before the cut</span></li>
+                      <li><span class="k">Master cut</span><span class="v">15–30s, platform-ready</span></li>
+                      <li><span class="k">Captions &amp; overlays</span><span class="v">included</span></li>
+                      <li class="sum"><span class="k">Exports</span><span class="v">9:16 + 1:1</span></li>
+                    </ul>
+                  </article>
+                  <article class="co-panel">
+                    <span class="co-num" aria-hidden="true">iii.</span>
+                    <h3 class="co-h3">Waves, <em>not whirlwinds.</em></h3>
+                    <p class="co-copy">Production runs in planned waves with review checkpoints, so you always know what's in motion and when it lands. Standard turnaround is seven days — a cadence you can plan media around.</p>
+                    <ul class="co-rows svc3-rows">
+                      <li><span class="k">Day 0</span><span class="v">brief lands — offer, product, angle</span></li>
+                      <li><span class="k">Wave 01</span><span class="v">hooks scripted, storyboard checkpoint</span></li>
+                      <li><span class="k">Day 7</span><span class="v">Creative Test delivered, ready to launch</span></li>
+                      <li class="sum"><span class="k">Next wave</span><span class="v">refreshes cut from winners</span></li>
+                    </ul>
+                  </article>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-  
-        <aside class="lo-info" id="info">
-          <div class="lo-info-card">
-            <div class="lo-copy-k" id="kicker">01 · Linear</div>
-            <h2 class="lo-copy-t" id="title">We set up a production line for you.</h2>
-            <p class="lo-copy-b" id="bodyText">Tasks, status, and approvals sit here before anything is assembled.</p>
-            <div class="lo-why-label">Why it matters</div>
-            <p class="lo-why" id="whyText">It gives the whole project structure so the creative does not drift.</p>
-          </div>
-        </aside>
-      </div>
-    </section>
-        </div>
-      </div>
-    </section>
 
+          <!-- closing statement (static, typewriter) -->
+          <h2 class="svc3-h2 svc3-typeline-head" style="margin: 15px auto 72px; letter-spacing: -0.03em; text-align: center; line-height: 1.05;">Get the perfect plan for <em>you</em></h2>
+          <p class="svc3-typeline" id="blueprint"><span class="svc3-typeline-n" aria-hidden="true">00</span>Story crafted with technical excellence and delivered in a day</p>
 
-    <!-- ============== SERVICES & PRICING (extracted from index.html, unchanged) ============== -->
-    <section id="for-brands" class="section" style="padding-top: clamp(96px, 18vh, 180px);">
-      <div class="container">
-        <div class="s-head">
-          <div class="meta">
-            <span class="kbd-rule reveal" data-i18n="tabs.eyebrow">03 — Two ways to work with us</span>
-          </div>
-          <div>
-            <h2 class="h2 reveal" data-i18n="tabs.h2">Choose your <em>lane</em>.</h2>
-            <p class="lead muted reveal" style="margin-top: var(--s-5);" data-i18n="tabs.lead">The Brands &amp; End Businesses offer is for teams selling their own product or service. The Agencies &amp; Media Buyers offer is white-label / co-branded fulfillment for partners who already own the strategy and the client relationship.</p>
-          </div>
-        </div>
-
-        <div class="audience-tabs" role="tablist" data-tabs aria-label="Audience">
-          <button role="tab" type="button" data-target="brands"   aria-selected="true"  data-i18n="tabs.brands">For Brands &amp; End Businesses</button>
-          <button role="tab" type="button" data-target="agencies" aria-selected="false" data-i18n="tabs.agencies">For Agencies &amp; Media Buyers</button>
-        </div>
-
-        <!-- LANE: BRANDS -->
-        <div class="lane" data-lane="brands">
-          <div class="reveal">
-            <span class="audience-lane-tag" data-i18n="lane.brands.tag">For Brands &amp; End Businesses</span>
-            <h3 class="h2" style="max-width: 22ch; margin-top: var(--s-3);" data-i18n="lane.brands.h">Build a real video-ad engine —<br><em>without</em> hiring a creative team.</h3>
-            <p class="lead muted" style="margin-top: var(--s-5); max-width: 70ch;" data-i18n="lane.brands.p">Best for founders, in-house teams, and growing businesses with multiple offers that need structured, repeatable creative output. Start small with Sprout, scale into a monthly plan when you're ready.</p>
-          </div>
-
-          <div class="plan-stack reveal-stagger" data-vine style="margin-top: var(--s-7);">
-            <!-- SPROUT -->
-            <article class="plan sprout-feature" id="sprout" style="scroll-margin-top: clamp(96px, 14vh, 150px);">
-              <span class="tier" data-i18n="p.sprout.tier">Trial — one-time</span>
-              <h4 class="name" data-i18n="p.sprout.name">Sprout</h4>
-              <p class="blurb" data-i18n="p.sprout.blurb">The low-risk first step.</p>
-              <div class="price"><span class="amt" data-i18n="p.sprout.price">$99</span><span class="per" data-i18n="p.sprout.per">one-time</span></div>
-              <ul>
-                <li data-i18n="p.sprout.l1">1 product / 1 offer</li>
-                <li data-i18n="p.sprout.l2">1 Video Ad Pack</li>
-                <li data-i18n="p.sprout.l3">3 hook options</li>
-                <li data-i18n="p.sprout.l4">1 script + 1 storyboard</li>
-                <li data-i18n="p.sprout.l5">1 master cut up to 15s</li>
-                <li data-i18n="p.sprout.l6">Captions &amp; text overlays</li>
-                <li data-i18n="p.sprout.l7">Brand Alignment Sheet</li>
-                <li data-i18n="p.sprout.l8">7-day turnaround</li>
-                <li class="dim" data-i18n="p.sprout.l9">$99 credited toward month one if upgraded within 7 days</li>
+          <!-- select strip -->
+          <div class="svc3-pencil-stage">
+            <video class="svc3-pencil-vid" id="storyVid" muted loop playsinline preload="auto" aria-hidden="true">
+              <source src="assets/Storyboard-final.mp4" type="video/mp4" />
+            </video>
+            <canvas id="svc3-pencil"></canvas>
+            <span class="svc3-pencil-hint svc3-pencil-hint--left"><span class="dot" aria-hidden="true"></span>You click</span>
+            <span class="svc3-pencil-hint svc3-pencil-hint--right">The pencil</span>
+            <aside class="svc3-plan-pop" id="sproutPop" role="dialog" aria-label="Instant Ad Blueprint plan details">
+              <button type="button" class="svc3-plan-close" aria-label="Close">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l10 10M12 2L2 12"/></svg>
+              </button>
+              <h3 class="svc3-plan-name">Instant Ad<br>Blueprint</h3>
+              <p class="svc3-plan-price"><span class="amt">$29</span> · AI Creative Draft</p>
+              <p class="svc3-plan-blurb">A self-serve AI draft — see how your product USP could become a paid-social ad.</p>
+              <ul class="svc3-plan-list">
+                <li>1 product / 1 USP</li>
+                <li>1 AI-generated sales angle</li>
+                <li>3 hook options</li>
+                <li>15–30s script + 6-frame storyboard</li>
+                <li>CTA + production recommendation</li>
+                <li>No human review or revisions</li>
+                <li>Delivered in 24h · branded PDF</li>
               </ul>
-              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="p.sprout.cta">Start a Sprout trial</span><span class="arr">→</span></a></div>
-            </article>
+              <a href="blueprint.html" class="btn-arrow svc3-plan-cta"><span>Open Blueprint</span><span class="arr">→</span></a>
+            </aside>
+          </div>
+          <div class="svc3-select" data-gs="fade">
+            <p class="svc3-eyebrow">01 — 04 · The Tiers</p>
+            <h2 class="svc3-h2">Select your <em>cadence.</em></h2>
+            <nav class="svc3-toc svc3-toc--tiers" aria-label="Tier pages">
+              <a href="services-sprout.html"><span class="n">01</span><span class="t">Sprout</span><span class="d">Creative Pilot · $149</span><span class="arr">→</span></a>
+              <a href="services-standard.html"><span class="n">02</span><span class="t">Standard</span><span class="d">Campaign Builder · $997/mo</span><span class="arr">→</span></a>
+              <a href="services-pro.html"><span class="n">03</span><span class="t">Pro</span><span class="d">Testing Engine · $1,997/mo</span><span class="arr">→</span></a>
+              <a href="services-enterprise.html"><span class="n">04</span><span class="t">Scale</span><span class="d">Creative Dept. · from $3,497/mo</span><span class="arr">→</span></a>
+            </nav>
 
-            <div class="plan-trio">
-            <!-- STANDARD -->
-            <article class="plan">
-              <span class="tier" data-i18n="p.standard.tier">Monthly</span>
-              <h4 class="name" data-i18n="p.standard.name">Standard</h4>
-              <p class="blurb" data-i18n="p.standard.blurb">Your monthly video foundation.</p>
-              <div class="price is-hidden"><span class="amt" data-i18n="p.standard.price">$997</span><span class="per" data-i18n="p.standard.per">/ month</span></div>
-              <ul>
-                <li data-i18n="p.standard.l1">Up to 2 products / 2 offers</li>
-                <li data-i18n="p.standard.l2">6 Video Ad Packs / month</li>
-                <li data-i18n="p.standard.l3">Videos up to 30 seconds</li>
-                <li data-i18n="p.standard.l4">Storyboarding included</li>
-                <li data-i18n="p.standard.l5">9:16 delivery + 1:1 exports</li>
-                <li data-i18n="p.standard.l6">Planned production waves</li>
-                <li data-i18n="p.standard.l7">Review checkpoints in each wave</li>
-                <li data-i18n="p.standard.l8">Brand Alignment Sheet</li>
-              </ul>
-              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="p.standard.cta">Choose Standard</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- PRO (featured) -->
-            <article class="plan featured">
-              <span class="ribbon" data-i18n="p.pro.ribbon">Most chosen</span>
-              <span class="tier" data-i18n="p.pro.tier">Monthly — most chosen</span>
-              <h4 class="name" data-i18n="p.pro.name">Pro</h4>
-              <p class="blurb" data-i18n="p.pro.blurb">A repeatable video production engine.</p>
-              <div class="price is-hidden"><span class="amt" data-i18n="p.pro.price">$1,997</span><span class="per" data-i18n="p.pro.per">/ month</span></div>
-              <ul>
-                <li data-i18n="p.pro.l1">Up to 3 products / 3 offers</li>
-                <li data-i18n="p.pro.l2">12 Video Ad Packs / month</li>
-                <li data-i18n="p.pro.l3">2 production waves of 6</li>
-                <li data-i18n="p.pro.l4">6 light adjustment credits / month</li>
-                <li data-i18n="p.pro.l5">Refreshes from winners &amp; prior ads</li>
-                <li data-i18n="p.pro.l6">Voiceover included</li>
-                <li data-i18n="p.pro.l7">Monthly creative direction call</li>
-                <li data-i18n="p.pro.l8">Priority turnaround</li>
-              </ul>
-              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="p.pro.cta">Choose Pro</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- ENTERPRISE -->
-            <article class="plan">
-              <span class="tier" data-i18n="p.ent.tier">Monthly — high capacity</span>
-              <h4 class="name" data-i18n="p.ent.name">Enterprise</h4>
-              <p class="blurb" data-i18n="p.ent.blurb">Priority video capacity.</p>
-              <div class="price is-hidden"><span class="amt" data-i18n="p.ent.price">$2,497+</span><span class="per" data-i18n="p.ent.per">/ month</span></div>
-              <ul>
-                <li data-i18n="p.ent.l1">Up to 5 products / 5 offers</li>
-                <li data-i18n="p.ent.l2">15 Video Ad Packs / month</li>
-                <li data-i18n="p.ent.l3">Custom production cadence</li>
-                <li data-i18n="p.ent.l4">Priority queue</li>
-                <li data-i18n="p.ent.l5">Refreshes from winners &amp; prior ads</li>
-                <li data-i18n="p.ent.l6">Voiceover included</li>
-                <li data-i18n="p.ent.l7">Scheduled review checkpoints</li>
-                <li data-i18n="p.ent.l8">Optional avatar-supported scope</li>
-              </ul>
-              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="p.ent.cta">Talk to us</span><span class="arr">→</span></a></div>
-            </article>
+            <div class="svc3-select-group">
+              <p class="svc3-eyebrow">05 — 06 · Separate services</p>
+              <h2 class="svc3-h2">Beyond the <em>tiers.</em></h2>
+              <nav class="svc3-toc svc3-toc--alt" aria-label="Other services">
+                <a href="services-film.html"><span class="n">05</span><span class="t">Film Studio</span><span class="d">long-form · up to 90s</span><span class="arr">→</span></a>
+                <a href="services-partners.html"><span class="n">06</span><span class="t">Partners</span><span class="d">agency &amp; media-buyer blocks</span><span class="arr">→</span></a>
+              </nav>
             </div>
 
-            <!-- FILM STUDIO STRIP -->
-            <article class="plan feature-strip">
-              <div>
-                <span class="tier" data-i18n="p.film.tier">Separate service line</span>
-                <h4 class="name" style="margin-top: 10px;" data-i18n="p.film.name">Film Studio</h4>
-                <p class="blurb" style="margin-top: var(--s-3); max-width: 38ch;" data-i18n="p.film.blurb">Longer-form production — B2B instructional, product explainers, branded educational, sales support.</p>
-              </div>
-              <ul>
-                <li data-i18n="p.film.l1">Up to 4 finished videos</li>
-                <li data-i18n="p.film.l2">Videos up to 1m 30s</li>
-                <li data-i18n="p.film.l3">Script + storyboarding</li>
-              </ul>
-              <ul>
-                <li data-i18n="p.film.l4">Voiceover &amp; avatar-supported delivery</li>
-                <li data-i18n="p.film.l5">Up to 5 revision rounds</li>
-                <li data-i18n="p.film.l6">Custom production plan</li>
-                <li style="list-style:none; padding:0;"><a href="intake.html" class="btn-arrow" style="margin-top: 14px; display:inline-flex;"><span data-i18n="p.film.cta">Request a quote</span><span class="arr">→</span></a></li>
-              </ul>
-            </article>
-          </div>
-        </div>
-
-        <hr class="lane-divider" />
-
-        <!-- LANE: AGENCIES -->
-        <div id="for-agencies" class="lane" data-lane="agencies" hidden>
-          <div class="reveal">
-            <span class="audience-lane-tag" data-i18n="lane.agencies.tag">For Agencies &amp; Media Buyers</span>
-            <h3 class="h2" style="max-width: 22ch; margin-top: var(--s-3);" data-i18n="lane.agencies.h">You keep the client and the strategy.<br><em>We supply the videos.</em></h3>
-            <p class="lead muted" style="margin-top: var(--s-5); max-width: 70ch;" data-i18n="lane.agencies.p">A white-label-friendly production desk for solo media buyers, performance agencies, and paid-social specialists. No client poaching. No random freelance editing. A repeatable production process you can plug in.</p>
-          </div>
-
-          <div class="plan-grid reveal-stagger" style="margin-top: var(--s-7);">
-            <!-- TEST SPRINT -->
-            <article class="plan">
-              <span class="tier" data-i18n="a.sprint.tier">Test sprint — one-time</span>
-              <h4 class="name" data-i18n="a.sprint.name">Partner Test Sprint</h4>
-              <p class="blurb" data-i18n="a.sprint.blurb">Partner-first proof of fit.</p>
-              <div class="price"><span class="amt" data-i18n="a.sprint.price">$297–$500</span><span class="per" data-i18n="a.sprint.per">one-time</span></div>
-              <ul>
-                <li data-i18n="a.sprint.l1">Partner onboarding form</li>
-                <li data-i18n="a.sprint.l2">1 client-facing Video Ad Pack or 2 smaller concepts</li>
-                <li data-i18n="a.sprint.l3">White-label-ready delivery folder</li>
-                <li data-i18n="a.sprint.l4">Partner-facing Loom handoff</li>
-                <li data-i18n="a.sprint.l5">Partner brief template</li>
-                <li class="dim" data-i18n="a.sprint.l6">Credit toward first monthly block</li>
-              </ul>
-              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="a.sprint.cta">Start a partner sprint</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- STARTER -->
-            <article class="plan">
-              <span class="tier" data-i18n="a.starter.tier">Monthly</span>
-              <h4 class="name" data-i18n="a.starter.name">Partner Starter</h4>
-              <p class="blurb" data-i18n="a.starter.blurb">Monthly support for solo buyers and small agencies.</p>
-              <div class="price"><span class="amt" data-i18n="a.starter.price">$850+</span><span class="per" data-i18n="a.starter.per">/ month</span></div>
-              <ul>
-                <li data-i18n="a.starter.l1">Up to 4 Video Ad Packs / month</li>
-                <li data-i18n="a.starter.l2">White-label or co-branded delivery</li>
-                <li data-i18n="a.starter.l3">Partner brief workflow</li>
-                <li data-i18n="a.starter.l4">Partner-facing Loom handoffs</li>
-                <li data-i18n="a.starter.l5">Planned production waves</li>
-                <li data-i18n="a.starter.l6">7-day standard turnaround</li>
-                <li data-i18n="a.starter.l7">No ad account access required</li>
-              </ul>
-              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="a.starter.cta">Open a starter block</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- GROWTH (featured) -->
-            <article class="plan featured">
-              <span class="ribbon" data-i18n="a.growth.ribbon">Most chosen</span>
-              <span class="tier" data-i18n="a.growth.tier">Monthly — most chosen</span>
-              <h4 class="name" data-i18n="a.growth.name">Partner Growth</h4>
-              <p class="blurb" data-i18n="a.growth.blurb">Larger monthly block for multi-account agencies.</p>
-              <div class="price"><span class="amt" data-i18n="a.growth.price">$1,700+</span><span class="per" data-i18n="a.growth.per">/ month</span></div>
-              <ul>
-                <li data-i18n="a.growth.l1">Up to 10 Video Ad Packs / month</li>
-                <li data-i18n="a.growth.l2">White-label delivery</li>
-                <li data-i18n="a.growth.l3">Refresh support from prior concepts</li>
-                <li data-i18n="a.growth.l4">Planned production waves</li>
-                <li data-i18n="a.growth.l5">Priority production over starter</li>
-                <li data-i18n="a.growth.l6">Clean handoff structure</li>
-                <li data-i18n="a.growth.l7">No end-client account access required</li>
-              </ul>
-              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="a.growth.cta">Open a growth block</span><span class="arr">→</span></a></div>
-            </article>
-
-            <!-- SCALE -->
-            <article class="plan">
-              <span class="tier" data-i18n="a.scale.tier">Custom</span>
-              <h4 class="name" data-i18n="a.scale.name">Partner Scale</h4>
-              <p class="blurb" data-i18n="a.scale.blurb">Dedicated capacity for high-volume agencies.</p>
-              <div class="price"><span class="amt" data-i18n="a.scale.price">Custom</span><span class="per" data-i18n="a.scale.per">monthly</span></div>
-              <ul>
-                <li data-i18n="a.scale.l1">Custom monthly video capacity</li>
-                <li data-i18n="a.scale.l2">Multi-account production planning</li>
-                <li data-i18n="a.scale.l3">White-label fulfillment system</li>
-                <li data-i18n="a.scale.l4">Priority queue</li>
-                <li data-i18n="a.scale.l5">Structured review cadence</li>
-                <li data-i18n="a.scale.l6">Custom handoff workflow</li>
-                <li data-i18n="a.scale.l7">Refresh support</li>
-              </ul>
-              <div class="footer-cta"><a href="intake.html" class="btn-arrow"><span data-i18n="a.scale.cta">Plan capacity</span><span class="arr">→</span></a></div>
-            </article>
+            <div class="svc3-tier-cta" style="margin-top: var(--s-6);">
+              <a href="pricing.html" class="btn-arrow"><span>Compare full plans &amp; pricing</span><span class="arr">→</span></a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ============== FINAL CTA ============== -->
-    <section id="contact" class="final-cta">
-      <h2 class="big reveal-up" data-i18n="fin.h">Bring the offer.<br>We turn it <em>into video.</em></h2>
-      <div class="actions reveal">
-        <a href="intake.html" class="btn btn-primary" data-magnetic="0.18">
-          <span data-i18n="fin.cta1">Book a Sprout trial</span>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-        </a>
-      </div>
-    </section>
+
   </main>
+
+  <!-- ============== CHAPTER DOCK (mobile) ============== -->
+  <nav class="svc3-dock" aria-label="Services index">
+    <a href="#why" data-ch="why" class="active"><span class="n">00</span><span>Case</span></a>
+    <a href="services-sprout.html" data-ch="t-sprout"><span class="n">01</span><span>Sprout</span></a>
+    <a href="services-standard.html" data-ch="t-standard"><span class="n">02</span><span>Standard</span></a>
+    <a href="services-pro.html" data-ch="t-pro"><span class="n">03</span><span>Pro</span></a>
+    <a href="services-enterprise.html" data-ch="t-enterprise"><span class="n">04</span><span>Scale</span></a>
+    <a href="services-film.html" data-ch="t-film"><span class="n">05</span><span>Film</span></a>
+    <a href="services-partners.html" data-ch="t-partners"><span class="n">06</span><span>Partners</span></a>
+  </nav>
 
   <!-- ============== FOOTER ============== -->
   <footer class="site-footer">
@@ -450,19 +250,16 @@
           <p style="margin-top: var(--s-4); max-width: 36ch;" data-i18n="foot.tag">Short-form video ad production desk · Motion picture studio · Nagoya, Japan</p>
         </div>
         <div>
-          <h5 data-i18n="foot.col1.h">For Brands</h5>
-          <a href="services.html" data-i18n="p.sprout.name">Sprout</a>
-          <a href="services.html" data-i18n="p.standard.name">Standard</a>
-          <a href="services.html" data-i18n="p.pro.name">Pro</a>
-          <a href="services.html" data-i18n="p.ent.name">Enterprise</a>
-          <a href="services.html" data-i18n="p.film.name">Film Studio</a>
+          <h5 data-i18n="nav.work">How We Craft</h5>
+          <a href="principle.html" data-i18n="nav.craft.principle">Our Principle</a>
+          <a href="work.html" data-i18n="nav.craft.selected">Selected Work</a>
+          <a href="team.html" data-i18n="nav.craft.team">The Team</a>
         </div>
         <div>
-          <h5 data-i18n="foot.col2.h">For Agencies</h5>
-          <a href="services.html#for-agencies" data-i18n="a.sprint.name">Partner Test Sprint</a>
-          <a href="services.html#for-agencies" data-i18n="a.starter.name">Partner Starter</a>
-          <a href="services.html#for-agencies" data-i18n="a.growth.name">Partner Growth</a>
-          <a href="services.html#for-agencies" data-i18n="a.scale.name">Partner Scale</a>
+          <h5 data-i18n="nav.brands">Services</h5>
+          <a href="pricing.html" data-i18n="foot.col1.h">For Brands</a>
+          <a href="pricing.html#for-agencies" data-i18n="foot.col2.h">For Agencies</a>
+          <a href="intake.html" data-i18n="workpage.cta.btn">Start a brief</a>
         </div>
         <div>
           <h5 data-i18n="foot.col3.h">Studio</h5>
@@ -478,9 +275,17 @@
     </div>
   </footer>
 
-  <script src="js/i18n.js?v=20260608a"></script>
+  <script src="js/i18n.js?v=20260611ja"></script>
   <script src="js/anim.js?v=20260531r"></script>
-  <script src="js/production-orbit.js?v=20260608j"></script>
-  <script src="js/vine.js?v=20260602d"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/three@0.149.0/build/three.min.js"></script>
+  <script src="js/services-v3-stage.js?v=20260612a"></script>
+  <script src="js/pencil-3d.js?v=20260613l"></script>
+  <script src="js/pencil-video.js?v=20260614a"></script>
+  <script src="js/tier-3d.js?v=20260614a"></script>
+  <script src="js/case-orbit.js?v=20260614a"></script>
+  <script src="js/case-pit.js?v=20260615e"></script>
+  <script src="js/services-v3.js?v=20260613c"></script>
 </body>
 </html>

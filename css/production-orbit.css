@@ -12,10 +12,10 @@
         --ltb-soft: rgba(242, 239, 230, .46);
         --ltb-line: rgba(242, 239, 230, .13);
         --ltb-line-strong: rgba(242, 239, 230, .22);
-        --ltb-sprout: #c8f7d5;
-        --ltb-sprout-deep: #8ad9aa;
+        --ltb-sprout: #e3cda3;
+        --ltb-sprout-deep: #c8a876;
         --ltb-warm: #f3efe2;
-        --ltb-gold: #CFA772;
+        --ltb-gold: #c8a876;
         --ltb-card-w: min(33vw, 144px);
         --ltb-card-h: calc(var(--ltb-card-w) * 1.34);
         --ltb-phone-wbase: min(58vw, 270px);
@@ -48,9 +48,7 @@
         height: 860vh;
         min-height: 6500px;
         color: var(--ltb-text);
-        background:
-          radial-gradient(circle at 50% 52%, rgba(200,247,213,.06), transparent 30vw),
-          #0d0d10;
+        background: transparent;
       }
 .lotabin-orbit .lo-pin {
         position: sticky;
@@ -61,12 +59,10 @@
         perspective: 1200px;
         display: grid;
         grid-template-rows: auto minmax(0, 1fr) auto;
+        grid-template-columns: minmax(0, 1fr);
         gap: 16px;
         padding: 20px clamp(16px, 2vw, 36px) 22px;
-        background:
-          radial-gradient(circle at 50% 52%, rgba(200,247,213,.10), transparent 38vw),
-          radial-gradient(circle at 58% 40%, rgba(242,239,230,.05), transparent 34vw),
-          #0d0d10;
+        background: transparent;
         z-index: 0;
       }
 .lotabin-orbit .lo-pin::before {
@@ -77,7 +73,19 @@
         background:
           linear-gradient(180deg, #0d0d10, #0d0d10 14%, rgba(13,13,16,0) 26%, rgba(13,13,16,0) 86%, #0d0d10),
           linear-gradient(90deg, #0d0d10, rgba(13,13,16,0) 12%, rgba(13,13,16,0) 88%, #0d0d10);
+        z-index: 1;
+        opacity: .82;
+      }
+/* Three.js soundstage background (js/orbit-stage.js). Sits under the edge-fade
+   ::before (z 1) and all content (z 2); if WebGL is unavailable the .lo-pin
+   gradient background simply shows through. */
+.lotabin-orbit .lo-stage-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
         z-index: 0;
+        pointer-events: none;
       }
 .lotabin-orbit .lo-hud, .lotabin-orbit .lo-stage, .lotabin-orbit .lo-info {
         position: relative;
@@ -114,14 +122,38 @@
         text-align: right;
         margin-right: clamp(16px, 7vw, 130px);
         color: var(--ltb-text);
-        font-family: var(--font-display, 'Playfair Display', Georgia, serif);
-        font-size: clamp(24px, 2.1vw, 38px);
-        line-height: 1.04;
+        font-family: var(--font-mono, 'JetBrains Mono', ui-monospace, monospace);
+        font-size: clamp(16px, 1.5vw, 26px);
+        line-height: 1.25;
         font-weight: 500;
-        letter-spacing: -.02em;
+        letter-spacing: .09em;
+        text-transform: uppercase;
         text-wrap: balance;
       }
+/* typewriter caret — solid while typing, blinking at rest */
+.lotabin-orbit .lo-hud-stage::after {
+        content: "";
+        display: inline-block;
+        width: .52em;
+        height: 1.02em;
+        margin-left: .22em;
+        vertical-align: text-bottom;
+        background: var(--ltb-gold, #cfa772);
+        animation: ltbCaretBlink 1.1s steps(1) infinite;
+      }
+.lotabin-orbit .lo-hud-stage.lo-typing::after {
+        animation: none;
+        opacity: 1;
+      }
+@keyframes ltbCaretBlink {
+        0%, 54% { opacity: 1; }
+        55%, 100% { opacity: 0; }
+      }
+@media (prefers-reduced-motion: reduce) {
+        .lotabin-orbit .lo-hud-stage::after { animation: none; }
+      }
 .lotabin-orbit .lo-hud-rail {
+        display: none;
         height: 2px;
         margin-top: 15px;
         border-radius: 999px;
@@ -139,6 +171,7 @@
       }
 .lotabin-orbit .lo-steps {
         display: grid;
+        position: relative;
         grid-template-columns: repeat(8, minmax(0, 1fr));
         gap: 22px;
         margin-top: 18px;
@@ -162,6 +195,16 @@
       }
 .lotabin-orbit .lo-step { cursor: pointer; transition: color .25s var(--e-out, ease); }
 .lotabin-orbit .lo-step:hover, .lotabin-orbit .lo-step:focus-visible { color: rgba(242,239,230,.95); outline: none; }
+.lotabin-orbit .lo-steps::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background: #43382b;
+        z-index: 0;
+      }
 .lotabin-orbit .lo-step::before {
         content: "";
         position: absolute;
@@ -169,17 +212,17 @@
         right: 0;
         bottom: 0;
         width: 100%;
-        height: 1px;
-        background: rgba(207, 167, 114, .28);
-        transform: translateY(-.5px);
+        height: 3px;
+        background: #43382b;
+        transform: translateY(0);
       }
 .lotabin-orbit .lo-step::after {
         content: "";
         position: absolute;
         left: 0;
-        bottom: -1px;
+        bottom: 0;
         width: calc(var(--seg,0) * 100%);
-        height: 2px;
+        height: 3px;
         background: var(--ltb-gold);
         box-shadow: 0 0 10px rgba(207, 167, 114, .25);
       }
@@ -235,7 +278,7 @@
         height: min(24vw, 300px);
         transform: translate(-50%,-50%) scale(var(--glow-scale,.6));
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(200,247,213,.13), rgba(242,239,230,.04) 38%, transparent 60%);
+        background: radial-gradient(circle, rgba(200,168,118,.16), rgba(242,239,230,.04) 38%, transparent 60%);
         opacity: var(--glow-opacity,0);
         filter: blur(10px);
         z-index: 2;
@@ -256,23 +299,43 @@
         width: 100%;
         height: 100%;
         overflow: visible;
-        transform: rotate(-90deg);
-        filter: drop-shadow(0 0 12px rgba(200,247,213,.10));
+        filter: drop-shadow(0 0 12px rgba(200,168,118,.12));
+      }
+.lotabin-orbit .lo-hex-label {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: .24em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        color: rgba(242,239,230,.34);
+        transition: color .35s ease, text-shadow .35s ease;
+        pointer-events: none;
+      }
+.lotabin-orbit .lo-hex-label.lo-active {
+        color: #d8b985;
+        text-shadow: 0 0 9px rgba(200,168,118,.45);
+      }
+@media (max-width: 759px) {
+.lotabin-orbit .lo-hex-label { font-size: 7.5px; letter-spacing: .18em; }
       }
 .lotabin-orbit .lo-track {
         fill: none;
-        stroke: rgba(140,230,180,.12);
-        stroke-width: 1.1;
+        stroke: rgba(200,168,118,.14);
+        stroke-width: 0.5;
       }
 .lotabin-orbit .lo-vine-line {
         fill: none;
         stroke: url(#ltbVineGradient);
-        stroke-width: 1.9;
+        stroke-width: 0.8;
         stroke-linecap: round;
         stroke-dasharray: 100;
         stroke-dashoffset: var(--vine-offset,100);
         opacity: var(--vine-green-opacity, 1);
-        filter: drop-shadow(0 0 6px rgba(120,225,165,.45));
+        filter: drop-shadow(0 0 6px rgba(200,168,118,.5));
       }
 .lotabin-orbit .lo-vine-gold {
         stroke: var(--ltb-gold, #CFA772);
@@ -287,7 +350,7 @@
         height: 60px;
         opacity: 0;
         pointer-events: none;
-        filter: drop-shadow(0 3px 7px rgba(0,0,0,.30)) drop-shadow(0 0 6px rgba(120,225,165,.30));
+        filter: drop-shadow(0 3px 7px rgba(0,0,0,.30)) drop-shadow(0 0 6px rgba(200,168,118,.32));
       }
 .lotabin-orbit .lo-leaf-svg {
         width: 100%;
@@ -296,20 +359,20 @@
         display: block;
       }
 .lotabin-orbit .lo-leaf-blade {
-        fill: rgba(150,232,184,.17);
-        stroke: rgba(156,236,190,.74);
+        fill: rgba(200,168,118,.16);
+        stroke: rgba(216,200,160,.78);
         stroke-width: 1.25;
         stroke-linejoin: round;
       }
 .lotabin-orbit .lo-leaf-vein {
         fill: none;
-        stroke: rgba(168,240,196,.52);
+        stroke: rgba(216,200,160,.55);
         stroke-width: .9;
         stroke-linecap: round;
       }
 .lotabin-orbit .lo-leaf-stem {
         fill: none;
-        stroke: rgba(150,232,184,.72);
+        stroke: rgba(200,168,118,.74);
         stroke-width: 1.4;
         stroke-linecap: round;
       }
@@ -321,8 +384,8 @@
         height: 7px;
         border-radius: 999px;
         transform: translate(-50%,-50%);
-        background: radial-gradient(circle at 38% 35%, #c8f8dc, #6fe0a0 55%, #45c07f);
-        box-shadow: 0 0 9px rgba(120,225,165,.7);
+        background: radial-gradient(circle at 38% 35%, #efe0c2, #c8a876 55%, #9a7d4f);
+        box-shadow: 0 0 9px rgba(200,168,118,.72);
         opacity: var(--ring-opacity, 1);
         pointer-events: none;
       }
@@ -337,41 +400,316 @@
         z-index: 6;
         pointer-events: none;
       }
-.lotabin-orbit .lo-card-shell {
+.lotabin-orbit .lo-dev {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+      }
+
+/* ---- c1 · KPI Setup — tablet (iPad) ---- */
+.lotabin-orbit .lo-tablet {
+        position: relative;
+        width: 90%;
+        aspect-ratio: 0.75;
+        border-radius: 9.5%/7.1%;
+        background: linear-gradient(150deg, #a7adb3, #62676c 58%, #8b9197);
+        padding: 2.4%;
+        box-shadow: 0 22px 50px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.45);
+      }
+.lotabin-orbit .lo-tablet-bezel {
         position: relative;
         width: 100%;
         height: 100%;
-        border-radius: 27px;
-        overflow: hidden;
-        border: 1px solid rgba(242,239,230,.12);
-        background: rgba(8,11,10,.94);
-        box-shadow: 0 24px 56px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.08);
+        border-radius: 8.5%/6.4%;
+        background: #101214;
+        padding: 4.2%;
       }
-.lotabin-orbit .lo-card-shell::before {
+.lotabin-orbit .lo-tablet-bezel::before {
         content: "";
         position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(255,255,255,.16), transparent 40%, rgba(255,255,255,.05));
-        z-index: 3;
-        pointer-events: none;
+        top: 2.1%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #3d4750, #14181c 70%);
       }
-.lotabin-orbit .lo-card-media {
-        position: absolute;
-        inset: 0;
-        padding: 14px;
-        display: grid;
-        place-items: center;
-        background: radial-gradient(circle at 50% 10%, rgba(242,239,230,.055), transparent 34%);
-      }
-.lotabin-orbit .lo-card-pic {
+.lotabin-orbit .lo-tablet-screen {
         width: 100%;
         height: 100%;
-        border-radius: 17px;
-        background-image: var(--pic);
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-color: rgba(255,255,255,.025);
+        border-radius: 5.5%/4.1%;
+        background: #fbfbfc var(--pic) center/contain no-repeat;
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+      }
+
+/* ---- c2 · Script — printed page ---- */
+.lotabin-orbit .lo-paper {
+        position: relative;
+        width: 86%;
+        aspect-ratio: 0.78;
+      }
+.lotabin-orbit .lo-paper-back {
+        position: absolute;
+        inset: 0;
+        transform: rotate(2.6deg) translate(2.5%, 1.2%);
+        background: #e9e5da;
+        border-radius: 3px;
+        box-shadow: 0 14px 30px rgba(0,0,0,.35);
+      }
+.lotabin-orbit .lo-paper-sheet {
+        position: absolute;
+        inset: 0;
+        transform: rotate(-1.7deg);
+        background: #fdfcf8 var(--pic) center/92% no-repeat;
+        border-radius: 3px;
+        box-shadow: 0 16px 36px rgba(0,0,0,.40);
+      }
+.lotabin-orbit .lo-paper-clip {
+        position: absolute;
+        top: -3.5%;
+        left: 9%;
+        width: 10.5%;
+        aspect-ratio: 0.46;
+        transform: rotate(-7deg);
+        border: 2.5px solid #b6bcc3;
+        border-radius: 999px;
+        box-shadow: 0 1px 2px rgba(0,0,0,.25);
+      }
+.lotabin-orbit .lo-paper-clip::before {
+        content: "";
+        position: absolute;
+        left: 22%;
+        right: 22%;
+        top: 14%;
+        bottom: 36%;
+        border: 2px solid #c9ced4;
+        border-radius: 999px;
+      }
+
+/* ---- c3 · Concept — taped art sheet ---- */
+.lotabin-orbit .lo-art {
+        position: relative;
+        width: 98%;
+        aspect-ratio: 4/3;
+        transform: rotate(1.6deg);
+      }
+.lotabin-orbit .lo-art-sheet {
+        position: absolute;
+        inset: 0;
+        background: #f6ead0 var(--pic) center/cover no-repeat;
+        border-radius: 2px;
+        box-shadow: 0 16px 36px rgba(0,0,0,.38);
+      }
+.lotabin-orbit .lo-tape {
+        position: absolute;
+        width: 30%;
+        height: 8.5%;
+        background: linear-gradient(rgba(244,238,218,.62), rgba(238,230,206,.55));
+        box-shadow: 0 2px 5px rgba(0,0,0,.20);
+      }
+.lotabin-orbit .lo-tape-tl { left: -8%; top: -3%; transform: rotate(-37deg); }
+.lotabin-orbit .lo-tape-br { right: -8%; bottom: -3%; transform: rotate(-37deg); }
+
+/* ---- c4 · Storyboard — clipped printout ---- */
+.lotabin-orbit .lo-storyb {
+        position: relative;
+        width: 99%;
+        aspect-ratio: 1.775;
+      }
+.lotabin-orbit .lo-storyb-sheet {
+        position: absolute;
+        inset: 0;
+        background: #f4f2ec var(--pic) center/cover no-repeat;
+        border-radius: 2px;
+        box-shadow: 0 16px 36px rgba(0,0,0,.40);
+      }
+.lotabin-orbit .lo-binder {
+        position: absolute;
+        top: -7%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 19%;
+        aspect-ratio: 2.5;
+        background: linear-gradient(#43484e, #1e2125 70%);
+        clip-path: polygon(6% 100%, 94% 100%, 100% 8%, 88% 0, 12% 0, 0 8%);
+        box-shadow: 0 3px 7px rgba(0,0,0,.35);
+      }
+.lotabin-orbit .lo-binder::before {
+        content: "";
+        position: absolute;
+        left: 30%;
+        right: 30%;
+        top: -38%;
+        height: 42%;
+        border: 2px solid #aab0b7;
+        border-bottom: none;
+        border-radius: 5px 5px 0 0;
+      }
+
+/* ---- c5 · QA — laptop, lid driven by scroll (--lid: 0 closed → 1 open) ---- */
+.lotabin-orbit .lo-laptop {
+        position: relative;
+        width: 96%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        perspective: 900px;
+        transform-style: preserve-3d;
+      }
+.lotabin-orbit .lo-laptop-lid {
+        position: relative;
+        width: 97%;
+        aspect-ratio: 1.40;
+        transform-origin: 50% 100%;
+        transform: rotateX(calc(-84deg * (1 - var(--lid, 0))));
+        transform-style: preserve-3d;
+        will-change: transform;
+      }
+.lotabin-orbit .lo-laptop-screen {
+        position: absolute;
+        inset: 0;
+        backface-visibility: hidden;
+        border-radius: 8px 8px 0 0;
+        background: #0a0c0d var(--pic) center/cover no-repeat;
+        box-shadow: inset 0 0 0 1.5px #26292c, inset 0 0 0 2.5px rgba(255,255,255,.05);
+      }
+.lotabin-orbit .lo-laptop-screen::before {
+        content: "";
+        position: absolute;
+        top: 3.5%;
+        left: 50%;
+        width: 4px;
+        height: 4px;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        background: #2f3a42;
+      }
+.lotabin-orbit .lo-laptop-cover {
+        position: absolute;
+        inset: 0;
+        transform: rotateX(180deg);
+        backface-visibility: hidden;
+        border-radius: 0 0 8px 8px;
+        background: linear-gradient(200deg, #9aa0a5, #666b70 60%, #7e848a);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+      }
+.lotabin-orbit .lo-laptop-base {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 21;
+        background: linear-gradient(#b9bec3, #8e9398 45%, #5f6469);
+        border-radius: 2px 2px 8px 8px;
+        box-shadow: 0 14px 30px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.5);
+      }
+.lotabin-orbit .lo-laptop-base::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        width: 15%;
+        height: 46%;
+        background: rgba(20,22,24,.28);
+        border-radius: 0 0 5px 5px;
+      }
+
+/* ---- c6 · Pictures — director's field monitor ---- */
+.lotabin-orbit .lo-monitor {
+        position: relative;
+        height: 94%;
+        aspect-ratio: 0.62;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+.lotabin-orbit .lo-monitor-handle {
+        position: relative;
+        z-index: 1;
+        width: 52%;
+        height: 4%;
+        border-radius: 999px;
+        background: linear-gradient(#3c4146, #23272b);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
+      }
+.lotabin-orbit .lo-monitor-handle::before,
+.lotabin-orbit .lo-monitor-handle::after {
+        content: "";
+        position: absolute;
+        bottom: -68%;
+        width: 9%;
+        height: 90%;
+        background: #2a2e32;
+      }
+.lotabin-orbit .lo-monitor-handle::before { left: 14%; }
+.lotabin-orbit .lo-monitor-handle::after { right: 14%; }
+.lotabin-orbit .lo-monitor-body {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        margin-top: 2.5%;
+        border-radius: 12px;
+        background: linear-gradient(165deg, #34393e, #1d2125 65%);
+        box-shadow: 0 22px 48px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.12);
+      }
+.lotabin-orbit .lo-monitor-screen {
+        position: absolute;
+        inset: 3.4%;
+        border-radius: 7px;
+        overflow: hidden;
+        background: #000 var(--pic) center/cover no-repeat;
+      }
+.lotabin-orbit .lo-monitor-screen::before,
+.lotabin-orbit .lo-monitor-screen::after {
+        content: "";
+        position: absolute;
+        width: 14%;
+        aspect-ratio: 1;
+        border: 1.5px solid rgba(255,255,255,.55);
+      }
+.lotabin-orbit .lo-monitor-screen::before {
+        left: 5%; top: 3.5%;
+        border-right: none; border-bottom: none;
+      }
+.lotabin-orbit .lo-monitor-screen::after {
+        right: 5%; bottom: 3.5%;
+        border-left: none; border-top: none;
+      }
+.lotabin-orbit .lo-rec {
+        position: absolute;
+        top: 4.6%;
+        right: 8%;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .14em;
+        color: #ff6b5e;
+        text-shadow: 0 1px 2px rgba(0,0,0,.6);
+      }
+.lotabin-orbit .lo-rec i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #ff4540;
+        box-shadow: 0 0 7px rgba(255,70,60,.85);
+      }
+.lotabin-orbit .lo-tc {
+        position: absolute;
+        bottom: 4.2%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 9.5px;
+        letter-spacing: .1em;
+        color: rgba(255,255,255,.88);
+        text-shadow: 0 1px 2px rgba(0,0,0,.6);
       }
 .lotabin-orbit .lo-card-meta {
         position: absolute;
@@ -395,8 +733,8 @@
         border-radius: 999px;
         display: grid;
         place-items: center;
-        background: rgba(200,247,213,.10);
-        border: 1px solid rgba(200,247,213,.22);
+        background: rgba(200,168,118,.10);
+        border: 1px solid rgba(200,168,118,.24);
         color: var(--ltb-warm);
         font-size: 12px;
         font-weight: 900;
@@ -584,7 +922,7 @@
 .lotabin-orbit .lo-why-label {
         grid-column: 2;
         margin-top: 3px;
-        color: rgba(200,247,213,.78);
+        color: rgba(200,168,118,.82);
         font-family: var(--font-mono, 'JetBrains Mono', ui-monospace, monospace);
         font-size: 11px;
         font-weight: 500;
@@ -609,9 +947,13 @@
 @media (max-width: 759px) {.lotabin-orbit { --ltb-card-w: min(33vw, 144px); --ltb-phone-wbase: min(58vw, 270px); }
 .lotabin-orbit .lo-assembly { height: 900vh; min-height: 6200px; }
 .lotabin-orbit .lo-pin {
-          min-height: 640px;
-          padding: 10px 12px 12px;
-          gap: 10px;
+          /* Never force the pinned panel taller than the visible viewport — a
+             min-height above the available svh pushes the info card below the
+             fold on short phones (e.g. iPhone SE) and breaks the sticky hold. */
+          min-height: 0;
+          height: calc(100svh - var(--lotabin-sticky-top, 0px));
+          padding: 10px 12px 14px;
+          gap: 8px;
         }
 .lotabin-orbit .lo-hud {
           padding: 2px 0 0;
@@ -621,20 +963,61 @@
           font-size: 9px;
         }
 .lotabin-orbit .lo-hud-stage {
-          font-size: clamp(15px, 4.1vw, 22px);
+          font-size: clamp(12px, 3.3vw, 17px);
         }
 .lotabin-orbit .lo-steps {
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 14px 12px;
+          /* VERTICAL production-flow progress rail (reparented into .lo-stage
+             by production-orbit.js at mobile widths). Sits over the dim left
+             edge of the orbit; the orbit is shifted right to clear it. */
+          position: absolute;
+          left: 2px;
+          top: 50%;
+          transform: translateY(-50%);
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          grid-template-columns: none;
+          gap: 0;
+          margin: 0;
+          height: min(78%, 384px);
+          width: clamp(82px, 25vw, 104px);
+          z-index: 6;
+        }
+.lotabin-orbit .lo-steps::before {
+          /* soft scrim so the rail labels stay legible over the dim left edge
+             of the orbit (overrides the desktop horizontal baseline line) */
+          display: block;
+          content: "";
+          left: -12px; right: auto; top: -16px; bottom: -16px;
+          width: 122px; height: auto;
+          background: linear-gradient(90deg, rgba(13,13,16,.94), rgba(13,13,16,.74) 52%, rgba(13,13,16,0));
+          z-index: -1;
         }
 .lotabin-orbit .lo-step {
-          font-size: 8px;
-          padding: 0 0 10px;
+          flex: 1 1 0;
+          display: flex;
+          align-items: center;
+          padding: 0 4px 0 18px;
+          text-align: left;
+          font-size: 8.5px;
+          letter-spacing: .1em;
+        }
+.lotabin-orbit .lo-step span { white-space: nowrap; }
+.lotabin-orbit .lo-step::before {
+          left: 4px; right: auto; top: 0; bottom: auto;
+          width: 2px; height: 100%;
+        }
+.lotabin-orbit .lo-step::after {
+          left: 4px; right: auto; top: 0; bottom: auto;
+          width: 2px; height: calc(var(--seg,0) * 100%);
         }
 .lotabin-orbit .lo-world {
           width: min(100%, 420px);
           height: 100%;
-          min-height: 300px;
+          /* yields vertical space to the info card on short viewports so the
+             orbit shrinks gracefully instead of pushing copy off-screen or
+             overlapping it; the 1fr grid track gives it room on taller phones */
+          min-height: 0;
         }
 .lotabin-orbit .lo-orbit, .lotabin-orbit .lo-card {
           top: 44%;
@@ -653,19 +1036,21 @@
           font-size: 10px;
         }
 .lotabin-orbit .lo-copy-t {
-          margin-top: 7px;
-          font-size: clamp(24px,7.2vw,34px);
+          margin-top: 6px;
+          font-size: clamp(21px,5.8vw,30px);
         }
 .lotabin-orbit .lo-copy-b {
-          margin-top: 10px;
-          font-size: 14px;
+          margin-top: 7px;
+          font-size: 13px;
+          line-height: 1.4;
         }
 .lotabin-orbit .lo-why-label {
-          margin-top: 11px;
+          margin-top: 8px;
           font-size: 10px;
         }
 .lotabin-orbit .lo-why {
-          margin-top: 5px;
-          font-size: 13px;
+          margin-top: 4px;
+          font-size: 12.5px;
+          line-height: 1.4;
         }
 }

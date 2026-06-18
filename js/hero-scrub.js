@@ -56,9 +56,18 @@
 
   /* ---------- State ---------- */
   let duration = 0;
-  let ticking  = false;
   let lastP    = -1;
   let decoderAwake = false;
+
+  /* Smoothed scrub: the scroll position sets a GOAL progress and
+     the displayed progress chases it with an eased, speed-capped
+     pursuit. A fast flick (or over-scroll) can no longer jump the
+     video to its last frame — the footage always plays through. */
+  let goalP = 0;   // where the scroll says we should be
+  let curP  = 0;   // what is actually shown
+  let rafId = 0;
+  let lastT = 0;
+  const MAX_RATE = 0.45; // max progress per second → full play-through ≥ ~2.2s
 
   /* ---------- Apply scroll progress to the stage ---------- */
   function applyProgress(p) {
@@ -70,8 +79,9 @@
     // Video scale de-zooms 1.10 → 1.00
     sticky.style.setProperty('--scrub-scale', (1.10 - 0.10 * p).toFixed(3));
 
-    // Headline reveal kicks in once the frame is mostly open
-    const tp  = clamp((p - 0.55) / 0.45, 0, 1);
+    // Headline + captions reveal only once the video is fully scrolled
+    // through (the very end of the scrub), then hold.
+    const tp  = clamp((p - 0.92) / 0.08, 0, 1);
     const tpe = easeOutCubic(tp);
     sticky.style.setProperty('--scrub-text-op', tpe.toFixed(3));
     sticky.style.setProperty('--scrub-text-pe', tpe > 0.05 ? 'auto' : 'none');
@@ -93,24 +103,55 @@
     }
   }
 
+  /* Fraction of the track reserved as a HOLD at the end: the scrub
+     reaches p = 1 early, then the finished frame (headline visible)
+     stays pinned for the remaining scroll before the page releases. */
+  const HOLD = 0.21; // of a 480vh track ≈ 80vh of dwell
+
   function computeProgress() {
     const rect = track.getBoundingClientRect();
     const total = track.offsetHeight - window.innerHeight;
     if (total <= 0) return 0;
-    return clamp(-rect.top, 0, total) / total;
+    const raw = clamp(-rect.top, 0, total) / total;
+    return clamp(raw / (1 - HOLD), 0, 1);
   }
 
   function onScroll() {
-    if (ticking || reduced) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      const p = computeProgress();
-      if (Math.abs(p - lastP) > 0.0005) {
-        applyProgress(p);
-        lastP = p;
-      }
-      ticking = false;
-    });
+    if (reduced) return;
+    goalP = computeProgress();
+    if (!rafId) {
+      lastT = performance.now();
+      rafId = requestAnimationFrame(tick);
+    }
+  }
+
+  function tick(now) {
+    rafId = 0;
+    const dt = Math.min((now - lastT) / 1000, 0.1);
+    lastT = now;
+
+    // eased approach, capped so over-scrolling still plays the frames through
+    const ease = 1 - Math.exp(-dt * 5);
+    let delta = (goalP - curP) * ease;
+    const maxStep = MAX_RATE * dt;
+    if (delta >  maxStep) delta =  maxStep;
+    if (delta < -maxStep) delta = -maxStep;
+    curP += delta;
+    if (Math.abs(goalP - curP) < 0.0006) curP = goalP;
+
+    if (Math.abs(curP - lastP) > 0.0005) {
+      applyProgress(curP);
+      lastP = curP;
+    }
+    if (curP !== goalP) rafId = requestAnimationFrame(tick);
+  }
+
+  /* Jump straight to the scroll position without the chase — used on
+     load / resize so a mid-page refresh doesn't replay the video. */
+  function snapToScroll() {
+    goalP = curP = computeProgress();
+    applyProgress(curP);
+    lastP = curP;
   }
 
   /* ---------- Unlock seeking for moov-at-end MP4s ----------
@@ -175,10 +216,9 @@
       if (decoderAwake) return;
       primeDecoder().then(() => {
         try { video.pause(); } catch (e) {}
-        // Re-fire scroll handler so the visible frame matches
-        // wherever the user actually is on the page now.
-        lastP = -1;
-        onScroll();
+        // Re-sync the visible frame to wherever the user actually
+        // is on the page now.
+        snapToScroll();
       });
     };
     const opts = { once: true, passive: true, capture: true };
@@ -193,7 +233,7 @@
     if (duration > 0 && tcEl) tcEl.textContent = `00:00 / ${fmt(duration)}`;
     primeDecoder().then(() => {
       try { video.pause(); } catch (e) {}
-      onScroll();
+      snapToScroll();
       attachGestureFallback();
     });
   }
@@ -219,7 +259,7 @@
   });
 
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => { lastP = -1; onScroll(); }, { passive: true });
+  window.addEventListener('resize', () => { snapToScroll(); }, { passive: true });
 
   /* ---------- Safety: if video fails to load, dont block the page ---------- */
   video.addEventListener('error', () => {

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0d11" />
+  <title>lotabin — Our Principle · Enabling businesses to the joy of storytelling</title>
+  <meta name="description" content="Our principle: enabling businesses to the joy of storytelling. Why lotabin exists — a short-form video ad production desk and motion picture studio in Nagoya, Japan." />
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32"   href="/assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png" />
+  <link rel="apple-touch-icon"      sizes="180x180" href="/assets/apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600&family=Shippori+Mincho+B1:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+  <link rel="stylesheet" href="css/tokens.css?v=20260611f" />
+  <link rel="stylesheet" href="css/site.css?v=20260610b" />
+
+  <meta property="og:title" content="lotabin — Our Principle" />
+  <meta property="og:description" content="Enabling businesses to the joy of storytelling." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lotabin.com/principle.html" />
+  <meta property="og:image" content="https://lotabin.com/assets/lotabin-logo.png" />
+  <link rel="canonical" href="https://lotabin.com/principle.html" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "lotabin",
+    "legalName": "lotabin LLC",
+    "url": "https://lotabin.com",
+    "logo": "https://lotabin.com/assets/lotabin-logo.png",
+    "image": "https://lotabin.com/assets/lotabin-logo.png",
+    "email": "yuya@lotabin.com",
+    "description": "Short-form video ad production desk and motion picture studio in Nagoya, Japan.",
+    "slogan": "Enabling businesses to the joy of storytelling.",
+    "address": { "@type": "PostalAddress", "addressLocality": "Nagoya", "addressRegion": "Aichi", "addressCountry": "JP" },
+    "contactPoint": { "@type": "ContactPoint", "email": "yuya@lotabin.com", "contactType": "customer support", "availableLanguage": ["English", "Japanese"] }
+  }
+  </script>
+
+  <style>
+    /* ===== Principle page — local layout ===== */
+    .principle-hero {
+      position: relative;
+      min-height: clamp(560px, 92vh, 980px);
+      display: flex; align-items: center;
+      padding-top: clamp(96px, 16vh, 160px);
+      padding-bottom: clamp(64px, 10vh, 120px);
+      overflow: hidden;
+    }
+    .principle-hero .container { position: relative; z-index: 1; }
+    .principle-statement {
+      font-family: var(--font-display);
+      font-size: clamp(2.9rem, 2rem + 6.2vw, 7.4rem);
+      font-weight: 500; line-height: 1.02; letter-spacing: -0.03em;
+      margin-top: var(--s-5);
+      max-width: 16ch;
+      text-wrap: balance;
+    }
+    .principle-statement em { font-style: italic; color: var(--bronze); }
+    .principle-hero .lead { margin-top: var(--s-6); max-width: 52ch; }
+
+    /* Vertical Japanese echo of the principle (decorative) */
+    .principle-tate {
+      position: absolute; z-index: 1;
+      top: 50%; right: clamp(20px, 5vw, 88px);
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      font-family: 'Shippori Mincho B1', var(--font-serif);
+      font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+      letter-spacing: 0.42em;
+      color: var(--fg-muted);
+      border-right: 1px solid var(--rule-strong);
+      padding-right: 18px;
+      pointer-events: none;
+    }
+    @media (max-width: 899px) { .principle-tate { display: none; } }
+
+    /* ===== Manifesto letter ===== */
+    .principle-letter {
+      max-width: 640px; margin: 0 auto;
+      padding-top: clamp(72px, 12vh, 130px);
+      padding-bottom: clamp(72px, 12vh, 130px);
+    }
+    .principle-letter .kbd-rule { display: inline-block; margin-bottom: var(--s-7); }
+    .principle-letter p {
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.45rem);
+      line-height: 1.8;
+      color: var(--fg);
+      text-wrap: pretty;
+    }
+    .principle-letter p + p { margin-top: var(--s-6); }
+    .principle-letter p em { font-style: italic; color: var(--bronze); }
+
+    /* Sign-off */
+    .principle-sign {
+      display: flex; align-items: center; gap: var(--s-4);
+      margin-top: var(--s-8);
+      padding-top: var(--s-6);
+      border-top: 1px solid var(--rule);
+    }
+    .principle-sign .who {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--fg-muted);
+    }
+  </style>
+</head>
+<body class="grain">
+
+  <!-- ============== HEADER ============== -->
+  <header class="site-header scrolled" id="site-header">
+    <a href="index.html" class="brand-mark" aria-label="lotabin home">
+      <img src="assets/transparent.png" alt="lotabin" />
+      <span>lotabin</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <span class="nav-drop">
+        <button type="button" class="nav-drop-trigger" data-i18n="nav.work" aria-haspopup="true">How We Craft</button>
+        <span class="nav-drop-menu" aria-label="How we craft">
+          <a href="principle.html" data-i18n="nav.craft.principle" aria-current="page">Our Principle</a>
+          <a href="work.html" data-i18n="nav.craft.selected">Selected Work</a>
+          <a href="team.html" data-i18n="nav.craft.team">The Team</a>
+        </span>
+      </span>
+      <a href="services.html" class="nav-brk"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.brands">Services</span><span class="brk" aria-hidden="true">]</span></a>
+      <a href="index.html#top" class="nav-home" aria-label="Home"><span class="nav-home-mark" aria-hidden="true"></span></a>
+      <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
+      <a href="contact.html"       data-i18n="nav.contact">Contact</a>
+    </nav>
+
+    <div class="nav-tools">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="ja">JA</button>
+      </div>
+      <button class="menu-btn" type="button" data-menu-btn aria-controls="mobile-menu" aria-expanded="false" aria-label="Menu">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 4h12M1 10h12" /></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- mobile menu -->
+  <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile">
+    <span class="menu-group-label" data-i18n="nav.work">How We Craft</span>
+    <a href="principle.html" class="menu-sub" data-i18n="nav.craft.principle" aria-current="page">Our Principle</a>
+    <a href="work.html" class="menu-sub" data-i18n="nav.craft.selected">Selected Work</a>
+    <a href="team.html" class="menu-sub" data-i18n="nav.craft.team">The Team</a>
+    <a href="services.html" class="nav-brk"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.brands">Services</span><span class="brk" aria-hidden="true">]</span></a>
+    <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
+    <a href="contact.html"       data-i18n="nav.contact">Contact</a>
+  </nav>
+
+  <main id="top">
+    <!-- ============== THE STATEMENT ============== -->
+    <section class="principle-hero" data-screen-label="Principle — statement">
+      <div class="container">
+        <span class="kbd-rule reveal" data-i18n="principle.eyebrow">How We Craft — Our Principle</span>
+        <h1 class="principle-statement reveal-up" data-i18n="principle.h1">Enabling businesses to the <em>joy</em> of storytelling.</h1>
+        <p class="lead muted reveal" data-i18n="principle.lead">Every business runs on a story. Most never get the time, the craft, or the calm to tell it well. We exist to change that.</p>
+      </div>
+      <span class="principle-tate" aria-hidden="true">物語る悦びを、ビジネスに。</span>
+    </section>
+
+    <!-- ============== THE LETTER ============== -->
+    <section class="section rule" data-screen-label="Principle — letter">
+      <div class="container">
+        <div class="principle-letter">
+          <span class="kbd-rule reveal" data-i18n="principle.letter.eyebrow">What it means</span>
+          <p class="reveal" data-i18n="principle.p1">Most companies don&rsquo;t lack stories. They lack the room to tell them &mdash; production drags, direction goes vague, and somewhere between the brief and the final cut, the joy drains out.</p>
+          <p class="reveal" data-i18n="principle.p2">So we built a desk that carries the weight: the scripts, the boards, the shoots, the revisions. What we hand back is the part worth keeping &mdash; watching your story land with the people it was made for.</p>
+          <p class="reveal" data-i18n="principle.p3">That is the whole principle. When telling your story feels like <em>a joy instead of a chore</em>, you tell it more often. And the more often you tell it, the better it gets.</p>
+          <div class="principle-sign reveal">
+            <span class="who" data-i18n="principle.sign">lotabin &middot; Nagoya, Japan</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== FINAL CTA ============== -->
+    <section class="final-cta">
+      <h2 class="big reveal-up" data-i18n="principle.cta.h">Your story is<br><em>waiting.</em></h2>
+      <div class="actions reveal">
+        <a href="intake.html" class="btn btn-primary" data-magnetic="0.18">
+          <span data-i18n="workpage.cta.btn">Start a brief</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a href="team.html" class="btn btn-ghost" data-i18n="principle.cta.btn2">Meet the team</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============== FOOTER ============== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <a href="index.html" class="brand-mark" style="font-size: 1.6rem;">
+            <img src="assets/transparent.png" alt="lotabin" />
+            <span data-i18n="foot.brand">lotabin</span>
+          </a>
+          <p style="margin-top: var(--s-4); max-width: 36ch;" data-i18n="foot.tag">Short-form video ad production desk · Motion picture studio · Nagoya, Japan</p>
+        </div>
+        <div>
+          <h5 data-i18n="nav.work">How We Craft</h5>
+          <a href="principle.html" data-i18n="nav.craft.principle">Our Principle</a>
+          <a href="work.html" data-i18n="nav.craft.selected">Selected Work</a>
+          <a href="team.html" data-i18n="nav.craft.team">The Team</a>
+        </div>
+        <div>
+          <h5 data-i18n="nav.brands">Services</h5>
+          <a href="services.html" data-i18n="foot.col1.h">For Brands</a>
+          <a href="services-partners.html" data-i18n="foot.col2.h">For Agencies</a>
+          <a href="intake.html" data-i18n="workpage.cta.btn">Start a brief</a>
+        </div>
+        <div>
+          <h5 data-i18n="foot.col3.h">Studio</h5>
+          <a href="entertainment.html" data-i18n="nav.entertainment">Entertainment</a>
+          <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a>
+          <a href="contact.html" data-i18n="nav.contact">Contact</a>
+        </div>
+      </div>
+      <div class="legal">
+        <span data-i18n="foot.legal">© 2026 lotabin LLC — All rights reserved</span>
+        <span data-i18n="foot.location">Nagoya 名古屋 · Japan</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js?v=20260611pr"></script>
+  <script src="js/anim.js?v=20260531r"></script>
+</body>
+</html>

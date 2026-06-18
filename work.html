@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0d11" />
+  <title>lotabin — Work · Video ads &amp; films · Nagoya, Japan</title>
+  <meta name="description" content="Selected video ads and films produced by lotabin and our agency partners — a short-form video production desk and motion picture studio in Nagoya, Japan." />
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32"   href="/assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png" />
+  <link rel="apple-touch-icon"      sizes="180x180" href="/assets/apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600&family=Shippori+Mincho+B1:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+  <link rel="stylesheet" href="css/tokens.css?v=20260531r" />
+  <link rel="stylesheet" href="css/site.css?v=20260602d" />
+
+  <meta property="og:title" content="lotabin — Work" />
+  <meta property="og:description" content="Selected video ads and films produced by lotabin and our agency partners." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lotabin.com/work.html" />
+  <meta property="og:image" content="https://lotabin.com/assets/lotabin-logo.png" />
+  <link rel="canonical" href="https://lotabin.com/work.html" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "lotabin",
+    "legalName": "lotabin LLC",
+    "url": "https://lotabin.com",
+    "logo": "https://lotabin.com/assets/lotabin-logo.png",
+    "image": "https://lotabin.com/assets/lotabin-logo.png",
+    "email": "yuya@lotabin.com",
+    "description": "Short-form video ad production desk and motion picture studio in Nagoya, Japan.",
+    "address": { "@type": "PostalAddress", "addressLocality": "Nagoya", "addressRegion": "Aichi", "addressCountry": "JP" },
+    "contactPoint": { "@type": "ContactPoint", "email": "yuya@lotabin.com", "contactType": "customer support", "availableLanguage": ["English", "Japanese"] }
+  }
+  </script>
+
+  <style>
+    /* ===== Work page — local layout ===== */
+    .work-page { padding-top: clamp(96px, 18vh, 180px); padding-bottom: clamp(80px, 12vh, 130px); }
+    .work-page .s-head { margin-bottom: var(--s-7); }
+    .work-card { cursor: pointer; }
+
+    /* ===== Video lightbox ===== */
+    .vlb {
+      position: fixed; inset: 0; z-index: var(--z-toast);
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(16px, 4vw, 56px);
+      opacity: 0; visibility: hidden;
+      transition: opacity var(--d-med) var(--e-out), visibility 0s linear var(--d-med);
+    }
+    .vlb.open { opacity: 1; visibility: visible; transition: opacity var(--d-med) var(--e-out); }
+    .vlb__backdrop {
+      position: absolute; inset: 0; cursor: pointer;
+      background: rgba(7, 7, 10, 0.88);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+    }
+    .vlb__dialog {
+      position: relative; z-index: 1;
+      width: 100%; max-width: min(1180px, 92vw);
+      opacity: 0; transform: translateY(20px) scale(0.985);
+      transition: opacity var(--d-slow) var(--e-out), transform var(--d-slow) var(--e-out);
+    }
+    .vlb.open .vlb__dialog { opacity: 1; transform: none; }
+
+    .vlb__stage {
+      position: relative; aspect-ratio: 16 / 9; width: 100%;
+      background: #000; overflow: hidden;
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.55);
+      /* Slight feather on all four edges so the video blends into the dimmed page */
+      -webkit-mask-image:
+        linear-gradient(to right, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%);
+      -webkit-mask-composite: source-in;
+      mask-image:
+        linear-gradient(to right, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%);
+      mask-composite: intersect;
+    }
+    .vlb__stage iframe, .vlb__stage video {
+      position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block;
+    }
+    .vlb__soon {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 10px; text-align: center; padding: var(--s-6);
+      background:
+        repeating-linear-gradient(135deg, rgba(246,244,239,0.018) 0 8px, transparent 8px 16px),
+        var(--ink-800);
+    }
+    .vlb__soon-k {
+      font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--bronze);
+    }
+    .vlb__soon-t { color: var(--fg-muted); max-width: 38ch; font-size: 0.95rem; }
+
+    .vlb__close {
+      position: absolute; top: -14px; right: -10px; z-index: 2;
+      width: 44px; height: 44px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--paper-50); color: var(--ink-1000);
+      border: 0; cursor: pointer;
+      transition: background var(--d-med) var(--e-out), transform var(--d-fast) var(--e-out);
+    }
+    .vlb__close:hover { background: var(--bronze); transform: rotate(90deg); }
+    .vlb__close:focus-visible { outline: 2px solid var(--bronze); outline-offset: 3px; }
+    @media (min-width: 720px) { .vlb__close { top: -18px; right: -18px; } }
+
+    .vlb__meta {
+      display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+      gap: var(--s-4) var(--s-6); margin-top: var(--s-5);
+    }
+    .vlb__head { min-width: 0; }
+    .vlb__tag {
+      display: block;
+      font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--bronze); margin-bottom: 8px;
+    }
+    .vlb__tag:empty { display: none; }
+    .vlb__title {
+      font-family: var(--font-display); font-weight: 500; line-height: 1.05; letter-spacing: -0.018em;
+      margin: 0; color: var(--paper-50); font-size: clamp(1.5rem, 3.4vw, 2.4rem);
+    }
+    .vlb__credits {
+      display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-7); margin: 0;
+    }
+    .vlb__credits > div { display: flex; flex-direction: column; gap: 3px; }
+    .vlb__credits dt {
+      font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--fg-muted);
+    }
+    .vlb__credits dd {
+      margin: 0; font-family: var(--font-serif); font-size: 1.05rem; color: var(--paper-50);
+    }
+
+    /* ===== Work search ===== */
+    .work-search {
+      display: flex; align-items: center; gap: var(--s-2);
+      width: 100%; max-width: 280px; margin-bottom: var(--s-7);
+      padding: 8px 14px;
+      border: 1px solid var(--rule-strong); border-radius: 999px;
+      transition: border-color var(--d-med) var(--e-out);
+    }
+    .work-search:focus-within { border-color: var(--bronze); }
+    .work-search svg { width: 14px; height: 14px; flex: none; color: var(--fg-muted); }
+    .work-search:focus-within svg { color: var(--bronze); }
+    .work-search input {
+      flex: 1 1 auto; min-width: 0;
+      background: none; border: 0; outline: 0; color: var(--fg);
+      font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.04em;
+    }
+    .work-search input::placeholder { color: var(--fg-muted); letter-spacing: 0.08em; }
+    .work-search input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+    .work-empty {
+      font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.08em;
+      color: var(--fg-muted); margin: var(--s-5) 0 0;
+    }
+  </style>
+</head>
+<body class="grain">
+
+  <!-- ============== HEADER ============== -->
+  <header class="site-header scrolled" id="site-header">
+    <a href="index.html" class="brand-mark" aria-label="lotabin home">
+      <img src="assets/transparent.png" alt="lotabin" />
+      <span>lotabin</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <span class="nav-drop">
+        <button type="button" class="nav-drop-trigger" data-i18n="nav.work" aria-haspopup="true">How We Craft</button>
+        <span class="nav-drop-menu" aria-label="How we craft">
+          <a href="principle.html" data-i18n="nav.craft.principle">Our Principle</a>
+          <a href="work.html" data-i18n="nav.craft.selected" aria-current="page">Selected Work</a>
+          <a href="team.html" data-i18n="nav.craft.team">The Team</a>
+        </span>
+      </span>
+      <a href="services.html" class="nav-brk"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.brands">Services</span><span class="brk" aria-hidden="true">]</span></a>
+      <a href="index.html#top" class="nav-home" aria-label="Home"><span class="nav-home-mark" aria-hidden="true"></span></a>
+      <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
+      <a href="contact.html"       data-i18n="nav.contact">Contact</a>
+    </nav>
+
+    <div class="nav-tools">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="ja">JA</button>
+      </div>
+      <button class="menu-btn" type="button" data-menu-btn aria-controls="mobile-menu" aria-expanded="false" aria-label="Menu">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 4h12M1 10h12" /></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- mobile menu -->
+  <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile">
+    <span class="menu-group-label" data-i18n="nav.work">How We Craft</span>
+    <a href="principle.html" class="menu-sub" data-i18n="nav.craft.principle">Our Principle</a>
+    <a href="work.html" class="menu-sub" data-i18n="nav.craft.selected" aria-current="page">Selected Work</a>
+    <a href="team.html" class="menu-sub" data-i18n="nav.craft.team">The Team</a>
+    <a href="services.html" class="nav-brk"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.brands">Services</span><span class="brk" aria-hidden="true">]</span></a>
+    <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
+    <a href="contact.html"       data-i18n="nav.contact">Contact</a>
+  </nav>
+
+  <main id="top">
+    <section class="section rule work-page">
+      <div class="container">
+        <div class="s-head">
+          <div class="meta">
+            <span class="kbd-rule reveal" data-i18n="workpage.eyebrow">Work — Selected</span>
+          </div>
+          <div>
+            <h2 class="h2 reveal" data-i18n="workpage.h2">Video ads and films,<br>made to <em>be launched.</em></h2>
+            <p class="lead muted reveal" style="margin-top: var(--s-5); max-width: 60ch;" data-i18n="workpage.lead">A growing reel of work produced in-house and alongside our agency partners. Click any project to play the film — and see which lotabin partner made it.</p>
+          </div>
+        </div>
+
+        <div class="work-search reveal" role="search">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4" stroke-linecap="round"/></svg>
+          <input type="search" id="workSearch" placeholder="Search projects" aria-label="Search work" autocomplete="off" />
+        </div>
+
+        <!-- ============================================================
+             WORK GALLERY
+             Each card carries three editable attributes:
+               data-video   = YouTube or Vimeo link (or a direct .mp4 path).
+                              Leave empty until the film is ready.
+               data-client  = client / brand name shown in the player overlay.
+               data-partner = the lotabin partner who made it (shown in overlay).
+             Swap the thumbnail by replacing the assets/work/work-N.jpg image.
+             ============================================================ -->
+        <div class="work-gallery reveal-stagger" data-gallery>
+          <a class="work-card" href="#" data-cat="in" data-video="https://vimeo.com/1148500308" data-client="COPEL" data-partner="João Rafael" aria-label="Play — COPEL - TRIFASICO PROPAGANDA 2025">
+            <div class="work-media"><img src="assets/work/copel1.png" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">CM</span><h3 class="work-title">COPEL - TRIFASICO PROPAGANDA 2025</h3></div>
+          </a>
+          <a class="work-card" href="#" data-cat="in" data-video="" data-client="Aoba Skincare" data-partner="lotabin (in-house)" aria-label="Play — Aoba Skincare — hook pack">
+            <div class="work-media"><img src="assets/work/work-2.jpg" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">Performance ads · lotabin</span><h3 class="work-title">Aoba Skincare — 6-Hook Pack</h3></div>
+          </a>
+          <a class="work-card" href="#" data-cat="partner" data-video="" data-client="Studio Tanaka" data-partner="Partner Name" aria-label="Play — Studio Tanaka — partner white-label">
+            <div class="work-media"><img src="assets/work/work-3.jpg" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">White-label · Partner</span><h3 class="work-title">Studio Tanaka — Spring Drop</h3></div>
+          </a>
+          <a class="work-card" href="#" data-cat="in" data-video="" data-client="Meridian Fitness" data-partner="lotabin (in-house)" aria-label="Play — Meridian Fitness — product spot">
+            <div class="work-media"><img src="assets/work/work-4.jpg" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">Product spot · lotabin</span><h3 class="work-title">Meridian Fitness — Reset</h3></div>
+          </a>
+          <a class="work-card" href="#" data-cat="in" data-video="" data-client="Nori Naturals" data-partner="lotabin (in-house)" aria-label="Play — Nori Naturals — founder story">
+            <div class="work-media"><img src="assets/work/work-5.jpg" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">Founder story · lotabin</span><h3 class="work-title">Nori Naturals — Origin</h3></div>
+          </a>
+          <a class="work-card" href="#" data-cat="in" data-video="" data-client="Hibiki Audio" data-partner="lotabin (in-house)" aria-label="Play — Hibiki Audio — product spot">
+            <div class="work-media"><img src="assets/work/work-6.jpg" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">Product spot · lotabin</span><h3 class="work-title">Hibiki Audio — Unboxed</h3></div>
+          </a>
+          <a class="work-card" href="#" data-cat="partner" data-video="" data-client="Lumen Agency" data-partner="Partner Name" aria-label="Play — Lumen Agency — Q4 sprint">
+            <div class="work-media"><img src="assets/work/work-7.jpg" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">White-label · Partner</span><h3 class="work-title">Lumen Agency — Q4 Sprint</h3></div>
+          </a>
+          <a class="work-card" href="#" data-cat="in" data-video="" data-client="Sora Travel" data-partner="lotabin (in-house)" aria-label="Play — Sora Travel — city cuts">
+            <div class="work-media"><img src="assets/work/work-8.jpg" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">Brand film · lotabin</span><h3 class="work-title">Sora Travel — City Cuts</h3></div>
+          </a>
+          <a class="work-card" href="#" data-cat="in" data-video="" data-client="Daon Apparel" data-partner="lotabin (in-house)" aria-label="Play — Daon Apparel — drop 03">
+            <div class="work-media"><img src="assets/work/work-9.jpg" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">Performance ads · lotabin</span><h3 class="work-title">Daon Apparel — Drop 03</h3></div>
+          </a>
+          <a class="work-card" href="#" data-cat="in" data-video="" data-client="Verde Kitchen" data-partner="lotabin (in-house)" aria-label="Play — Verde Kitchen — tasting">
+            <div class="work-media"><img src="assets/work/work-10.jpg" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">Founder story · lotabin</span><h3 class="work-title">Verde Kitchen — Tasting</h3></div>
+          </a>
+          <a class="work-card" href="#" data-cat="partner" data-video="" data-client="Atlas Partners" data-partner="Partner Name" aria-label="Play — Atlas Partners — white-label">
+            <div class="work-media"><img src="assets/work/work-11.jpg" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">White-label · Partner</span><h3 class="work-title">Atlas Partners — Reframe</h3></div>
+          </a>
+          <a class="work-card" href="#" data-cat="in" data-video="" data-client="lotabin Entertainment" data-partner="lotabin (in-house)" aria-label="Play — Mori — short film">
+            <div class="work-media"><img src="assets/work/work-12.jpg" alt="" loading="lazy" /><span class="work-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+            <div class="work-meta"><span class="work-tag">Film · lotabin Entertainment</span><h3 class="work-title">Mori — Short Film</h3></div>
+          </a>
+        </div>
+        <p class="work-empty" id="workEmpty" hidden>No projects match your search.</p>
+      </div>
+    </section>
+
+    <!-- ============== FINAL CTA ============== -->
+    <section class="final-cta">
+      <h2 class="big reveal-up" data-i18n="workpage.cta.h">Have a project<br>in <em>the queue?</em></h2>
+      <div class="actions reveal">
+        <a href="intake.html" class="btn btn-primary" data-magnetic="0.18">
+          <span data-i18n="workpage.cta.btn">Start a brief</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a href="contact.html" class="btn btn-ghost" data-i18n="workpage.cta.btn2">Talk to us</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============== VIDEO LIGHTBOX ============== -->
+  <div class="vlb" id="videoLightbox" role="dialog" aria-modal="true" aria-label="Video player" aria-hidden="true">
+    <div class="vlb__backdrop" data-vlb-close></div>
+    <div class="vlb__dialog">
+      <button type="button" class="vlb__close" data-vlb-close aria-label="Close video">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l10 10M14 4L4 14"/></svg>
+      </button>
+      <div class="vlb__stage" id="vlbStage"></div>
+      <div class="vlb__meta">
+        <div class="vlb__head">
+          <span class="vlb__tag" id="vlbTag"></span>
+          <h3 class="vlb__title" id="vlbTitle"></h3>
+        </div>
+        <dl class="vlb__credits">
+          <div data-vlb-row="client"><dt>Client</dt><dd data-vlb-client></dd></div>
+          <div data-vlb-row="partner"><dt>lotabin partner</dt><dd data-vlb-partner></dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============== FOOTER ============== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <a href="index.html" class="brand-mark" style="font-size: 1.6rem;">
+            <img src="assets/transparent.png" alt="lotabin" />
+            <span data-i18n="foot.brand">lotabin</span>
+          </a>
+          <p style="margin-top: var(--s-4); max-width: 36ch;" data-i18n="foot.tag">Short-form video ad production desk · Motion picture studio · Nagoya, Japan</p>
+        </div>
+        <div>
+          <h5 data-i18n="nav.work">How We Craft</h5>
+          <a href="principle.html" data-i18n="nav.craft.principle">Our Principle</a>
+          <a href="work.html" data-i18n="nav.craft.selected">Selected Work</a>
+          <a href="team.html" data-i18n="nav.craft.team">The Team</a>
+        </div>
+        <div>
+          <h5 data-i18n="nav.brands">Services</h5>
+          <a href="services.html" data-i18n="foot.col1.h">For Brands</a>
+          <a href="services-partners.html" data-i18n="foot.col2.h">For Agencies</a>
+          <a href="intake.html" data-i18n="workpage.cta.btn">Start a brief</a>
+        </div>
+        <div>
+          <h5 data-i18n="foot.col3.h">Studio</h5>
+          <a href="entertainment.html" data-i18n="nav.entertainment">Entertainment</a>
+          <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a>
+          <a href="contact.html" data-i18n="nav.contact">Contact</a>
+        </div>
+      </div>
+      <div class="legal">
+        <span data-i18n="foot.legal">© 2026 lotabin LLC — All rights reserved</span>
+        <span data-i18n="foot.location">Nagoya 名古屋 · Japan</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js?v=20260611ja"></script>
+  <script src="js/anim.js?v=20260531r"></script>
+  <script src="js/work-lightbox.js?v=20260616d"></script>
+
+  <!-- ============== Work search ============== -->
+  <script>
+    (function () {
+      const input = document.getElementById('workSearch');
+      const cards = Array.prototype.slice.call(document.querySelectorAll('[data-gallery] .work-card'));
+      const empty = document.getElementById('workEmpty');
+      if (!input || !cards.length) return;
+
+      function norm(s) {
+        return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      }
+
+      // Pre-compute searchable text for each card (title, tag, client, partner).
+      cards.forEach(function (c) {
+        const title   = (c.querySelector('.work-title') || {}).textContent || '';
+        const tag     = (c.querySelector('.work-tag')   || {}).textContent || '';
+        const client  = c.getAttribute('data-client')  || '';
+        const partner = c.getAttribute('data-partner') || '';
+        c._search = norm([title, tag, client, partner].join(' · '));
+      });
+
+      function run() {
+        const q = norm(input.value.trim());
+        let shown = 0;
+        cards.forEach(function (c) {
+          const match = !q || c._search.indexOf(q) !== -1;
+          c.hidden = !match;
+          if (match) shown++;
+        });
+        if (empty) empty.hidden = shown !== 0;
+      }
+
+      input.addEventListener('input', run);
+    })();
+  </script>
+</body>
+</html>

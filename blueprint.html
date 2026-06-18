@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0d0d11" />
-  <title>lotabin — Start a brief</title>
-  <meta name="description" content="Open a production brief with the lotabin video-ad desk — a guided, bilingual intake." />
+  <title>lotabin — Instant Ad Blueprint</title>
+  <meta name="description" content="Self-serve $29 Instant Ad Blueprint — submit your product details and receive an AI-generated ad blueprint with a sales angle, hooks, script, storyboard, and CTA." />
 
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32"   href="/assets/favicon-32.png" />
@@ -23,23 +23,33 @@
     html, body { height: 100%; background: var(--ink-900); }
     body { margin: 0; overflow: hidden; }
     #root { height: 100%; }
-    /* keep film grain above the console but never block clicks */
     .grain::before { z-index: 70; }
+
+    /* Blueprint-desk-only rail flourishes (built on the shared if-* system) */
+    .bp-rail-card {
+      margin-top: var(--s-5);
+      border: 1px solid var(--if-line-strong);
+      border-radius: 14px;
+      padding: var(--s-5);
+      background: linear-gradient(180deg, color-mix(in oklab, var(--if-accent) 10%, transparent), transparent);
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .bp-rail-ic { width: 22px; height: 22px; color: var(--if-accent); }
+    .bp-rail-name { font-family: var(--font-display); font-size: 1.15rem; letter-spacing: -.01em; margin-top: 6px; }
+    .bp-rail-price { font-family: var(--font-mono); font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; color: var(--if-accent); }
+    .bp-rail-list { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+    .bp-rail-list li { font-size: .82rem; line-height: 1.35; color: var(--fg-muted); padding-left: 16px; position: relative; }
+    .bp-rail-list li::before { content: ""; position: absolute; left: 0; top: .55em; width: 5px; height: 5px; border-radius: 50%; background: var(--if-accent); opacity: .7; }
+
+    .bp-note {
+      margin-top: var(--s-6);
+      font-family: var(--font-mono); font-size: .68rem; line-height: 1.6;
+      letter-spacing: .04em; color: var(--fg-muted);
+      border-left: 2px solid var(--if-line-strong); padding-left: 14px; max-width: 60ch;
+    }
   </style>
 
-  <link rel="canonical" href="https://lotabin.com/intake.html" />
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "lotabin",
-    "legalName": "lotabin LLC",
-    "url": "https://lotabin.com",
-    "logo": "https://lotabin.com/assets/lotabin-logo.png",
-    "email": "yuya@lotabin.com",
-    "address": { "@type": "PostalAddress", "addressLocality": "Nagoya", "addressRegion": "Aichi", "addressCountry": "JP" }
-  }
-  </script>
+  <link rel="canonical" href="https://lotabin.com/blueprint.html" />
 </head>
 <body class="grain">
   <div id="root"></div>
@@ -48,12 +58,6 @@
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
-  <!-- data (no JSX, plain script) -->
-  <script src="intake-data.jsx?v=1"></script>
-
-  <!-- components + app (JSX via babel, in dependency order) -->
-  <script type="text/babel" src="tweaks-panel.jsx"></script>
-  <script type="text/babel" src="intake-steps.jsx?v=1"></script>
-  <script type="text/babel" src="intake-app.jsx?v=2"></script>
+  <script type="text/babel" src="blueprint-app.jsx?v=1"></script>
 </body>
 </html>

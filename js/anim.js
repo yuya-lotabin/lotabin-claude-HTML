@@ -46,7 +46,9 @@
       const rect = scrubTrack.getBoundingClientRect();
       insideHero = rect.bottom > 80; // small grace zone
     }
-    header.classList.toggle('scrolled', scrolledPast && !insideHero);
+    // Box (translucent backdrop + rule) shows as soon as the page is scrolled,
+    // including while scrubbing through the cinematic hero.
+    header.classList.toggle('scrolled', scrolledPast);
   };
   setHeader();
   window.addEventListener('scroll', setHeader, { passive: true });
@@ -82,6 +84,27 @@
       });
     });
   });
+
+  /* Deep links into a hidden lane (e.g. pricing.html#for-agencies):
+     switch the tab first, then scroll to the target. */
+  const activateLaneFromHash = () => {
+    const hash = location.hash.slice(1);
+    if (!hash) return;
+    const target = document.getElementById(hash);
+    if (!target) return;
+    const lane = target.closest('[data-lane]');
+    if (!lane || !lane.hidden) return;
+    const btn = document.querySelector('[data-tabs] button[role="tab"][data-target="' + lane.dataset.lane + '"]');
+    if (!btn) return;
+    btn.click();
+    requestAnimationFrame(() => {
+      const off = (document.querySelector('.site-header')?.offsetHeight || 0) + 12;
+      const y = target.getBoundingClientRect().top + window.scrollY - off;
+      window.scrollTo({ top: y, behavior: 'auto' });
+    });
+  };
+  window.addEventListener('hashchange', activateLaneFromHash);
+  activateLaneFromHash();
 
   /* ---------- 5. Magnetic CTAs (desktop only) ---------- */
   const fine = window.matchMedia('(pointer: fine)').matches;

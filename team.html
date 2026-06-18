@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0d11" />
+  <title>lotabin — The Team · How we work · Nagoya, Japan</title>
+  <meta name="description" content="How lotabin works — a producer-led creative farm — and the partners we build with." />
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32"   href="/assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png" />
+  <link rel="apple-touch-icon"      sizes="180x180" href="/assets/apple-touch-icon.png" />
+
+  <!-- start fetching the flow-diagram video at parse time so it's warm on open -->
+  <link rel="preload" as="video" href="assets/space-final.mp4" type="video/mp4" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600&family=Shippori+Mincho+B1:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+  <link rel="stylesheet" href="css/tokens.css?v=20260531r" />
+  <link rel="stylesheet" href="css/site.css?v=20260602d" />
+
+  <meta property="og:title" content="lotabin — The Team" />
+  <meta property="og:description" content="How lotabin works — a producer-led creative farm — and the partners we build with." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lotabin.com/team.html" />
+  <meta property="og:image" content="https://lotabin.com/assets/lotabin-logo.png" />
+  <link rel="canonical" href="https://lotabin.com/team.html" />
+
+  <style>
+    /* ===== Team page — local layout ===== */
+    .team-page { padding-top: clamp(96px, 18vh, 180px); padding-bottom: clamp(60px, 9vh, 100px); }
+    .team-page .s-head { margin-bottom: var(--s-7); }
+
+    /* ---- Partner globe (left column of s-head) ---- */
+    .team-page .s-head { align-items: start; }
+    .globe-wrap {
+      position: relative;
+      width: min(360px, 100%);
+      aspect-ratio: 1 / 1;
+    }
+    .globe-wrap canvas {
+      display: block; width: 100%; height: 100%;
+      cursor: grab; touch-action: none;
+    }
+    .globe-wrap canvas:active { cursor: grabbing; }
+    /* one-time bronze energy ripple on first interaction */
+    .globe-ripple {
+      position: absolute; left: 50%; top: 50%;
+      width: 100%; aspect-ratio: 1 / 1; border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0.15);
+      pointer-events: none; opacity: 0; z-index: 2;
+      border: 2px solid var(--bronze);
+      box-shadow: 0 0 30px rgba(200, 168, 118, 0.75), inset 0 0 26px rgba(200, 168, 118, 0.45);
+    }
+    .globe-wrap.is-rippling .globe-ripple { animation: globeRipple 1100ms var(--e-out) forwards; }
+    @keyframes globeRipple {
+      0%   { transform: translate(-50%, -50%) scale(0.15); opacity: 0; }
+      12%  { opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .globe-wrap.is-rippling .globe-ripple { animation: none; }
+    }
+    @media (max-width: 1023px) {
+      .globe-wrap { margin-inline: auto; width: min(300px, 80vw); }
+    }
+
+    /* ---- Flow diagram ---- */
+    .team-flow {
+      margin-top: var(--s-8);
+      /* spaceship video backdrop is scoped to this block only */
+      position: relative; overflow: hidden;
+      padding: clamp(48px, 8vh, 88px) clamp(20px, 4vw, 56px);
+    }
+    .team-flow > .flow-grid,
+    .team-flow > .flow-caption { position: relative; z-index: 1; }
+    .flow-horizon {
+      position: absolute; inset: 0; z-index: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; /* resized to fill the block; overflow is cropped */
+      object-position: center;
+      pointer-events: none;
+      opacity: .6;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 86%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+      -webkit-mask-composite: source-in;
+      mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 86%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+      mask-composite: intersect;
+    }
+    .flow-grid {
+      display: grid;
+      grid-template-columns: auto 72px auto 104px auto;
+      align-items: center;
+      justify-content: center;
+      column-gap: var(--s-4);
+    }
+    .flow-node {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 20px 30px;
+      border: 1px solid var(--rule-strong);
+      background: rgba(20, 20, 26, 0.6);
+      font-family: var(--font-mono); font-size: 0.78rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .flow-node.hub {
+      background: var(--paper-50);
+      color: var(--ink-1000);
+      border-color: var(--paper-50);
+    }
+    .flow-col { display: grid; row-gap: var(--s-4); justify-items: stretch; }
+    .flow-col .flow-node { justify-content: center; }
+    .flow-more {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 4px 0;
+    }
+    .flow-more i {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--bronze); opacity: 0.55; display: inline-block;
+    }
+    .flow-caption {
+      margin-top: var(--s-5);
+      width: fit-content;
+      margin-inline: auto;
+      text-align: center;
+      padding: 10px 22px;
+      border: 1px solid var(--rule-strong);
+      background: rgba(20, 20, 26, 0.6);
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--fg-muted);
+    }
+    .flow-arrow svg, .flow-fan svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .flow-arrow path, .flow-fan path {
+      stroke: var(--paper-50); stroke-opacity: 0.55;
+      stroke-width: 1.4; fill: none;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .flow-varrow { display: none; }
+
+    /* entrance: nodes rise, arrows draw, in pipeline order */
+    @media (prefers-reduced-motion: no-preference) {
+      .team-flow .flow-node,
+      .team-flow .flow-more,
+      .team-flow .flow-caption {
+        opacity: 0; transform: translateY(12px);
+        transition: opacity var(--d-slow) var(--e-out), transform var(--d-slow) var(--e-out);
+      }
+      .team-flow .flow-arrow path,
+      .team-flow .flow-fan path {
+        stroke-dasharray: 1; stroke-dashoffset: 1;
+        transition: stroke-dashoffset 700ms var(--e-out);
+      }
+      .team-flow.in .flow-node,
+      .team-flow.in .flow-more,
+      .team-flow.in .flow-caption { opacity: 1; transform: none; }
+      .team-flow.in .flow-arrow path,
+      .team-flow.in .flow-fan path { stroke-dashoffset: 0; }
+
+      .team-flow.in .n-project        { transition-delay: 0ms; }
+      .team-flow.in .flow-arrow path  { transition-delay: 250ms; }
+      .team-flow.in .n-hub            { transition-delay: 500ms; }
+      .team-flow.in .flow-fan path    { transition-delay: 800ms; }
+      .team-flow.in .n-f1             { transition-delay: 1050ms; }
+      .team-flow.in .n-f2             { transition-delay: 1150ms; }
+      .team-flow.in .n-f3             { transition-delay: 1250ms; }
+      .team-flow.in .flow-more        { transition-delay: 1350ms; }
+      .team-flow.in .flow-caption     { transition-delay: 1500ms; }
+    }
+
+    @media (max-width: 860px) {
+      .flow-grid { grid-template-columns: 1fr; row-gap: var(--s-4); justify-items: center; }
+      .flow-arrow, .flow-fan { display: none; }
+      .flow-varrow {
+        display: block; height: 36px;
+      }
+      .flow-varrow svg { display: block; height: 100%; width: auto; overflow: visible; }
+      .flow-varrow path {
+        stroke: var(--paper-50); stroke-opacity: 0.55;
+        stroke-width: 1.4; fill: none;
+        stroke-linecap: round; stroke-linejoin: round;
+      }
+      .flow-col { justify-items: center; }
+    }
+
+    /* ---- Partners ---- */
+    .partners-section { padding-top: clamp(60px, 9vh, 100px); }
+    .partner-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: var(--s-5);
+      margin-top: var(--s-7);
+    }
+    .partner-card {
+      border-top: 1px solid var(--rule-strong);
+      padding: var(--s-5) 0 var(--s-4);
+      display: flex; flex-direction: column; gap: var(--s-3);
+    }
+    .partner-card .p-idx {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.18em; color: var(--bronze);
+    }
+    .partner-card .p-name {
+      font-family: var(--font-display); font-size: 1.5rem; font-weight: 500;
+      letter-spacing: -0.015em; line-height: 1.1;
+    }
+    .partner-card .p-role {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--fg-muted);
+      display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3);
+    }
+    .partner-card .p-origin {
+      color: var(--bronze);
+      letter-spacing: 0.18em;
+      white-space: nowrap;
+    }
+    .partner-card .p-bio {
+      font-size: 0.92rem; line-height: 1.6; color: var(--fg-muted);
+      max-width: 34ch; text-wrap: pretty;
+    }
+
+    /* ---- Department selector ---- */
+    .dept-tabs {
+      display: flex; flex-wrap: wrap; gap: var(--s-3);
+      margin-top: var(--s-6);
+    }
+    .dept-tab {
+      appearance: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 22px;
+      background: rgba(20, 20, 26, 0.5);
+      border: 1px solid var(--rule-strong);
+      color: var(--fg-muted);
+      font-family: var(--font-mono); font-size: 0.74rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      transition: color var(--d-med) var(--e-out),
+                  border-color var(--d-med) var(--e-out),
+                  background var(--d-med) var(--e-out);
+    }
+    .dept-tab .t-idx { color: var(--bronze); font-size: 0.66rem; letter-spacing: 0.12em; }
+    .dept-tab:hover { color: var(--fg); border-color: var(--paper-50); }
+    .dept-tab:focus-visible { outline: 2px solid var(--bronze); outline-offset: 3px; }
+    .dept-tab.is-active {
+      background: var(--paper-50); color: var(--ink-1000); border-color: var(--paper-50);
+    }
+    .dept-tab.is-active .t-idx { color: var(--bronze-deep); }
+
+    .dept-meta {
+      margin-top: var(--s-5);
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg-muted);
+    }
+    .dept-meta b { color: var(--bronze); font-weight: 500; }
+    .dept-meta .sep { color: var(--rule-strong); margin: 0 10px; }
+
+    .dept-panel { margin-top: var(--s-6); }
+    .dept-panel[hidden] { display: none; }
+
+    .dept-soon {
+      border-top: 1px solid var(--rule-strong);
+      padding: clamp(48px, 8vh, 88px) 0;
+      display: flex; flex-direction: column; gap: var(--s-4);
+      align-items: flex-start;
+    }
+    .dept-soon-lead {
+      font-family: var(--font-display); font-weight: 400;
+      font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.25;
+      letter-spacing: -0.015em; color: var(--fg); max-width: 28ch;
+      text-wrap: pretty;
+    }
+  </style>
+</head>
+<body class="grain">
+
+  <!-- ============== HEADER ============== -->
+  <header class="site-header scrolled" id="site-header">
+    <a href="index.html" class="brand-mark" aria-label="lotabin home">
+      <img src="assets/transparent.png" alt="lotabin" />
+      <span>lotabin</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <span class="nav-drop">
+        <button type="button" class="nav-drop-trigger" data-i18n="nav.work" aria-haspopup="true">How We Craft</button>
+        <span class="nav-drop-menu" aria-label="How we craft">
+          <a href="principle.html" data-i18n="nav.craft.principle">Our Principle</a>
+          <a href="work.html" data-i18n="nav.craft.selected">Selected Work</a>
+          <a href="team.html" data-i18n="nav.craft.team" aria-current="page">The Team</a>
+        </span>
+      </span>
+      <a href="services.html" class="nav-brk"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.brands">Services</span><span class="brk" aria-hidden="true">]</span></a>
+      <a href="index.html#top" class="nav-home" aria-label="Home"><span class="nav-home-mark" aria-hidden="true"></span></a>
+      <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
+      <a href="contact.html"       data-i18n="nav.contact">Contact</a>
+    </nav>
+
+    <div class="nav-tools">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="ja">JA</button>
+      </div>
+      <button class="menu-btn" type="button" data-menu-btn aria-controls="mobile-menu" aria-expanded="false" aria-label="Menu">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 4h12M1 10h12" /></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- mobile menu -->
+  <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile">
+    <span class="menu-group-label" data-i18n="nav.work">How We Craft</span>
+    <a href="principle.html" class="menu-sub" data-i18n="nav.craft.principle">Our Principle</a>
+    <a href="work.html" class="menu-sub" data-i18n="nav.craft.selected">Selected Work</a>
+    <a href="team.html" class="menu-sub" data-i18n="nav.craft.team" aria-current="page">The Team</a>
+    <a href="services.html" class="nav-brk"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.brands">Services</span><span class="brk" aria-hidden="true">]</span></a>
+    <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
+    <a href="contact.html"       data-i18n="nav.contact">Contact</a>
+  </nav>
+
+  <main id="top">
+
+    <!-- ============== HOW WE WORK ============== -->
+    <section class="section rule team-page">
+      <div class="container">
+        <div class="s-head">
+          <div class="meta">
+            <div class="globe-wrap reveal" aria-label="Countries lotabin partners are from">
+              <canvas id="partner-globe"></canvas>
+              <span class="globe-ripple r1" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div>
+            <h2 class="h2 reveal">One producer.<br>The right specialists across the <em>globe.</em></h2>
+            <p class="lead muted reveal" style="margin-top: var(--s-5); max-width: 60ch;">lotabin runs as a creative farm. Every project gets a single producer who owns it end to end — and assembles the exact specialists it needs from our roster, nothing more.</p>
+          </div>
+        </div>
+
+        <div class="team-flow reveal" aria-label="How a project moves through lotabin">
+          <video class="flow-horizon" id="flow-horizon" src="assets/space-final.mp4" muted loop autoplay playsinline preload="auto" aria-hidden="true"></video>
+          <div class="flow-grid">
+            <span class="flow-node n-project">Your Project</span>
+
+            <span class="flow-arrow" aria-hidden="true">
+              <svg viewBox="0 0 72 16">
+                <path pathLength="1" d="M4 8 H62 M55 3l7 5-7 5" />
+              </svg>
+            </span>
+            <span class="flow-varrow" aria-hidden="true">
+              <svg viewBox="0 0 16 36"><path pathLength="1" d="M8 4 V28 M3 22l5 7 5-7" /></svg>
+            </span>
+
+            <span class="flow-node hub n-hub">Producer</span>
+
+            <span class="flow-fan" aria-hidden="true">
+              <svg viewBox="0 0 104 224">
+                <path pathLength="1" d="M6 112 C 44 112, 52 28, 90 28 M83 23l7 5-7 5" />
+                <path pathLength="1" d="M6 112 H90 M83 107l7 5-7 5" />
+                <path pathLength="1" d="M6 112 C 44 112, 52 196, 90 196 M83 191l7 5-7 5" />
+              </svg>
+            </span>
+            <span class="flow-varrow" aria-hidden="true">
+              <svg viewBox="0 0 16 36"><path pathLength="1" d="M8 4 V28 M3 22l5 7 5-7" /></svg>
+            </span>
+
+            <span class="flow-col">
+              <span class="flow-more" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="flow-node n-f1">Writer</span>
+              <span class="flow-node n-f2">DOP</span>
+              <span class="flow-node n-f3">AI Designer</span>
+              <span class="flow-more" aria-hidden="true"><i></i><i></i><i></i></span>
+            </span>
+          </div>
+          <p class="flow-caption">…and more fields, pulled in as the project needs</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== DEPARTMENTS ============== -->
+    <section class="section rule partners-section">
+      <div class="container">
+        <div class="s-head">
+          <div class="meta">
+            <span class="kbd-rule reveal">Departments</span>
+          </div>
+          <div>
+            <p class="lead muted reveal" style="max-width: 56ch;">World-class specialists to make your project successful.</p>
+          </div>
+        </div>
+
+        <div class="dept-tabs reveal" role="tablist" aria-label="Departments">
+          <button type="button" class="dept-tab is-active" role="tab" aria-selected="true" data-dept="writers">Writers</button>
+          <button type="button" class="dept-tab" role="tab" aria-selected="false" data-dept="artists">Conceptual Artists</button>
+          <button type="button" class="dept-tab" role="tab" aria-selected="false" data-dept="directors">Video Directors</button>
+          <button type="button" class="dept-tab" role="tab" aria-selected="false" data-dept="social">Paid Social</button>
+        </div>
+
+        <!-- Writers -->
+        <div class="dept-panel" data-dept="writers" role="tabpanel" aria-label="Writers">
+          <div class="partner-grid reveal-stagger">
+            <article class="partner-card">
+              <span class="p-idx">01</span>
+              <h3 class="p-name">Anna Dias</h3>
+              <p class="p-role"><span>Copywriter · Visual Director</span><span class="p-origin">São Paulo</span></p>
+              <p class="p-bio">Finds the idea behind the idea. The sharp concept a whole execution can hang on.</p>
+            </article>
+            <article class="partner-card">
+              <span class="p-idx">02</span>
+              <h3 class="p-name">Oliver Hughes</h3>
+              <p class="p-role"><span>Scriptwriter · Long-form</span><span class="p-origin">London</span></p>
+              <p class="p-bio">Shapes the full spot. Structure, beats and the turn that carries a story to the CTA.</p>
+            </article>
+            <article class="partner-card">
+              <span class="p-idx">03</span>
+              <h3 class="p-name">Maya Bennett</h3>
+              <p class="p-role"><span>Brand Narrative · Voice</span><span class="p-origin">New York</span></p>
+              <p class="p-bio">Keeps the words sounding like the brand. Tone, point of view and the through-line across a campaign.</p>
+            </article>
+            <article class="partner-card">
+              <span class="p-idx">04</span>
+              <h3 class="p-name">Haruki Sato</h3>
+              <p class="p-role"><span>Copywriter · Hooks</span><span class="p-origin">Tokyo</span></p>
+              <p class="p-bio">Opens the ad in the first second. Scroll-stopping hooks and the line that earns the next one.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Conceptual Artists -->
+        <div class="dept-panel" data-dept="artists" role="tabpanel" aria-label="Conceptual Artists" hidden>
+          <div class="partner-grid reveal-stagger">
+            <article class="partner-card">
+              <span class="p-idx">01</span>
+              <h3 class="p-name">Ji-woo Park</h3>
+              <p class="p-role"><span>Art Director · Direction</span><span class="p-origin">Seoul</span></p>
+              <p class="p-bio">Sets the look. Palette, composition and the visual world a spot lives inside.</p>
+            </article>
+            <article class="partner-card">
+              <span class="p-idx">02</span>
+              <h3 class="p-name">Beatriz Costa</h3>
+              <p class="p-role"><span>Concept Illustrator · Keyframes</span><span class="p-origin">São Paulo</span></p>
+              <p class="p-bio">Draws the idea before it exists. Keyframes that prove a concept is worth shooting.</p>
+            </article>
+            <article class="partner-card">
+              <span class="p-idx">03</span>
+              <h3 class="p-name">Camille Laurent</h3>
+              <p class="p-role"><span>Visual Designer · Systems</span><span class="p-origin">Paris</span></p>
+              <p class="p-bio">Builds the type, layout and on-screen system so every frame reads as one piece.</p>
+            </article>
+            <article class="partner-card">
+              <span class="p-idx">04</span>
+              <h3 class="p-name">Yi-chen Lin</h3>
+              <p class="p-role"><span>Storyboard Artist · Boards</span><span class="p-origin">Taipei</span></p>
+              <p class="p-bio">Turns the script into shots. Boards the whole team can shoot from with no guesswork.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Video Directors -->
+        <div class="dept-panel" data-dept="directors" role="tabpanel" aria-label="Video Directors" hidden>
+          <div class="partner-grid reveal-stagger">
+            <article class="partner-card">
+              <span class="p-idx">01</span>
+              <h3 class="p-name">João Rafael</h3>
+              <p class="p-role"><span>Director · AI Video Creator</span><span class="p-origin">Curitiba</span></p>
+              <p class="p-bio">Directs the shoot and builds the AI video. Story, motion and synthetic shots from one hand.</p>
+            </article>
+            <article class="partner-card">
+              <span class="p-idx">02</span>
+              <h3 class="p-name">Anong Srisuk</h3>
+              <p class="p-role"><span>DOP · Camera</span><span class="p-origin">Bangkok</span></p>
+              <p class="p-bio">Owns the image. Lensing, light and movement that make a low budget look like more.</p>
+            </article>
+            <article class="partner-card">
+              <span class="p-idx">03</span>
+              <h3 class="p-name">Charlotte Doyle</h3>
+              <p class="p-role"><span>Editor · Cut</span><span class="p-origin">Sydney</span></p>
+              <p class="p-bio">Finds the spot in the footage. Rhythm, retention and the version that performs.</p>
+            </article>
+            <article class="partner-card">
+              <span class="p-idx">04</span>
+              <h3 class="p-name">Marcus Reed</h3>
+              <p class="p-role"><span>Director · Live action</span><span class="p-origin">Los Angeles</span></p>
+              <p class="p-bio">Runs the shoot. Performance, pacing and the call on what actually makes the cut.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Paid Social -->
+        <div class="dept-panel" data-dept="social" role="tabpanel" aria-label="Paid Social Marketing Specialists" hidden>
+          <div class="dept-soon">
+            <span class="kbd-rule">Coming soon</span>
+            <p class="dept-soon-lead">We're not offering paid social yet. This department is still being assembled. Check back soon.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== FINAL CTA ============== -->
+    <section class="final-cta">
+      <h2 class="big reveal-up" data-i18n="workpage.cta.h">Have a project<br>in <em>the queue?</em></h2>
+      <div class="actions reveal">
+        <a href="intake.html" class="btn btn-primary" data-magnetic="0.18">
+          <span data-i18n="workpage.cta.btn">Start a brief</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a href="contact.html" class="btn btn-ghost" data-i18n="workpage.cta.btn2">Talk to us</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============== FOOTER ============== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <a href="index.html" class="brand-mark" style="font-size: 1.6rem;">
+            <img src="assets/transparent.png" alt="lotabin" />
+            <span data-i18n="foot.brand">lotabin</span>
+          </a>
+          <p style="margin-top: var(--s-4); max-width: 36ch;" data-i18n="foot.tag">Short-form video ad production desk · Motion picture studio · Nagoya, Japan</p>
+        </div>
+        <div>
+          <h5 data-i18n="nav.work">How We Craft</h5>
+          <a href="principle.html" data-i18n="nav.craft.principle">Our Principle</a>
+          <a href="work.html" data-i18n="nav.craft.selected">Selected Work</a>
+          <a href="team.html" data-i18n="nav.craft.team">The Team</a>
+        </div>
+        <div>
+          <h5 data-i18n="nav.brands">Services</h5>
+          <a href="services.html" data-i18n="foot.col1.h">For Brands</a>
+          <a href="services-partners.html" data-i18n="foot.col2.h">For Agencies</a>
+          <a href="intake.html" data-i18n="workpage.cta.btn">Start a brief</a>
+        </div>
+        <div>
+          <h5 data-i18n="foot.col3.h">Studio</h5>
+          <a href="entertainment.html" data-i18n="nav.entertainment">Entertainment</a>
+          <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a>
+          <a href="contact.html" data-i18n="nav.contact">Contact</a>
+        </div>
+      </div>
+      <div class="legal">
+        <span data-i18n="foot.legal">© 2026 lotabin LLC — All rights reserved</span>
+        <span data-i18n="foot.location">Nagoya 名古屋 · Japan</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js?v=20260611ja"></script>
+  <script src="js/anim.js?v=20260531r"></script>
+  <script src="js/partner-globe.js?v=20260611b"></script>
+  <script>
+    /* department selector: switch card panels + retrace the globe */
+    (function () {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll(".dept-tab"));
+      var panels = Array.prototype.slice.call(document.querySelectorAll(".dept-panel"));
+      var metaEl = document.getElementById("dept-meta");
+      if (!tabs.length) return;
+
+      function labelFor(dept) {
+        var t = tabs.filter(function (x) { return x.dataset.dept === dept; })[0];
+        if (!t) return "";
+        return (t.textContent || "").replace(/^\s*\d+\s*/, "").trim();
+      }
+
+      function renderMeta(panel, dept) {
+        if (!metaEl) return;
+        var cities = {};
+        panel.querySelectorAll(".p-origin").forEach(function (o) {
+          cities[(o.textContent || "").trim().toLowerCase()] = true;
+        });
+        var nCities = Object.keys(cities).length;
+        metaEl.innerHTML =
+          "<b>" + labelFor(dept) + "</b>" +
+          '<span class="sep">/</span>' + nCities + " " + (nCities === 1 ? "city" : "cities");
+      }
+
+      function activate(dept) {
+        tabs.forEach(function (t) {
+          var on = t.dataset.dept === dept;
+          t.classList.toggle("is-active", on);
+          t.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        var active = null;
+        panels.forEach(function (p) {
+          var on = p.dataset.dept === dept;
+          p.hidden = !on;
+          if (on) active = p;
+        });
+        // globe re-reads the now-visible cards
+        if (window.refreshPartnerGlobe) window.refreshPartnerGlobe();
+        if (active) {
+          renderMeta(active, dept);
+          // replay the card stagger for instant feedback
+          var grid = active.querySelector(".partner-grid");
+          if (grid) { grid.classList.remove("in"); void grid.offsetWidth; grid.classList.add("in"); }
+        }
+      }
+
+      tabs.forEach(function (t) {
+        t.addEventListener("click", function () { activate(t.dataset.dept); });
+      });
+
+      // initial meta for the default (writers) panel
+      var first = panels.filter(function (p) { return !p.hidden; })[0];
+      if (first) renderMeta(first, first.dataset.dept);
+    })();
+  </script>
+  <script>
+    /* one-time bronze energy ripple from the globe's center on first interaction */
+    (function () {
+      var wrap = document.querySelector(".globe-wrap");
+      if (!wrap) return;
+      var fire = function () {
+        wrap.classList.add("is-rippling");
+        wrap.removeEventListener("pointerdown", fire);
+      };
+      wrap.addEventListener("pointerdown", fire, { once: true });
+    })();
+  </script>
+  <script>
+    /* flow-horizon video: play only while the flow diagram is on screen */
+    (function () {
+      var v = document.getElementById("flow-horizon");
+      if (!v) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      /* start playing immediately on page load so it's warm by the time it's seen */
+      v.play().catch(function () {});
+      if (!("IntersectionObserver" in window)) return;
+      new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { v.play().catch(function () {}); }
+        else { v.pause(); }
+      }, { rootMargin: "120px 0px" }).observe(v.parentElement);
+    })();
+  </script>
+</body>
+</html>

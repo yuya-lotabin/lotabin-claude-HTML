@@ -28,6 +28,24 @@
         const bodyText = root.querySelector('#bodyText');
         const whyText = root.querySelector('#whyText');
         const leaves = [1,2,3,4,5].map(n => root.querySelector('#leaf' + n));
+        const hexLabels = Array.from(root.querySelectorAll('.lo-hex-label'));
+        const loStage = root.querySelector('.lo-stage');
+        const stepsEl = root.querySelector('.lo-steps');
+        // On mobile the production-flow progress bar becomes a VERTICAL rail beside
+        // the orbit. The steps live inside .lo-hud (position:relative + transform =
+        // a containing block), so to position the rail against the stage we reparent
+        // it into .lo-stage at mobile widths, and back into the HUD on desktop.
+        // Breakpoint-scoped so the desktop layout is never altered.
+        function placeSteps() {
+          if (!stepsEl || !hud || !loStage) return;
+          const mobile = innerWidth < 760;
+          if (mobile) {
+            if (stepsEl.parentElement !== loStage) loStage.appendChild(stepsEl);
+          } else {
+            if (stepsEl.parentElement !== hud) hud.appendChild(stepsEl);
+          }
+        }
+        placeSteps();
         const totalCards = 6;
         const stepAngle = Math.PI * 2 / totalCards;
         const cards = Array.from({length: totalCards}, (_, i) => ({
@@ -36,7 +54,7 @@
         }));
     
         const copy = [
-          ['01 · Linear','Onboarding a Real Production Team','We set up a production line for you.','Tasks, status, and approvals sit here before anything is assembled.','It gives the whole project structure so the creative does not drift.'],
+          ['01 · Linear','Onboarding a Real Production Team','We set up a production line for you.','We set up a fixed deadline, in plain language.','It gives the whole project structure so the creative does not drift.'],
           ['02 · Script','Script defines the voice','Scripts crafted by industry professional.','Voiceover, captions, timing, and emphasis shape the message before visuals combine.','It makes the final video feel intentional, not improvised.'],
           ['02.5 · Concept','Character concept aligns the look','High-concept development for the character direction and visual consistency.','It prevents surprises by aligning wardrobe, styling, world-building, and brand tone early.'],
           ['03 · Storyboard','Storyboard maps the shots','Storyboard turns the script into shot order, framing, and commercial rhythm.','It lets everyone see the production plan before edit decisions become expensive.'],
@@ -47,6 +65,7 @@
         ];
     
         let videoStarted = false;
+        let hexLabelKey = -1;
         const starts = [0,.10,.23,.36,.49,.62,.80,.91];
         const ends = [.10,.23,.36,.49,.62,.80,.91,1];
         const clamp = (n,min=0,max=1) => Math.min(max, Math.max(min,n));
@@ -129,10 +148,34 @@
           return rot;
         }
     
+        // Typewriter effect for the HUD stage title: when the stage changes,
+        // the new title types on character by character behind a gold caret.
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let hudTypeTimer = null;
+        let hudTypeTarget = hudStage ? hudStage.textContent : '';
+        function typeStage(text) {
+          if (text === hudTypeTarget) return;
+          hudTypeTarget = text;
+          if (hudTypeTimer) { clearInterval(hudTypeTimer); hudTypeTimer = null; }
+          if (prefersReducedMotion) { hudStage.textContent = text; return; }
+          let n = 0;
+          hudStage.classList.add('lo-typing');
+          hudStage.textContent = '';
+          hudTypeTimer = setInterval(() => {
+            n += 1;
+            hudStage.textContent = text.slice(0, n);
+            if (n >= text.length) {
+              clearInterval(hudTypeTimer);
+              hudTypeTimer = null;
+              hudStage.classList.remove('lo-typing');
+            }
+          }, 17);
+        }
+
         function setCopy(p) {
           const i = idxFor(p), c = copy[i];
           kicker.textContent=c[0];
-          hudStage.textContent=c[1];
+          typeStage(c[1]);
           title.textContent=c[2];
           bodyText.textContent=c[3];
           whyText.textContent=c[4];
@@ -151,6 +194,7 @@
         }
     
         function placeLeaf(el, angle, rx, ry, opacity, ringY) {
+          if (!el) return;
           const x = rx * Math.cos(angle), y = ry * Math.sin(angle) + ringY;
           el.style.opacity = opacity.toFixed(4);
           el.style.transform = `translate(-50%,-50%) translate(${x.toFixed(2)}px,${y.toFixed(2)}px) rotate(${(angle*180/Math.PI+95).toFixed(2)}deg) scale(${mix(.75,1.12,opacity).toFixed(3)})`;
@@ -177,22 +221,49 @@
           const video = smooth(.93,.985,p);
           const settle = smooth(.97,1,p);
           const rot = rotationFor(p);
-          const ringScale = mix(1,.80,merge)+mix(0,.05,phoneRise);
+          // Through POST-PROD the hexagon compresses inward (toward the phone)
+          // alongside the pictures circling/merging around it; by the time the
+          // PLAY stage's video kicks in (~.93) it is fully hidden behind the phone.
+          const hexCompress = smooth(.80,.92,p);
+          const hexFade = smooth(.88,.93,p);
+          const ringScale = (mix(1,.80,merge)+mix(0,.05,phoneRise)) * mix(1,.26,hexCompress);
           const ringY = mix(0,32,phoneRise)-mix(0,8,settle);
     
           orbit.style.width = `${D.ringW}px`;
           orbit.style.height = `${D.ringH}px`;
-          // Keep the decorative ring a TRUE circle on screen. The SVG viewBox is
-          // stretched to fill the wide ring box (preserveAspectRatio="none"), so we
-          // counter that by scaling the horizontal radius by ringH/ringW: this makes
-          // rx*ringW === ry*ringH, i.e. equal rendered radii (a circle) at any aspect.
-          const ringRxView = (44 * D.ringH / Math.max(1, D.ringW)).toFixed(3);
-          vineLine.setAttribute('rx', ringRxView);
-          if (vineGold) vineGold.setAttribute('rx', ringRxView);
-          if (track) track.setAttribute('rx', ringRxView);
+          // Keep the hexagon REGULAR on screen with vertices pointing up/down.
+          // The SVG viewBox is stretched to fill the wide ring box
+          // (preserveAspectRatio="none"), so we counter that by scaling the
+          // horizontal radius by ringH/ringW: equal rendered radii at any aspect.
+          // Drawn from the top vertex clockwise, so each pathLength segment of
+          // ~16.7 traces one production-stage edge in order.
+          const hexRx = 44 * D.ringH / Math.max(1, D.ringW);
+          const hexPts = [];
+          for (let k = 0; k < 6; k++) {
+            const a = (-90 + k * 60) * Math.PI / 180;
+            hexPts.push((50 + hexRx * Math.cos(a)).toFixed(2) + ',' + (50 + 44 * Math.sin(a)).toFixed(2));
+          }
+          const hexStr = hexPts.join(' ');
+          vineLine.setAttribute('points', hexStr);
+          if (vineGold) vineGold.setAttribute('points', hexStr);
+          if (track) track.setAttribute('points', hexStr);
+          // One label per hexagon edge (KPI Setup … Pictures), sitting just
+          // outside the edge midpoint, rotated to match the edge slope.
+          const hexR = D.ringH * .44;
+          if (hexLabelKey !== hexR) {
+            hexLabelKey = hexR;
+            const labelRot = [30, 90, -30, 30, -90, -30];
+            const labelDist = hexR * .866 + 15;
+            hexLabels.forEach((el, k) => {
+              const a = (-60 + k * 60) * Math.PI / 180;
+              el.style.transform = `translate(-50%,-50%) translate(${(Math.cos(a) * labelDist).toFixed(1)}px, ${(Math.sin(a) * labelDist).toFixed(1)}px) rotate(${labelRot[k]}deg)`;
+            });
+          }
+          const stageIdx = idxFor(p);
+          hexLabels.forEach((el, k) => el.classList.toggle('lo-active', k === stageIdx));
           orbit.style.setProperty('--ring-y',`${ringY.toFixed(2)}px`);
           orbit.style.setProperty('--ring-scale',ringScale.toFixed(4));
-          orbit.style.setProperty('--ring-opacity',intro.toFixed(4));
+          orbit.style.setProperty('--ring-opacity',(intro*(1-hexFade)).toFixed(4));
           // set the draw offset on the orbit so BOTH the green and gold rings inherit it
           orbit.style.setProperty('--vine-offset', `${(100-vine*100).toFixed(2)}`);
           // As the circle completes, crossfade the green vine to the gold chroma key
@@ -202,9 +273,14 @@
           orbit.style.setProperty('--vine-green-opacity', (1 - goldComp).toFixed(4));
     
           const leafAngles=[-Math.PI/2+.1,-.18,Math.PI/2-.18,Math.PI+.20,Math.PI*1.74];
-          // leaves ride the same true circle as the ring (equal x/y radii)
+          // leaves sit ON the hexagon outline: scale the circular radius by the
+          // polar radius of a regular pointy-top hexagon at each angle
+          const hexFactor = (ang) => {
+            let phi = ((ang * 180 / Math.PI + 90) % 60 + 60) % 60;
+            return Math.cos(Math.PI / 6) / Math.cos((phi - 30) * Math.PI / 180);
+          };
           const leafR = D.ringH*.44;
-          leafAngles.forEach((a,i)=>placeLeaf(leaves[i], a, leafR*ringScale, leafR*ringScale, clamp((vine-i*.15)/.45), ringY));
+          leafAngles.forEach((a,i)=>{ const f = hexFactor(a); placeLeaf(leaves[i], a, leafR*ringScale*f, leafR*ringScale*f, clamp((vine-i*.15)/.45), ringY); });
     
           const targets=[
             {x:-74,y:0},
@@ -263,6 +339,11 @@
             card.el.style.filter=`blur(${(depthBlur+fadeBlur).toFixed(2)}px) drop-shadow(0 ${mix(10,30,front).toFixed(1)}px ${mix(24,82,front).toFixed(1)}px rgba(0,0,0,.36))`;
             card.el.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(2)}px,${(y+ringY*.10).toFixed(2)}px,${z.toFixed(2)}px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg) scale(${scale.toFixed(4)})`;
           });
+    
+          // QA laptop (card 5): lid opens as the card rotates to the front for its
+          // focus window (.49–.55) and closes again as the orbit moves on.
+          const lidOpen = smooth(.43,.505,p) * (1 - smooth(.555,.635,p));
+          cards[4].el.style.setProperty('--lid', lidOpen.toFixed(4));
     
           glow.style.setProperty('--glow-opacity', smooth(.80,.92,p).toFixed(4));
           glow.style.setProperty('--glow-scale', mix(.54,.92,smooth(.84,.92,p)).toFixed(4));
@@ -323,8 +404,8 @@
         }
     
         const onScroll = update;
-        const onResize = update;
-        const onOrientation = update;
+        const onResize = () => { placeSteps(); update(); };
+        const onOrientation = () => { placeSteps(); update(); };
         window.addEventListener('scroll', onScroll, {passive:true});
         window.addEventListener('resize', onResize, {passive:true});
         window.addEventListener('orientationchange', onOrientation, {passive:true});

@@ -14,7 +14,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&family=Shippori+Mincho+B1:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600&family=Shippori+Mincho+B1:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
 
   <link rel="stylesheet" href="css/tokens.css?v=20260531r" />
   <link rel="stylesheet" href="css/site.css?v=20260602d" />
@@ -43,68 +43,186 @@
   </script>
 
   <style>
-    /* ===== Contact page — local styles ===== */
-    .contact-section { padding-top: clamp(96px, 18vh, 180px); padding-bottom: clamp(96px, 14vh, 140px); }
-    .contact-grid {
+    /* ===== Contact page — editorial "call sheet" treatment ===== */
+
+    .contact-section {
+      padding-top: clamp(120px, 20vh, 200px);
+      padding-bottom: clamp(96px, 14vh, 150px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Vertical kanji accent — 対話 "dialogue" — pure decoration */
+    .contact-kanji {
+      position: absolute;
+      top: clamp(96px, 16vh, 170px);
+      right: clamp(8px, 3vw, 56px);
+      writing-mode: vertical-rl;
+      font-family: 'Shippori Mincho B1', var(--font-display), serif;
+      font-weight: 500;
+      font-size: clamp(72px, 11vw, 168px);
+      line-height: 1;
+      letter-spacing: 0.18em;
+      color: var(--paper-50);
+      opacity: 0.045;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    @media (max-width: 880px) { .contact-kanji { display: none; } }
+
+    .contact-head { max-width: 1000px; }
+    .contact-head .h-title {
+      font-family: var(--font-display);
+      font-size: var(--fs-h1);
+      font-weight: 500;
+      line-height: 0.96;
+      letter-spacing: -0.03em;
+      margin: var(--s-5) 0 0;
+      color: var(--paper-50);
+    }
+    .contact-head .h-title em { color: var(--bronze); font-style: italic; font-weight: 400; }
+    .contact-head .lead { margin-top: var(--s-5); max-width: 52ch; }
+    .contact-head .lead a { color: var(--paper-50); border-bottom: 1px solid var(--rule-strong); transition: color var(--d-med) var(--e-out), border-color var(--d-med) var(--e-out); }
+    .contact-head .lead a:hover { color: var(--bronze); border-color: var(--bronze); }
+
+    /* ---- The sheet: hairline-divided two-column ---- */
+    .contact-sheet {
+      margin-top: clamp(48px, 8vh, 88px);
+      border-top: 1px solid var(--rule-strong);
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      gap: clamp(40px, 6vw, 80px);
-      margin-top: clamp(40px, 6vw, 64px);
     }
     @media (min-width: 880px) {
-      .contact-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; }
+      .contact-sheet { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr); }
     }
 
-    .contact-aside p { color: var(--ink-300); max-width: 38ch; }
-    .contact-aside .meta-list { margin-top: var(--s-6); list-style: none; padding: 0; display: grid; gap: var(--s-4); }
-    .contact-aside .meta-list li { display: grid; gap: 4px; }
-    .contact-aside .meta-list .lbl { font-family: var(--font-mono, ui-monospace, monospace); font-size: var(--fs-eyebrow); color: var(--ink-300); letter-spacing: 0.08em; text-transform: uppercase; }
-    .contact-aside .meta-list .val { color: var(--paper-50); font-size: 1.05rem; }
-    .contact-aside .meta-list a.val:hover { color: var(--bronze); }
+    /* ---- Left rail: studio meta ---- */
+    .contact-aside { padding: clamp(28px, 4vw, 48px) 0 0; }
+    @media (min-width: 880px) {
+      .contact-aside { border-right: 1px solid var(--rule); padding-right: clamp(28px, 5vw, 72px); padding-bottom: var(--s-7); }
+    }
 
-    .contact-form {
+    .meta-row {
       display: grid;
-      gap: var(--s-5);
-      padding: clamp(28px, 4vw, 44px);
-      background: var(--ink-800);
-      border: 1px solid var(--ink-700);
-      border-radius: 18px;
+      gap: 10px;
+      padding: var(--s-5) 0 var(--s-6);
     }
-    .field { display: grid; gap: 8px; }
-    .field label {
-      font-family: var(--font-mono, ui-monospace, monospace);
+    .meta-row + .meta-row { border-top: 1px solid var(--rule); }
+    .meta-row .lbl {
+      font-family: var(--font-mono);
       font-size: var(--fs-eyebrow);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--ink-300);
+      color: var(--fg-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
     }
-    .field label .opt { text-transform: none; letter-spacing: 0; color: var(--ink-500); font-weight: 400; margin-left: 6px; }
+    .meta-row .val {
+      font-family: var(--font-serif);
+      font-size: clamp(1.15rem, 1rem + 0.7vw, 1.55rem);
+      font-weight: 400;
+      letter-spacing: -0.005em;
+      color: var(--paper-50);
+      line-height: 1.3;
+    }
+    a.val.mail-link {
+      width: fit-content;
+      position: relative;
+      transition: color var(--d-med) var(--e-out);
+    }
+    a.val.mail-link::after {
+      content: "";
+      position: absolute; left: 0; bottom: -3px;
+      width: 100%; height: 1px;
+      background: var(--bronze);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform var(--d-med) var(--e-out);
+    }
+    a.val.mail-link:hover { color: var(--bronze); }
+    a.val.mail-link:hover::after { transform: scaleX(1); }
+
+    .meta-row .val .jp { font-family: 'Shippori Mincho B1', serif; color: var(--fg-muted); font-size: 0.8em; margin-left: 8px; }
+
+    /* live local-time clock */
+    .clock-row .val { font-family: var(--font-mono); font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem); letter-spacing: 0.08em; display: inline-flex; align-items: baseline; gap: 12px; }
+    .clock-row .tz { font-size: 0.72rem; letter-spacing: 0.2em; color: var(--fg-muted); text-transform: uppercase; }
+
+    /* ---- Right: the form, treated like a printed sheet ---- */
+    .contact-formwrap { padding: clamp(28px, 4vw, 48px) 0 0; }
+    @media (min-width: 880px) {
+      .contact-formwrap { padding-left: clamp(28px, 5vw, 72px); }
+    }
+
+    .contact-form { display: grid; grid-template-columns: 1fr; gap: 0; }
+    @media (min-width: 680px) {
+      .contact-form { grid-template-columns: 1fr 1fr; column-gap: clamp(28px, 4vw, 56px); }
+      .field--wide { grid-column: 1 / -1; }
+    }
+
+    .field { display: grid; gap: 0; padding: var(--s-4) 0 var(--s-5); position: relative; }
+
+    .field label {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: var(--fs-eyebrow);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 6px;
+      transition: color var(--d-med) var(--e-out);
+    }
+    .field label .f-idx { color: var(--bronze); font-size: 0.66rem; letter-spacing: 0.12em; }
+    .field label .opt { text-transform: none; letter-spacing: 0.04em; color: var(--ink-500); margin-left: 2px; }
+    .field:focus-within label { color: var(--paper-50); }
+
     .field input,
     .field textarea {
       width: 100%;
-      min-height: 52px;
-      padding: 14px 16px;
-      font: inherit;
-      font-size: 1rem;
+      padding: 8px 0 14px;
+      font-family: var(--font-serif);
+      font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.5rem);
+      font-weight: 400;
+      letter-spacing: -0.005em;
       color: var(--paper-50);
-      background: var(--ink-1000);
-      border: 1px solid var(--ink-700);
-      border-radius: 10px;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
       outline: none;
-      transition: border-color 160ms ease, box-shadow 160ms ease;
       -webkit-appearance: none;
       appearance: none;
+      caret-color: var(--bronze);
     }
-    .field textarea { min-height: 160px; resize: vertical; line-height: 1.55; font-family: inherit; }
+    .field textarea { min-height: 120px; resize: vertical; line-height: 1.5; }
     .field input::placeholder,
-    .field textarea::placeholder { color: var(--ink-500); }
-    .field input:focus,
-    .field textarea:focus { border-color: var(--bronze); box-shadow: 0 0 0 2px rgba(200, 168, 118, 0.25); }
-    .field.has-error input,
-    .field.has-error textarea { border-color: #d27676; box-shadow: 0 0 0 2px rgba(210, 118, 118, 0.18); }
+    .field textarea::placeholder { color: var(--ink-500); font-style: italic; }
+
+    /* baseline rule + bronze focus draw */
+    .field .f-line {
+      position: relative;
+      display: block;
+      height: 1px;
+      background: var(--rule-strong);
+    }
+    .field .f-line::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: var(--bronze);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 480ms var(--e-out);
+    }
+    .field:focus-within .f-line::after { transform: scaleX(1); }
+    .field.has-error .f-line::after { background: #d27676; transform: scaleX(1); }
+
     .field .err {
       display: none;
-      font-size: 0.85rem;
+      margin-top: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
       color: #d27676;
     }
     .field.has-error .err { display: block; }
@@ -112,41 +230,66 @@
     /* honeypot — invisible to humans, present in DOM for bots */
     .field--hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 
-    .contact-form .actions { display: flex; flex-wrap: wrap; gap: var(--s-4); align-items: center; margin-top: var(--s-3); }
-    .contact-form .actions .btn { min-width: 180px; justify-content: center; }
+    .contact-form .actions {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-5);
+      align-items: center;
+      justify-content: space-between;
+      margin-top: var(--s-5);
+      padding-top: var(--s-6);
+      border-top: 1px solid var(--rule);
+    }
+    .contact-form .actions .btn { min-width: 200px; justify-content: center; }
     .contact-form .actions .btn[disabled] { opacity: 0.6; cursor: progress; }
-    .contact-form .fallback { font-size: 0.9rem; color: var(--ink-300); }
-    .contact-form .fallback a { color: var(--paper-50); border-bottom: 1px solid var(--ink-700); }
+    .contact-form .fallback {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      color: var(--fg-muted);
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .contact-form .fallback a { color: var(--paper-50); border-bottom: 1px solid var(--rule-strong); transition: color var(--d-med) var(--e-out), border-color var(--d-med) var(--e-out); }
     .contact-form .fallback a:hover { color: var(--bronze); border-bottom-color: var(--bronze); }
 
     .form-status {
       display: none;
-      padding: 14px 16px;
-      border-radius: 10px;
-      font-size: 0.95rem;
+      grid-column: 1 / -1;
+      margin-top: var(--s-4);
+      padding: 12px 0;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
     }
-    .form-status.is-error { display: block; background: rgba(210, 118, 118, 0.10); border: 1px solid rgba(210, 118, 118, 0.35); color: #f1c8c8; }
+    .form-status.is-error { display: block; color: #f1c8c8; border-top: 1px solid rgba(210, 118, 118, 0.45); }
+    .form-status.is-error a { color: #fff; border-bottom: 1px solid rgba(241, 200, 200, 0.5); }
 
-    /* Success state — replaces the form */
-    .contact-success {
-      display: none;
-      padding: clamp(28px, 4vw, 44px);
-      background: var(--ink-800);
-      border: 1px solid var(--ink-700);
-      border-radius: 18px;
+    /* ---- Success state — replaces the form ---- */
+    .contact-success { display: none; padding: clamp(28px, 4vw, 48px) 0 var(--s-7); }
+    @media (min-width: 880px) { .contact-success { padding-left: clamp(28px, 5vw, 72px); } }
+    .contact-success .kbd-rule { color: var(--bronze); }
+    .contact-success h3 {
+      font-family: var(--font-display);
+      font-size: var(--fs-h2);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      line-height: 1.02;
+      color: var(--paper-50);
+      margin: var(--s-5) 0 0;
     }
-    .contact-success h3 { font-family: var(--font-display, Playfair Display, serif); font-size: clamp(1.5rem, 1.2rem + 1vw, 2.2rem); color: var(--paper-50); margin: 0; }
-    .contact-success p { margin-top: var(--s-4); color: var(--ink-300); max-width: 48ch; }
-    .contact-success .check {
-      width: 44px; height: 44px; border-radius: 50%;
-      display: inline-flex; align-items: center; justify-content: center;
-      background: rgba(200, 168, 118, 0.15);
-      border: 1px solid var(--bronze);
-      color: var(--bronze);
-      margin-bottom: var(--s-4);
+    .contact-success p { margin-top: var(--s-5); color: var(--fg-muted); max-width: 44ch; font-size: var(--fs-lead); font-weight: 300; line-height: 1.55; }
+    .contact-success p a { color: var(--paper-50); border-bottom: 1px solid var(--rule-strong); }
+    .contact-success p a:hover { color: var(--bronze); border-bottom-color: var(--bronze); }
+
+    .is-sent .contact-formwrap { display: none; }
+    .is-sent .contact-success { display: block; animation: successIn 700ms var(--e-out) both; }
+    @keyframes successIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-    .is-sent .contact-form { display: none; }
-    .is-sent .contact-success { display: block; }
   </style>
 </head>
 <body class="grain">
@@ -159,8 +302,16 @@
     </a>
 
     <nav class="nav-links" aria-label="Primary">
-      <a href="index.html#what"     data-i18n="nav.work">Work</a>
-      <a href="services.html"       data-i18n="nav.brands">Services</a>
+      <span class="nav-drop">
+        <button type="button" class="nav-drop-trigger" data-i18n="nav.work" aria-haspopup="true">How We Craft</button>
+        <span class="nav-drop-menu" aria-label="How we craft">
+          <a href="principle.html" data-i18n="nav.craft.principle">Our Principle</a>
+          <a href="work.html" data-i18n="nav.craft.selected">Selected Work</a>
+          <a href="team.html" data-i18n="nav.craft.team">The Team</a>
+        </span>
+      </span>
+      <a href="services.html" class="nav-brk"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.brands">Services</span><span class="brk" aria-hidden="true">]</span></a>
+      <a href="index.html#top" class="nav-home" aria-label="Home"><span class="nav-home-mark" aria-hidden="true"></span></a>
       <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
       <a href="contact.html"        data-i18n="nav.contact" aria-current="page">Contact</a>
     </nav>
@@ -178,51 +329,52 @@
 
   <!-- mobile menu -->
   <nav id="mobile-menu" class="mobile-menu" data-mobile-menu aria-label="Mobile">
-    <a href="index.html#what"     data-i18n="nav.work">Work</a>
-    <a href="services.html"       data-i18n="nav.brands">Services</a>
+    <span class="menu-group-label" data-i18n="nav.work">How We Craft</span>
+    <a href="principle.html" class="menu-sub" data-i18n="nav.craft.principle">Our Principle</a>
+    <a href="work.html" class="menu-sub" data-i18n="nav.craft.selected">Selected Work</a>
+    <a href="team.html" class="menu-sub" data-i18n="nav.craft.team">The Team</a>
+    <a href="services.html" class="nav-brk"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.brands">Services</span><span class="brk" aria-hidden="true">]</span></a>
     <a href="entertainment.html" class="nav-ext"><span class="brk" aria-hidden="true">[</span><span data-i18n="nav.entertainment">Entertainment</span><span class="brk" aria-hidden="true">]</span></a>
     <a href="contact.html"        data-i18n="nav.contact" aria-current="page">Contact</a>
   </nav>
 
   <main id="top">
-    <section class="section rule contact-section" id="contact">
+    <section class="section contact-section" id="contact" data-screen-label="Contact">
+      <span class="contact-kanji" aria-hidden="true">対話</span>
+
       <div class="container">
-        <div class="s-head">
-          <div class="meta">
-            <span class="kbd-rule reveal" data-i18n="contact.eyebrow">06 — Contact</span>
-          </div>
-          <div>
-            <h2 class="h2 reveal" data-i18n="contact.h">Open a <em>conversation</em>.</h2>
-            <p class="lead muted reveal" style="margin-top: var(--s-5); max-width: 56ch;" data-i18n="contact.lead">Tell us a bit about what you need. We'll write back from <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a> within one business day.</p>
-          </div>
+        <div class="contact-head">
+          <span class="kbd-rule reveal" data-i18n="contact.eyebrow">06 — Contact</span>
+          <h1 class="h-title reveal" data-i18n="contact.h">Open a <em>conversation</em>.</h1>
+          <p class="lead muted reveal" data-i18n="contact.lead">Tell us a bit about what you need. We'll write back from <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a> within one business day.</p>
         </div>
 
-        <div class="contact-grid">
-          <!-- LEFT: meta column -->
+        <div class="contact-sheet" data-contact-wrap>
+          <!-- LEFT: studio meta rail -->
           <aside class="contact-aside reveal">
-            <ul class="meta-list">
-              <li>
-                <span class="lbl" data-i18n="contact.direct.lbl">Direct email</span>
-                <a class="val" href="mailto:yuya@lotabin.com">yuya@lotabin.com</a>
-              </li>
-              <li>
-                <span class="lbl" data-i18n="contact.reply.lbl">Reply window</span>
-                <span class="val" data-i18n="contact.reply.val">1 business day</span>
-              </li>
-              <li>
-                <span class="lbl" data-i18n="contact.loc.lbl">Studio</span>
-                <span class="val" data-i18n="contact.loc.val">Nagoya 名古屋 · Japan</span>
-              </li>
-            </ul>
+            <div class="meta-row">
+              <span class="lbl" data-i18n="contact.direct.lbl">Direct email</span>
+              <a class="val mail-link" href="mailto:yuya@lotabin.com">yuya@lotabin.com</a>
+            </div>
+            <div class="meta-row">
+              <span class="lbl" data-i18n="contact.reply.lbl">Reply window</span>
+              <span class="val" data-i18n="contact.reply.val">1 business day</span>
+            </div>
+            <div class="meta-row">
+              <span class="lbl" data-i18n="contact.loc.lbl">Studio</span>
+              <span class="val">Nagoya<span class="jp">名古屋</span></span>
+            </div>
+            <div class="meta-row clock-row">
+              <span class="lbl"><span class="dot live" aria-hidden="true"></span><span data-i18n="contact.time.lbl">Local time</span></span>
+              <span class="val"><span id="studio-clock">--:--</span><span class="tz">JST · UTC+9</span></span>
+            </div>
           </aside>
 
           <!-- RIGHT: form -->
-          <div class="reveal" data-contact-wrap>
+          <div class="contact-formwrap reveal">
             <form class="contact-form" id="contact-form" novalidate>
               <!-- Web3Forms hidden config -->
-              <!-- ▼▼▼ REPLACE THIS VALUE WITH YOUR REAL ACCESS KEY from web3forms.com ▼▼▼ -->
-              <input type="hidden" name="access_key" value=f9608412-82eb-4e17-9474-b9a4341d6b7d
-              <!-- ▲▲▲ REPLACE THIS VALUE WITH YOUR REAL ACCESS KEY from web3forms.com ▲▲▲ -->
+              <input type="hidden" name="access_key" value="f9608412-82eb-4e17-9474-b9a4341d6b7d">
               <input type="hidden" name="subject" value="New inquiry via lotabin.com">
               <input type="hidden" name="from_name" value="lotabin.com contact form">
               <input type="hidden" name="redirect" value="false">
@@ -233,25 +385,29 @@
               </div>
 
               <div class="field" data-field="name">
-                <label for="cf-name" data-i18n="contact.field.name">Your name</label>
+                <label for="cf-name"><span class="f-idx" aria-hidden="true">01</span><span data-i18n="contact.field.name">Your name</span></label>
                 <input id="cf-name" name="name" type="text" autocomplete="name" required>
+                <span class="f-line" aria-hidden="true"></span>
                 <span class="err" data-i18n="contact.err.required">This field is required.</span>
               </div>
 
               <div class="field" data-field="email">
-                <label for="cf-email" data-i18n="contact.field.email">Email</label>
+                <label for="cf-email"><span class="f-idx" aria-hidden="true">02</span><span data-i18n="contact.field.email">Email</span></label>
                 <input id="cf-email" name="email" type="email" autocomplete="email" required>
+                <span class="f-line" aria-hidden="true"></span>
                 <span class="err" data-i18n="contact.err.email">Please enter a valid email.</span>
               </div>
 
-              <div class="field" data-field="company">
-                <label for="cf-company"><span data-i18n="contact.field.company">Company / brand</span><span class="opt" data-i18n="contact.optional">(optional)</span></label>
+              <div class="field field--wide" data-field="company">
+                <label for="cf-company"><span class="f-idx" aria-hidden="true">03</span><span data-i18n="contact.field.company">Company / brand</span><span class="opt" data-i18n="contact.optional">(optional)</span></label>
                 <input id="cf-company" name="company" type="text" autocomplete="organization">
+                <span class="f-line" aria-hidden="true"></span>
               </div>
 
-              <div class="field" data-field="message">
-                <label for="cf-message" data-i18n="contact.field.message">Message</label>
+              <div class="field field--wide" data-field="message">
+                <label for="cf-message"><span class="f-idx" aria-hidden="true">04</span><span data-i18n="contact.field.message">Message</span></label>
                 <textarea id="cf-message" name="message" required></textarea>
+                <span class="f-line" aria-hidden="true"></span>
                 <span class="err" data-i18n="contact.err.required">This field is required.</span>
               </div>
 
@@ -260,7 +416,7 @@
               <div class="actions">
                 <button type="submit" class="btn btn-primary" data-magnetic="0.12">
                   <span data-i18n="contact.submit">Send message</span>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"></path></svg>
                 </button>
                 <span class="fallback">
                   <span data-i18n="contact.fallback">Prefer plain email?</span>
@@ -268,15 +424,13 @@
                 </span>
               </div>
             </form>
+          </div>
 
-            <!-- SUCCESS STATE -->
-            <div class="contact-success" id="contact-success" role="region" aria-live="polite">
-              <div class="check" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11l4 4 10-10"/></svg>
-              </div>
-              <h3 data-i18n="contact.success.h">Message received.</h3>
-              <p data-i18n="contact.success.p">Thank you. Yuya will write back from <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a> within one business day.</p>
-            </div>
+          <!-- SUCCESS STATE -->
+          <div class="contact-success" id="contact-success" role="region" aria-live="polite">
+            <span class="kbd-rule" aria-hidden="true">06.1 — Received</span>
+            <h3 data-i18n="contact.success.h">Message received.</h3>
+            <p data-i18n="contact.success.p">Thank you. Yuya will write back from <a href="mailto:yuya@lotabin.com">yuya@lotabin.com</a> within one business day.</p>
           </div>
         </div>
       </div>
@@ -295,19 +449,16 @@
           <p style="margin-top: var(--s-4); max-width: 36ch;" data-i18n="foot.tag">Short-form video ad production desk · Motion picture studio · Nagoya, Japan</p>
         </div>
         <div>
-          <h5 data-i18n="foot.col1.h">For Brands</h5>
-          <a href="services.html" data-i18n="p.sprout.name">Sprout</a>
-          <a href="services.html" data-i18n="p.standard.name">Standard</a>
-          <a href="services.html" data-i18n="p.pro.name">Pro</a>
-          <a href="services.html" data-i18n="p.ent.name">Enterprise</a>
-          <a href="services.html" data-i18n="p.film.name">Film Studio</a>
+          <h5 data-i18n="nav.work">How We Craft</h5>
+          <a href="principle.html" data-i18n="nav.craft.principle">Our Principle</a>
+          <a href="work.html" data-i18n="nav.craft.selected">Selected Work</a>
+          <a href="team.html" data-i18n="nav.craft.team">The Team</a>
         </div>
         <div>
-          <h5 data-i18n="foot.col2.h">For Agencies</h5>
-          <a href="services.html#for-agencies" data-i18n="a.sprint.name">Partner Test Sprint</a>
-          <a href="services.html#for-agencies" data-i18n="a.starter.name">Partner Starter</a>
-          <a href="services.html#for-agencies" data-i18n="a.growth.name">Partner Growth</a>
-          <a href="services.html#for-agencies" data-i18n="a.scale.name">Partner Scale</a>
+          <h5 data-i18n="nav.brands">Services</h5>
+          <a href="services.html" data-i18n="foot.col1.h">For Brands</a>
+          <a href="services-partners.html" data-i18n="foot.col2.h">For Agencies</a>
+          <a href="intake.html" data-i18n="workpage.cta.btn">Start a brief</a>
         </div>
         <div>
           <h5 data-i18n="foot.col3.h">Studio</h5>
@@ -323,8 +474,20 @@
     </div>
   </footer>
 
-  <script src="js/i18n.js?v=20260605a"></script>
+  <script src="js/i18n.js?v=20260611ja"></script>
   <script src="js/anim.js?v=20260531r"></script>
+
+  <!-- ============== Studio clock (Nagoya, JST) ============== -->
+  <script>
+    (function () {
+      const el = document.getElementById('studio-clock');
+      if (!el) return;
+      const fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false });
+      function tick() { el.textContent = fmt.format(new Date()); }
+      tick();
+      setInterval(tick, 15000);
+    })();
+  </script>
 
   <!-- ============== Contact form submit handler ============== -->
   <script>
@@ -410,8 +573,12 @@
           }
           // Success — swap to success state
           wrap.classList.add('is-sent');
-          // Scroll the success card into view for mobile
-          document.getElementById('contact-success')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Bring the success block into view (without scrollIntoView)
+          const successEl = document.getElementById('contact-success');
+          if (successEl) {
+            const y = successEl.getBoundingClientRect().top + window.scrollY - Math.max(0, (window.innerHeight - successEl.offsetHeight) / 2);
+            window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+          }
         } catch (err) {
           status.classList.add('is-error');
           status.textContent = t('contact.error', 'Something went wrong. Please email yuya@lotabin.com directly.');
